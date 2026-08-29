@@ -378,3 +378,13 @@ CreateThread(function()
         Wait(wait)
     end
 end)
+
+-- ==================== QIFIL SINXRONIZASIYASI ====================
+-- Server entity-yə vizual effekt verə bilməz — qıfılı hər client öz tərəfində tətbiq edir
+RegisterNetEvent('196rp_garage:setLock', function(netId, locked)
+    local veh = NetworkGetEntityFromNetworkId(tonumber(netId) or 0)
+    if veh ~= 0 then
+        SetVehicleDoorsLocked(veh, locked and 2 or 1)
+        SetVehicleDoorsLockedForAllPlayers(veh, locked == true)
+    end
+end)

@@ -63,6 +63,10 @@ CORE_EXPORTS = {
     ('esx_context', 'Close'),
     ('esx_context', 'Refresh'),
     ('esx_context', 'Preview'),
+    # 196rp_spawner: server entity yarada bilmədiyi üçün client-də spawn edən vasitəçi
+    ('196rp_spawner', 'RequestSpawn'),
+    ('196rp_spawner', 'SpawnVehicleAwait'),
+    ('196rp_spawner', 'SpawnPedAwait'),
 }
 
 problems = 0

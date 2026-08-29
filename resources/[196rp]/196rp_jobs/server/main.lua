@@ -10,9 +10,11 @@ local activeJobs = {}
 
 local function ClearVehicle(src)
     local data = activeJobs[src]
-    if data and data.vehicle and DoesEntityExist(data.vehicle) then
-        SetEntityAsMissionEntity(data.vehicle, true, true)
-        DeleteEntity(data.vehicle)
+    if data and data.vehicle then
+        local veh = NetworkGetEntityFromNetworkId(data.vehicle)
+        if veh ~= 0 then
+            DeleteEntity(veh)
+        end
     end
     if data then
         data.vehicle = nil
@@ -20,45 +22,23 @@ local function ClearVehicle(src)
 end
 
 local function SpawnJobVehicle(src, job)
-    local model = GetHashKey(job.vehicle)
-
-    RequestModel(model)
-    local timeout = 0
-    while not HasModelLoaded(model) and timeout < 100 do
-        Wait(50)
-        timeout = timeout + 1
-    end
-
-    if not HasModelLoaded(model) then
-        return nil
-    end
-
-    local veh = CreateVehicle(model, job.vehicleSpawn.x, job.vehicleSpawn.y, job.vehicleSpawn.z,
-        job.vehicleHeading or 0.0, true, false)
-
-    if not veh or veh == 0 then
-        return nil
-    end
-
-    SetEntityAsMissionEntity(veh, true, true)
-    SetVehicleOnGroundProperly(veh)
-    SetVehicleHasBeenOwnedByPlayer(veh, true)
-    SetVehicleNumberPlateText(veh, ('196%04d'):format(math.random(0, 9999)))
-    SetVehicleEngineOn(veh, true, true, false)
-    SetVehicleDoorsLocked(veh, 1)
-
+    local params = {
+        model = job.vehicle,
+        coords = { x = job.vehicleSpawn.x, y = job.vehicleSpawn.y, z = job.vehicleSpawn.z },
+        heading = job.vehicleHeading or 0.0,
+        plate = ('196%04d'):format(math.random(0, 9999)),
+        owned = true,
+        doorsLocked = 1,
+    }
     if job.vehicleColor then
-        SetVehicleCustomPrimaryColour(veh, job.vehicleColor[1], job.vehicleColor[2], job.vehicleColor[3])
-        SetVehicleCustomSecondaryColour(veh, job.vehicleColor[1], job.vehicleColor[2], job.vehicleColor[3])
+        params.customColor = job.vehicleColor
     end
 
-    SetModelAsNoLongerNeeded(model)
-
-    -- Maşın çox uzaqlaşarsa / məhv olarsa təmizlə
-    local netId = NetworkGetNetworkIdFromEntity(veh)
-    SetNetworkIdExistsOnAllMachines(netId, true)
-
-    return veh
+    local netId = exports['196rp_spawner']:SpawnVehicleAwait(src, params)
+    if netId == 0 then
+        return nil
+    end
+    return netId
 end
 
 -- ==================== İŞƏ BAŞLAMA ====================
@@ -84,14 +64,14 @@ RegisterNetEvent('196rp_jobs:startJob', function(jobName)
     activeJobs[src] = { name = job.name, round = 0, vehicle = nil, lastCollect = 0 }
 
     if job.type == 'vehicle' then
-        local veh = SpawnJobVehicle(src, job)
-        if not veh then
+        local netId = SpawnJobVehicle(src, job)
+        if not netId then
             activeJobs[src] = nil
             TriggerClientEvent('esx:showNotification', src, 'İş maşını yaradıla bilmədi! Bir az sonra yenidən cəhd edin.', 'error')
             return
         end
-        activeJobs[src].vehicle = veh
-        TriggerClientEvent('196rp_jobs:vehicleSpawned', src, NetworkGetNetworkIdFromEntity(veh))
+        activeJobs[src].vehicle = netId
+        TriggerClientEvent('196rp_jobs:vehicleSpawned', src, netId)
     end
 
     TriggerClientEvent('196rp_jobs:jobStarted', src, job.name)
@@ -261,13 +241,13 @@ CreateThread(function()
     while true do
         Wait(60000)
         for src, state in pairs(activeJobs) do
-            if state.vehicle and DoesEntityExist(state.vehicle) then
+            if state.vehicle then
+                local veh = NetworkGetEntityFromNetworkId(state.vehicle)
                 local ped = GetPlayerPed(src)
-                if ped and ped ~= 0 then
-                    local d = #(GetEntityCoords(ped) - GetEntityCoords(state.vehicle))
+                if veh ~= 0 and ped and ped ~= 0 then
+                    local d = #(GetEntityCoords(ped) - GetEntityCoords(veh))
                     if d > 900.0 then
-                        SetEntityAsMissionEntity(state.vehicle, true, true)
-                        DeleteEntity(state.vehicle)
+                        DeleteEntity(veh)
                         state.vehicle = nil
                         TriggerClientEvent('esx:showNotification', src,
                             'İş maşını çox uzaqda qaldı — iş dayandırıldı.', 'error')

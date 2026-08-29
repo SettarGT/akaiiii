@@ -729,13 +729,8 @@ ESX.RegisterServerCallback("esx:spawnVehicle", function(source, cb, vehData)
     local ped = GetPlayerPed(source)
     ESX.OneSync.SpawnVehicle(vehData.model or `ADDER`, vehData.coords or GetEntityCoords(ped), vehData.coords.w or 0.0, vehData.props or {}, function(id)
         if vehData.warp then
-            local vehicle = NetworkGetEntityFromNetworkId(id)
-            local timeout = 0
-            while GetVehiclePedIsIn(ped, false) ~= vehicle and timeout <= 15 do
-                Wait(0)
-                TaskWarpPedIntoVehicle(ped, vehicle, -1)
-                timeout += 1
-            end
+            -- TaskWarpPedIntoVehicle server-də yoxdur (client native) — oyunçunun client-ində edilir
+            TriggerClientEvent("esx:warpIntoVehicle", source, id, -1)
         end
         cb(id)
     end)

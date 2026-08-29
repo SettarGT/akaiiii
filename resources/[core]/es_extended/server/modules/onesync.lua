@@ -102,23 +102,22 @@ function ESX.OneSync.SpawnObject(model, coords, heading, cb)
     end
 
     CreateThread(function()
-        local entity = CreateObject(model, objectCoords.x, objectCoords.y, objectCoords.z, true, true, false)
-        local tries = 0
-
-        while not DoesEntityExist(entity) do
-            Wait(200)
-            
-            tries = tries + 1
-
-            if tries > 40 then
-                return reject(("Could not spawn object - ^5%s^7!"):format(entity))
-            end
+        -- CreateObject/SetEntityHeading server-də yoxdur — 196rp_spawner vasitəsilə client-də yaradılır
+        local players = GetPlayers()
+        if #players == 0 then
+            return reject("No players online to spawn object!")
         end
-
-        local networkId = NetworkGetNetworkIdFromEntity(entity)
-
-        SetEntityHeading(entity, heading)
-        resolve(networkId)
+        exports['196rp_spawner']:RequestSpawn(tonumber(players[1]), 'object', {
+            model = model,
+            coords = { x = objectCoords.x, y = objectCoords.y, z = objectCoords.z },
+            heading = heading or 0.0,
+        }, function(netId)
+            if netId == 0 then
+                reject(("Could not spawn object - ^5%s^7!"):format(model))
+            else
+                resolve(netId)
+            end
+        end, 10000)
     end)
 
     if promise then
@@ -154,21 +153,22 @@ function ESX.OneSync.SpawnPed(model, coords, heading, cb)
     end
 
     CreateThread(function()
-        local entity = CreatePed(0, model, coords.x, coords.y, coords.z, heading, true, true)
-        local tries = 0
-
-        while not DoesEntityExist(entity) do
-            Wait(200)
-
-            tries = tries + 1
-
-            if tries > 40 then
-                return reject(("Could not spawn ped - ^5%s^7!"):format(model))
-            end
+        -- CreatePed server-də yoxdur — 196rp_spawner vasitəsilə client-də yaradılır
+        local players = GetPlayers()
+        if #players == 0 then
+            return reject("No players online to spawn ped!")
         end
-
-        local networkId = NetworkGetNetworkIdFromEntity(entity)
-        resolve(networkId)
+        exports['196rp_spawner']:RequestSpawn(tonumber(players[1]), 'ped', {
+            model = model,
+            coords = { x = coords.x, y = coords.y, z = coords.z },
+            heading = heading or 0.0,
+        }, function(netId)
+            if netId == 0 then
+                reject(("Could not spawn ped - ^5%s^7!"):format(model))
+            else
+                resolve(netId)
+            end
+        end, 10000)
     end)
 
     if promise then
@@ -204,21 +204,22 @@ function ESX.OneSync.SpawnPedInVehicle(model, vehicle, seat, cb)
     end
 
     CreateThread(function()
-        local entity = CreatePedInsideVehicle(vehicle, 1, model, seat, true, true)
-        local tries = 0
-
-        while not DoesEntityExist(entity) do
-            Wait(200)
-
-            tries = tries + 1
-
-            if tries > 40 then
-                reject(("Could not spawn ped - ^5%s^7!"):format(model))
-            end
+        -- CreatePedInsideVehicle server-də yoxdur — 196rp_spawner vasitəsilə client-də yaradılır
+        local players = GetPlayers()
+        if #players == 0 then
+            return reject("No players online to spawn ped!")
         end
-
-        local networkId = NetworkGetNetworkIdFromEntity(entity)
-        resolve(networkId)
+        exports['196rp_spawner']:RequestSpawn(tonumber(players[1]), 'pedInVehicle', {
+            model = model,
+            vehNetId = NetworkGetNetworkIdFromEntity(vehicle),
+            seat = seat,
+        }, function(netId)
+            if netId == 0 then
+                reject(("Could not spawn ped - ^5%s^7!"):format(model))
+            else
+                resolve(netId)
+            end
+        end, 10000)
     end)
 
     if promise then

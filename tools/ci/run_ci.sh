@@ -17,6 +17,7 @@ run() {
 }
 
 run "Lua sintaksisi"        python3 tools/ci/check_syntax.py
+run "Server-də client native" python3 tools/ci/check_server_natives.py
 run "Forward-reference"     python3 tools/ci/check_forward_refs.py "resources/[196rp]"
 run "Client/Server kontrakt" python3 tools/ci/check_contracts.py
 run "SQL referansları"      python3 tools/ci/check_sql_refs.py

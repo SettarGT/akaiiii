@@ -1,108 +1,56 @@
 -- 196 RP | Avtobus sistemi — server tərəfi
--- NPC sürücülü avtobuslar marşrutla hərəkət edir + gediş haqqı + taksi çağırışı
+-- Avtobus simulasiyası CLIENT-dədir (client/sim.lua) — server entity yarada bilməz.
+-- Server: sim sahibi təyin edir, mövqe keşi saxlayır, gediş haqqı + taksi məntiqi.
 
 local ESX = exports['es_extended']:getSharedObject()
 
--- [routeNumber] = { veh = entity, ped = entity, targetIndex = n }
-local buses = {}
+local simOwner = nil
+local busPositions = {}
 
--- ==================== NPC AVTOBUSLAR ====================
+-- ==================== SIM SAHİBİ ====================
 
-local function CreateBus(route)
-    local start = route.stops[1].coords
-    local vehModel = GetHashKey(Config.BusModel)
-    local pedModel = GetHashKey('a_m_m_busker_01')
+local function AssignSimOwner()
+    local ids = {}
+    for _, pid in pairs(GetPlayers()) do
+        ids[#ids + 1] = tonumber(pid)
+    end
+    table.sort(ids)
+    local newOwner = ids[1]
 
-    RequestModel(vehModel)
-    RequestModel(pedModel)
-
-    local t = 0
-    while (not HasModelLoaded(vehModel) or not HasModelLoaded(pedModel)) and t < 120 do
-        Wait(50)
-        t = t + 1
+    if newOwner == simOwner then
+        return
     end
 
-    if not HasModelLoaded(vehModel) or not HasModelLoaded(pedModel) then
-        return nil
+    if simOwner then
+        TriggerClientEvent('196rp_bus:setSimOwner', simOwner, false)
     end
-
-    local veh = CreateVehicle(vehModel, start.x, start.y, start.z, 0.0, true, false)
-    if not veh or veh == 0 then
-        return nil
+    simOwner = newOwner
+    if simOwner then
+        TriggerClientEvent('196rp_bus:setSimOwner', simOwner, true)
+        print(('[196rp_bus] simulasiya sahibi: %s'):format(simOwner))
     end
-
-    local ped = CreatePedInsideVehicle(veh, 26, pedModel, -1, true, false)
-
-    SetEntityAsMissionEntity(veh, true, true)
-    SetEntityInvincible(veh, true)
-    SetVehicleDoorsLocked(veh, 4)
-    SetVehicleDoorsLockedForAllPlayers(veh, true)
-    SetVehicleCanBeUsedByFleeingPeds(veh, false)
-    SetVehicleEngineOn(veh, true, true, false)
-    SetVehicleOnGroundProperly(veh)
-    SetVehicleNumberPlateText(veh, ('196BUS%02d'):format(route.number))
-    SetVehicleCustomPrimaryColour(veh, route.color.r, route.color.g, route.color.b)
-    SetVehicleCustomSecondaryColour(veh, route.color.r, route.color.g, route.color.b)
-
-    SetEntityInvincible(ped, true)
-    SetPedKeepTask(ped, true)
-    SetBlockingOfNonTemporaryEvents(ped, true)
-    SetPedCanBeDraggedOut(ped, false)
-    SetPedCanRagdoll(ped, false)
-    SetDriverAbility(ped, 1.0)
-    SetDriverAggressiveness(ped, 0.0)
-
-    SetModelAsNoLongerNeeded(vehModel)
-    SetModelAsNoLongerNeeded(pedModel)
-
-    return { veh = veh, ped = ped, targetIndex = 2 }
 end
 
--- Hər marşrut üçün bir avtobus
 CreateThread(function()
     Wait(5000)
-
-    for i = 1, #Config.Routes do
-        local route = Config.Routes[i]
-        local bus = CreateBus(route)
-        if bus then
-            buses[route.number] = bus
-            print(('[196rp_bus] %s nömrəli marşrut işə düşdü: %s'):format(route.number, route.name))
-        end
-    end
-
-    -- Marşrut üzrə hərəkət
     while true do
-        Wait(1000)
-
-        for i = 1, #Config.Routes do
-            local route = Config.Routes[i]
-            local bus = buses[route.number]
-
-            if not bus or not DoesEntityExist(bus.veh) or not DoesEntityExist(bus.ped) then
-                -- Maşın məhv edilibsə yenidən yarat
-                if bus then
-                    if DoesEntityExist(bus.ped) then DeleteEntity(bus.ped) end
-                    if DoesEntityExist(bus.veh) then DeleteEntity(bus.veh) end
-                end
-                buses[route.number] = CreateBus(route)
-            else
-                local target = route.stops[bus.targetIndex]
-                if target then
-                    TaskVehicleDriveToCoordLongrange(bus.ped, bus.veh,
-                        target.coords.x, target.coords.y, target.coords.z,
-                        Config.BusSpeed, 786603, 15.0)
-
-                    local dist = #(GetEntityCoords(bus.veh) - target.coords)
-                    if dist < 25.0 then
-                        bus.targetIndex = bus.targetIndex + 1
-                        if bus.targetIndex > #route.stops then
-                            bus.targetIndex = 1
-                        end
-                    end
-                end
-            end
+        if simOwner == nil or not GetPlayerName(simOwner) then
+            AssignSimOwner()
         end
+        Wait(10000)
+    end
+end)
+
+AddEventHandler('playerDropped', function()
+    if tonumber(source) == simOwner then
+        simOwner = nil
+        AssignSimOwner()
+    end
+end)
+
+RegisterNetEvent('196rp_bus:positions', function(list)
+    if tonumber(source) == simOwner and type(list) == 'table' then
+        busPositions = list
     end
 end)
 
@@ -214,21 +162,14 @@ end)
 -- ==================== DİGƏR ====================
 
 exports('GetBusPositions', function()
-    local list = {}
-    for number, bus in pairs(buses) do
-        if DoesEntityExist(bus.veh) then
-            list[number] = GetEntityCoords(bus.veh)
-        end
-    end
-    return list
+    return busPositions
 end)
 
 AddEventHandler('onResourceStop', function(res)
     if res ~= GetCurrentResourceName() then
         return
     end
-    for _, bus in pairs(buses) do
-        if DoesEntityExist(bus.ped) then DeleteEntity(bus.ped) end
-        if DoesEntityExist(bus.veh) then DeleteEntity(bus.veh) end
+    if simOwner then
+        TriggerClientEvent('196rp_bus:setSimOwner', simOwner, false)
     end
 end)

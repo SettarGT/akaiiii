@@ -214,7 +214,8 @@ function CreateExtendedPlayer(playerId, identifier, ssn, group, accounts, invent
         local ped <const> = GetPlayerPed(self.source)
 
         SetEntityCoords(ped, coordinates.x, coordinates.y, coordinates.z, false, false, false, false)
-        SetEntityHeading(ped, coordinates.w or coordinates.heading or 0.0)
+        -- SetEntityHeading server-də yoxdur (client native) — client-də tətbiq olunur
+        TriggerClientEvent('esx:setEntityHeading', self.source, coordinates.w or coordinates.heading or 0.0)
     end
 
     function self.getCoords(vector, heading)

@@ -157,30 +157,18 @@ ESX.RegisterServerCallback('196rp_ems:spawnVehicle', function(source, cb)
         return cb(false, nil)
     end
 
-    local model = GetHashKey('ambulance')
-    RequestModel(model)
-    local t = 0
-    while not HasModelLoaded(model) and t < 100 do
-        Wait(50)
-        t = t + 1
-    end
-    if not HasModelLoaded(model) then
+    local netId = exports['196rp_spawner']:SpawnVehicleAwait(source, {
+        model = 'ambulance',
+        coords = { x = spawn.x, y = spawn.y, z = spawn.z },
+        heading = heading,
+        plate = ('196EMS%02d'):format(math.random(0, 99)),
+    })
+
+    if netId == 0 then
         return cb(false, nil)
     end
 
-    local veh = CreateVehicle(model, spawn.x, spawn.y, spawn.z, heading, true, false)
-    SetModelAsNoLongerNeeded(model)
-
-    if not veh or veh == 0 then
-        return cb(false, nil)
-    end
-
-    SetEntityAsMissionEntity(veh, true, true)
-    SetVehicleOnGroundProperly(veh)
-    SetVehicleNumberPlateText(veh, ('196EMS%02d'):format(math.random(0, 99)))
-    SetVehicleEngineOn(veh, true, true, false)
-
-    cb(true, NetworkGetNetworkIdFromEntity(veh))
+    cb(true, netId)
 end)
 
 -- ==================== DİGƏR RESURSLAR ÜÇÜN ====================

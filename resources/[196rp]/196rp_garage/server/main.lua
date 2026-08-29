@@ -78,54 +78,51 @@ local function SaveProps(plate, propsJson)
     )
 end
 
+local function DeleteSpawned(plate)
+    local rec = spawnedVehicles[plate]
+    if rec and rec.vehNet then
+        local veh = NetworkGetEntityFromNetworkId(rec.vehNet)
+        if veh ~= 0 then
+            DeleteEntity(veh)
+        end
+    end
+end
+
 local function CreateOwnedVehicle(source, modelName, plate, props)
-    local model = GetHashKey(modelName)
-
-    RequestModel(model)
-    local timeout = 0
-    while not HasModelLoaded(model) and timeout < 100 do
-        Wait(50)
-        timeout = timeout + 1
-    end
-    if not HasModelLoaded(model) then
-        return nil
-    end
-
     local ped = GetPlayerPed(source)
     local coords = GetEntityCoords(ped)
-    local heading = GetEntityHeading(ped)
 
     -- Qaraj çıxışında yaradırıq
     local garage = NearestGarage(source, nil)
-    local spawnCoords, spawnHeading = coords, heading
+    local spawnCoords, spawnHeading = coords, 0.0
     if garage then
         spawnCoords = garage.coords
-        spawnHeading = 0.0
     end
 
-    local veh = CreateVehicle(model, spawnCoords.x + 2.0, spawnCoords.y, spawnCoords.z,
-        spawnHeading, true, false)
+    local params = {
+        model = modelName,
+        coords = { x = spawnCoords.x + 2.0, y = spawnCoords.y, z = spawnCoords.z },
+        heading = spawnHeading,
+        plate = plate,
+        owned = true,
+        doorsLocked = vehicleLocks[plate] and 2 or 1,
+    }
+    if props then
+        if props.color1 then
+            params.color1, params.color2 = props.color1, props.color2
+        end
+        if props.pearlescentColor then
+            params.pearlescent, params.wheelColor = props.pearlescentColor, props.wheelColor
+        end
+    end
 
-    SetModelAsNoLongerNeeded(model)
-
-    if not veh or veh == 0 then
+    local netId = exports['196rp_spawner']:SpawnVehicleAwait(source, params)
+    if netId == 0 then
         return nil
     end
 
-    SetEntityAsMissionEntity(veh, true, true)
-    SetVehicleNumberPlateText(veh, plate)
-    SetVehicleHasBeenOwnedByPlayer(veh, true)
-    SetVehicleOnGroundProperly(veh)
-    SetVehicleEngineOn(veh, true, true, false)
-    SetVehicleDoorsLocked(veh, vehicleLocks[plate] and 2 or 1)
-
-    if props then
-        if props.color1 then SetVehicleColours(veh, props.color1, props.color2 or props.color1) end
-        if props.pearlescentColor then SetVehicleExtraColours(veh, props.pearlescentColor, props.wheelColor or 0) end
-    end
-
-    spawnedVehicles[plate] = { veh = veh, owner = source }
-    return NetworkGetNetworkIdFromEntity(veh)
+    spawnedVehicles[plate] = { vehNet = netId, owner = source }
+    return netId
 end
 
 -- ==================== QARAJDAKI MAŞINLAR ====================
@@ -332,11 +329,7 @@ exports('ImpoundVehicle', function(plate)
     MySQL.update.await('UPDATE `owned_vehicles` SET `stored` = 1, `pound` = ?, `parking` = NULL WHERE `plate` = ?',
         { 'pound', plate })
 
-    local rec = spawnedVehicles[plate]
-    if rec and DoesEntityExist(rec.veh) then
-        SetEntityAsMissionEntity(rec.veh, true, true)
-        DeleteEntity(rec.veh)
-    end
+    DeleteSpawned(plate)
     spawnedVehicles[plate] = nil
 
     return true
@@ -359,9 +352,8 @@ ESX.RegisterServerCallback('196rp_garage:toggleLock', function(source, cb, plate
     vehicleLocks[plate] = not vehicleLocks[plate]
 
     local rec = spawnedVehicles[plate]
-    if rec and DoesEntityExist(rec.veh) then
-        SetVehicleDoorsLocked(rec.veh, vehicleLocks[plate] and 2 or 1)
-        SetVehicleDoorsLockedForAllPlayers(rec.veh, vehicleLocks[plate])
+    if rec then
+        TriggerClientEvent('196rp_garage:setLock', -1, rec.vehNet, vehicleLocks[plate] == true)
     end
 
     cb(vehicleLocks[plate])
@@ -421,10 +413,7 @@ AddEventHandler('playerDropped', function()
     local src = source
     for plate, rec in pairs(spawnedVehicles) do
         if rec.owner == src then
-            if DoesEntityExist(rec.veh) then
-                SetEntityAsMissionEntity(rec.veh, true, true)
-                DeleteEntity(rec.veh)
-            end
+            DeleteSpawned(plate)
             spawnedVehicles[plate] = nil
         end
     end
@@ -434,10 +423,7 @@ AddEventHandler('onResourceStop', function(res)
     if res ~= GetCurrentResourceName() then
         return
     end
-    for _, rec in pairs(spawnedVehicles) do
-        if DoesEntityExist(rec.veh) then
-            SetEntityAsMissionEntity(rec.veh, true, true)
-            DeleteEntity(rec.veh)
-        end
+    for plate, _ in pairs(spawnedVehicles) do
+        DeleteSpawned(plate)
     end
 end)

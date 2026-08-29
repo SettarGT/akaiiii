@@ -47,6 +47,7 @@ server_scripts {
 
 client_scripts {
     'client/main.lua',
+    'client/entity_events.lua',
 	'client/functions.lua',
 	'client/compat.lua',
 	'client/modules/wrapper.lua',

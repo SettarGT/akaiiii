@@ -37,31 +37,19 @@ ESX.RegisterServerCallback('196rp_fire:spawnVehicle', function(source, cb)
         return cb(false, nil)
     end
 
-    local model = GetHashKey(Config.FireTruck)
-    RequestModel(model)
-    local t = 0
-    while not HasModelLoaded(model) and t < 100 do
-        Wait(50)
-        t = t + 1
-    end
-    if not HasModelLoaded(model) then
-        return cb(false, nil)
-    end
-
     local coords = Config.Station.coords
-    local veh = CreateVehicle(model, coords.x + 4.0, coords.y, coords.z, 0.0, true, false)
-    SetModelAsNoLongerNeeded(model)
+    local netId = exports['196rp_spawner']:SpawnVehicleAwait(source, {
+        model = Config.FireTruck,
+        coords = { x = coords.x + 4.0, y = coords.y, z = coords.z },
+        heading = 0.0,
+        plate = ('%s%03d'):format(Config.FireTruckPlatePrefix or 'YAN', math.random(0, 999)),
+    })
 
-    if not veh or veh == 0 then
+    if netId == 0 then
         return cb(false, nil)
     end
 
-    SetEntityAsMissionEntity(veh, true, true)
-    SetVehicleOnGroundProperly(veh)
-    SetVehicleNumberPlateText(veh, ('%s%03d'):format(Config.FireTruckPlatePrefix or 'YAN', math.random(0, 999)))
-    SetVehicleEngineOn(veh, true, true, false)
-
-    cb(true, NetworkGetNetworkIdFromEntity(veh))
+    cb(true, netId)
 end)
 
 -- ==================== YANĞINLAR ====================

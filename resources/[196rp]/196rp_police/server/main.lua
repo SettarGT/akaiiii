@@ -230,31 +230,19 @@ ESX.RegisterServerCallback('196rp_police:spawnVehicle', function(source, cb)
         return cb(nil)
     end
 
-    local model = GetHashKey(Config.PoliceVehicles[math.random(1, #Config.PoliceVehicles)])
-    RequestModel(model)
-    local t = 0
-    while not HasModelLoaded(model) and t < 100 do
-        Wait(50)
-        t = t + 1
-    end
-    if not HasModelLoaded(model) then
+    local netId = exports['196rp_spawner']:SpawnVehicleAwait(source, {
+        model = Config.PoliceVehicles[math.random(1, #Config.PoliceVehicles)],
+        coords = { x = spawn.x, y = spawn.y, z = spawn.z },
+        heading = heading,
+        plate = ('196PD%02d'):format(math.random(0, 99)),
+        owned = true,
+    })
+
+    if netId == 0 then
         return cb(nil)
     end
 
-    local veh = CreateVehicle(model, spawn.x, spawn.y, spawn.z, heading, true, false)
-    SetModelAsNoLongerNeeded(model)
-
-    if not veh or veh == 0 then
-        return cb(nil)
-    end
-
-    SetEntityAsMissionEntity(veh, true, true)
-    SetVehicleOnGroundProperly(veh)
-    SetVehicleNumberPlateText(veh, ('196PD%02d'):format(math.random(0, 99)))
-    SetVehicleEngineOn(veh, true, true, false)
-    SetVehicleHasBeenOwnedByPlayer(veh, true)
-
-    cb(NetworkGetNetworkIdFromEntity(veh))
+    cb(netId)
 end)
 
 -- ==================== DİGƏR RESURSLAR ÜÇÜN ====================

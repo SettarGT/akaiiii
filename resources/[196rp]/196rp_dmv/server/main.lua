@@ -92,34 +92,32 @@ ESX.RegisterServerCallback('196rp_dmv:startDrivingTest', function(source, cb)
         end
     end
 
+local function DeleteTestVehicle(test)
+    if test and test.vehicleNet then
+        local veh = NetworkGetEntityFromNetworkId(test.vehicleNet)
+        if veh ~= 0 then
+            DeleteEntity(veh)
+        end
+        test.vehicleNet = nil
+    end
+end
+
     local start = Config.Checkpoints[1]
-    local model = GetHashKey(Config.TestVehicle)
 
-    RequestModel(model)
-    local t = 0
-    while not HasModelLoaded(model) and t < 100 do
-        Wait(50)
-        t = t + 1
-    end
-    if not HasModelLoaded(model) then
+    local netId = exports['196rp_spawner']:SpawnVehicleAwait(source, {
+        model = Config.TestVehicle,
+        coords = { x = start.x + 3.0, y = start.y, z = start.z },
+        heading = 0.0,
+        plate = '196DMV',
+    })
+
+    if netId == 0 then
         return cb(nil)
     end
 
-    local veh = CreateVehicle(model, start.x + 3.0, start.y, start.z, 0.0, true, false)
-    SetModelAsNoLongerNeeded(model)
+    tests[source] = { checkpoints = {}, vehicleNet = netId, started = os.time() }
 
-    if not veh or veh == 0 then
-        return cb(nil)
-    end
-
-    SetEntityAsMissionEntity(veh, true, true)
-    SetVehicleOnGroundProperly(veh)
-    SetVehicleNumberPlateText(veh, '196DMV')
-    SetVehicleEngineOn(veh, true, true, false)
-
-    tests[source] = { checkpoints = {}, vehicle = veh, started = os.time() }
-
-    cb(NetworkGetNetworkIdFromEntity(veh))
+    cb(netId)
 end)
 
 RegisterNetEvent('196rp_dmv:checkpoint', function(index, x, y, z)
@@ -178,10 +176,7 @@ ESX.RegisterServerCallback('196rp_dmv:finishDrivingTest', function(source, cb)
             ('Nöqtələrin hamısını keçmədiniz: %s/%s'):format(hit, #Config.Checkpoints), 'error')
     end
 
-    if test.vehicle and DoesEntityExist(test.vehicle) then
-        SetEntityAsMissionEntity(test.vehicle, true, true)
-        DeleteEntity(test.vehicle)
-    end
+    DeleteTestVehicle(test)
     tests[source] = nil
 
     cb(passed)
@@ -194,10 +189,7 @@ CreateThread(function()
         local now = os.time()
         for src, test in pairs(tests) do
             if now - test.started > 600 then
-                if test.vehicle and DoesEntityExist(test.vehicle) then
-                    SetEntityAsMissionEntity(test.vehicle, true, true)
-                    DeleteEntity(test.vehicle)
-                end
+                DeleteTestVehicle(test)
                 tests[src] = nil
             end
         end
@@ -207,10 +199,7 @@ end)
 AddEventHandler('playerDropped', function()
     local src = source
     if tests[src] then
-        if tests[src].vehicle and DoesEntityExist(tests[src].vehicle) then
-            SetEntityAsMissionEntity(tests[src].vehicle, true, true)
-            DeleteEntity(tests[src].vehicle)
-        end
+        DeleteTestVehicle(tests[src])
         tests[src] = nil
     end
 end)

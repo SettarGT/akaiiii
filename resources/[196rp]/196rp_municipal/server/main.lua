@@ -32,7 +32,8 @@ local function PickWorkTypeForHour(hour)
 end
 
 local function StartEvent()
-    local hour = GetClockHours()
+    -- GetClockHours server-də yoxdur (client native) — server vaxtından istifadə edirik
+    local hour = tonumber(os.date('%H')) or 12
     local workId = PickWorkTypeForHour(hour)
     local locId = math.random(1, #Config.Locations)
 

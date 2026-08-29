@@ -111,18 +111,8 @@ ESX.RegisterCommand(
                     SetEntityRoutingBucket(vehicle, xRoutingBucket)
                 end
 
-                for _ = 1, 100 do
-                    Wait(0)
-                    SetPedIntoVehicle(playerPed, vehicle, -1)
-
-                    if GetVehiclePedIsIn(playerPed, false) == vehicle then
-                        break
-                    end
-                end
-
-                if GetVehiclePedIsIn(playerPed, false) ~= vehicle then
-                    showError("[^1ERROR^7] The player could not be seated in the vehicle")
-                end
+                -- SetPedIntoVehicle server-də yoxdur (client native) — oyunçunu client-də oturduruq
+                TriggerClientEvent("esx:warpIntoVehicle", xPlayer.source, networkId, -1)
             end
         end)
     end,

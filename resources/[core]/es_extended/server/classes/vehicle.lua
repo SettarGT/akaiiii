@@ -148,7 +148,8 @@ Core.vehicleClass = {
 		end
 
 		Entity(vehicleData.entity).state:set("plate", newPlate, false)
-		SetVehicleNumberPlateText(vehicleData.entity, newPlate)
+		-- SetVehicleNumberPlateText server-də yoxdur (client native) — bütün client-lərdə tətbiq olunur
+		TriggerClientEvent(-1, "esx:setPlateText", NetworkGetNetworkIdFromEntity(vehicleData.entity), newPlate)
 
 		local oldPlate = vehicleData.plate
 		vehicleData.plate = newPlate
