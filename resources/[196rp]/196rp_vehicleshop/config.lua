@@ -6,7 +6,7 @@ Config = {}
 Config.Shops = {
     {
         id = 'avtosalon',
-        name = 'Premium Deluxe Avtosalon',
+        name = 'Premium Deluxe Avtosalon (28 May)',
         coords = vector3(-42.5, -1100.6, 26.4),
         heading = 90.0,
         blip = { sprite = 225, color = 49 },
@@ -14,7 +14,7 @@ Config.Shops = {
     },
     {
         id = 'motosalon',
-        name = 'Motosiklet Salonu',
+        name = 'Motosiklet Salonu (Koroğlu)',
         coords = vector3(1050.0, -900.0, 30.0),
         heading = 180.0,
         blip = { sprite = 226, color = 49 },

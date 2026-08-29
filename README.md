@@ -208,6 +208,10 @@ Hamısı qaydasındadırsa, FiveM-də serveri axtarın: **"196 RP"** → daxil o
 | `/evlilikteklifi`, `/toy`, `/bosan` | hamı | Evlilik təklifi, toy mərasimi, boşanma |
 | `/dost`, `/dostlar` | hamı | Dost əlavə edir / dost siyahısı (xəritədə göstərmə, pul göndərmə) |
 | `/missiya`, `/missiyadayandır` | hamı | Missiya lövhəsindən tapşırıq götürür / ləğv edir |
+| `/telefondukan` | hamı | Telefon kataloqu (20 model) — yalnız mağazada işləyir |
+| `/metro` | hamı | Ən yaxın metro stansiyasını və xətti göstərir |
+| `/xerite` | hamı | Bakı stansiyaları və rayonları siyahısı |
+| `/harada` | hamı | Hazırkı Bakı rayonunu göstərir |
 
 ---
 
@@ -224,7 +228,7 @@ akaiiii/
 └── resources/
     ├── [core]/             ← ESX framework (16 əsas resurs, AZ lokalları ilə)
     ├── [oxmysql]/          ← MySQL bağlantı resursu
-    └── [196rp]/            ← 39 xüsusi resurs (iş, məkan, həyat tərzi, dövlət qüvvələri və s.)
+    └── [196rp]/            ← 41 xüsusi resurs (iş, məkan, həyat tərzi, dövlət qüvvələri və s.)
 ```
 
 ### 196 RP xüsusi resursları
@@ -270,6 +274,8 @@ akaiiii/
 | `196rp_home` | Ev imkanları: açarlar, seyf, divar rəngi, icarə, telefon, balkon, qonaqlar, yataq |
 | `196rp_policeadv` | Qərargah, polis radarı, yol polisi, K9, SWAT, staj əlavəsi, helikopter, fövqəladə elan |
 | `196rp_social` | Hədiyyə, evlilik, dostluq, missiya sistemi |
+| `196rp_bakumap` | Bakı xəritəsi qatı: 12 metro stansiyası, 3 xətt, rayon təyinatı |
+| `196rp_phoneshop` | Telefon mağazası — 20 model (10 Aifon + 10 Samsan, parodiya adlar) |
 
 ---
 

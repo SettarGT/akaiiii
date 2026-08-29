@@ -6,7 +6,7 @@ Config = {}
 Config.Shops = {
     {
         id = 'market_legion',
-        name = '24/7 Market — Legion',
+        name = '24/7 Market — Xətai',
         coords = vector3(25.7, -1345.5, 29.5),
         blip = { sprite = 52, color = 3 },
         items = {
@@ -22,7 +22,7 @@ Config.Shops = {
     },
     {
         id = 'market_vinewood',
-        name = '24/7 Market — Vinewood',
+        name = '24/7 Market — Nəriman Nərimanov',
         coords = vector3(373.9, 325.8, 103.6),
         blip = { sprite = 52, color = 3 },
         items = {
@@ -37,7 +37,7 @@ Config.Shops = {
     },
     {
         id = 'market_sandy',
-        name = '24/7 Market — Sandy Shores',
+        name = '24/7 Market — Qara Qarayev',
         coords = vector3(549.2, 2669.2, 42.2),
         blip = { sprite = 52, color = 3 },
         items = {
@@ -50,7 +50,7 @@ Config.Shops = {
     },
     {
         id = 'market_paleto',
-        name = '24/7 Market — Paleto Bay',
+        name = '24/7 Market — İçərişəhər',
         coords = vector3(-3038.9, 585.9, 7.9),
         blip = { sprite = 52, color = 3 },
         items = {
@@ -62,7 +62,7 @@ Config.Shops = {
     },
     {
         id = 'market_ocean',
-        name = '24/7 Market — Great Ocean',
+        name = '24/7 Market — İçərişəhər',
         coords = vector3(-3241.9, 1001.2, 12.8),
         blip = { sprite = 52, color = 3 },
         items = {
@@ -74,7 +74,7 @@ Config.Shops = {
     },
     {
         id = 'supermarket',
-        name = 'Rob\'s Supermarket',
+        name = 'Rob\'s Supermarket — Elmlər Akademiyası',
         coords = vector3(-706.0, -905.0, 19.2),
         blip = { sprite = 52, color = 3 },
         items = {
@@ -94,7 +94,7 @@ Config.Shops = {
     },
     {
         id = 'aptek',
-        name = 'Mərkəzi Aptek',
+        name = 'Mərkəzi Aptek — Xətai',
         coords = vector3(176.0, -1300.0, 29.4),
         blip = { sprite = 403, color = 3 },
         items = {
@@ -104,7 +104,7 @@ Config.Shops = {
     },
     {
         id = 'bar_vanilla',
-        name = 'Vanilla Unicorn — Bar',
+        name = 'Vanilla Unicorn — Xətai',
         coords = vector3(127.4, -1304.0, 29.3),
         blip = { sprite = 93, color = 2 },
         items = {
@@ -115,7 +115,7 @@ Config.Shops = {
     },
     {
         id = 'baliq_dukani',
-        name = 'Balıqçılıq Alətləri Mağazası',
+        name = 'Balıqçılıq Alətləri Mağazası — 28 May',
         coords = vector3(48.0, -1100.0, 29.5),
         blip = { sprite = 68, color = 38 },
         items = {
@@ -125,7 +125,7 @@ Config.Shops = {
     },
     {
         id = 'mexanik_dukani',
-        name = 'Mexanik Avadanlıq Mağazası',
+        name = 'Mexanik Avadanlıq Mağazası — Xətai',
         coords = vector3(488.4, -1318.7, 29.2),
         blip = { sprite = 72, color = 66 },
         items = {
