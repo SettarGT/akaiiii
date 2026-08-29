@@ -9,8 +9,8 @@ Config.Garages = {
     { id = 'garage_vinewood', name = 'Vinewood Qarajı (Nəriman Nərimanov)', type = 'car', coords = vector3(630.0, 270.0, 103.1) },
     { id = 'garage_sandy', name = 'Sandy Shores Qarajı (Gəncə)', type = 'car', coords = vector3(549.2, 2669.2, 42.2) },
     { id = 'garage_paleto', name = 'Paleto Bay Qarajı (Zaqatala)', type = 'car', coords = vector3(-300.0, 6250.0, 31.5) },
-    { id = 'garage_delperro', name = 'Del Perro Qarajı (Elmlər Akademiyası)', type = 'car', coords = vector3(-1180.0, -900.0, 14.0) },
-    { id = 'garage_marina', name = 'Vespucci Marina (Qayıqlar) (Elmlər Akademiyası)', type = 'boat', coords = vector3(-1010.0, -640.0, 12.0) },
+    { id = 'garage_delperro', name = 'Del Perro Qarajı (20 Yanvar)', type = 'car', coords = vector3(-1180.0, -900.0, 14.0) },
+    { id = 'garage_marina', name = 'Vespucci Marina (Qayıqlar) (20 Yanvar)', type = 'boat', coords = vector3(-1010.0, -640.0, 12.0) },
     { id = 'garage_airport', name = 'Hava Limanı Anqarı (Təyyarələr) (Ağ şəhər)', type = 'aircraft', coords = vector3(-1030.0, -2750.0, 20.0) },
 }
 

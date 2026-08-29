@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<title>196 RP Telefon — dizayn baxışı</title>
+<link rel="stylesheet" href="/resources/%5B196rp%5D/196rp_phone/web/css/style.css">
+<style>body{background:#05080d;display:grid;place-items:center}
+#hint{position:fixed;top:12px;left:50%;transform:translateX(-50%);font:12px system-ui,sans-serif;color:#93a1b3}</style>
+</head>
+<body>
+<div id="hint">Telefon dizayn baxışı — brauzerdə avtomatik demo rejimi açılır. [P] və ya /telefon oyunda açır.</div>
+<!-- Eyni DOM strukturu + JS (demo rejimində öz-özünə məlumatla açılır) -->
+<div id="phone" class="device hidden">
+  <div class="island"></div>
+  <div class="status"><span class="time" id="sbTime">--:--</span>
+    <span class="sb-right">
+      <svg class="sig" viewBox="0 0 16 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="4" y="5" width="3" height="7" rx="1"/><rect x="8" y="2" width="3" height="10" rx="1"/><rect x="12" y="0" width="3" height="12" rx="1" opacity=".4"/></svg>
+      <svg class="bat" viewBox="0 0 27 12"><rect x="0" y="0" width="24" height="12" rx="3.5" fill="none" stroke="currentColor" stroke-opacity=".5"/><rect x="2" y="2" width="18" height="8" rx="2"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+    </span></div>
+  <div class="screen">
+    <section class="view home active" id="v-home">
+      <div class="me" id="meName">Qonaq</div>
+      <div class="grid">
+        <button class="app" data-app="dial"><span class="ic g-green"><svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg></span><em>Zəng</em></button>
+        <button class="app" data-app="msg"><span class="ic g-blue"><svg viewBox="0 0 24 24"><path d="M12 3C6.5 3 2 6.9 2 11.7c0 2.6 1.3 4.9 3.4 6.5-.2.8-.7 2-1.6 3 .1.1 2.4-.1 4.3-1.2 1.2.4 2.5.6 3.9.6 5.5 0 10-3.9 10-8.7S17.5 3 12 3z"/></svg></span><em>Mesaj</em></button>
+        <button class="app" data-app="contact"><span class="ic g-orange"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 100-8 4 4 0 000 8zm0 2c-3.3 0-9 1.7-9 5v2h18v-2c0-3.3-5.7-5-9-5z"/></svg></span><em>Kontakt</em></button>
+        <button class="app" data-app="bank"><span class="ic g-gold"><svg viewBox="0 0 24 24"><path d="M12 2 2 8h20L12 2zM4 10v7h3v-7H4zm6.5 0v7h3v-7h-3zM17 10v7h3v-7h-3zM2 19v3h20v-3H2z"/></svg></span><em>Bank</em></button>
+      </div>
+      <div class="dock"><button class="dockbtn" id="btnClosePhone"><svg viewBox="0 0 24 24"><path d="M12 4l1.4 1.4L10.8 8h7.2v2h-7.2l2.6 2.6L12 14l-5-5 5-5z" transform="rotate(-90 12 9)"/></svg></button></div>
+    </section>
+    <section class="view" id="v-dial">
+      <header class="vhead"><button class="back" data-back>‹</button><h3>Zəng</h3><span></span></header>
+      <div class="num" id="dialNum">&nbsp;</div>
+      <div class="pad">
+        <button data-d="1">1</button><button data-d="2">2<span>ABC</span></button><button data-d="3">3<span>DEF</span></button>
+        <button data-d="4">4<span>GHI</span></button><button data-d="5">5<span>JKL</span></button><button data-d="6">6<span>MNO</span></button>
+        <button data-d="7">7<span>PQRS</span></button><button data-d="8">8<span>TUV</span></button><button data-d="9">9<span>WXYZ</span></button>
+        <button data-d="*">*</button><button data-d="0">0<span>+</span></button><button data-d="#">#</button>
+      </div>
+      <div class="dial-actions"><button class="call" id="btnCall"><svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg></button><button class="del" id="btnDel">⌫</button></div>
+    </section>
+    <section class="view" id="v-msg">
+      <header class="vhead"><button class="back" data-back>‹</button><h3>Mesajlar</h3><button class="add" id="btnNewMsg">+</button></header>
+      <ul class="threads" id="msgList"></ul>
+      <div class="compose" id="compose" style="display:none">
+        <input id="cmpTo" placeholder="Nömrə" inputmode="numeric"><input id="cmpText" placeholder="Mesaj...">
+        <div class="cmp-actions"><button id="cmpCancel">Ləğv</button><button class="send" id="cmpSend">Göndər</button></div>
+      </div>
+    </section>
+    <section class="view" id="v-contact">
+      <header class="vhead"><button class="back" data-back>‹</button><h3>Kontaktlar</h3><button class="add" id="btnNewContact">+</button></header>
+      <ul class="contacts" id="contactList"></ul>
+      <div class="compose" id="contactForm" style="display:none">
+        <input id="cfName" placeholder="Ad"><input id="cfNumber" placeholder="Nömrə" inputmode="numeric">
+        <div class="cmp-actions"><button id="cfCancel">Ləğv</button><button class="send" id="cfSave">Yadda saxla</button></div>
+      </div>
+    </section>
+    <section class="view" id="v-bank">
+      <header class="vhead"><button class="back" data-back>‹</button><h3>Bank</h3><span></span></header>
+      <div class="bankcard">
+        <div class="bc-top"><span class="bc-brand">196 BANK</span><svg viewBox="0 0 24 24"><circle cx="9" cy="12" r="5"/><circle cx="15" cy="12" r="5" opacity=".6"/></svg></div>
+        <div class="bc-num" id="bcNum">•••• ••••</div>
+        <div class="bc-bottom"><span id="bcName">Qonaq</span><span class="bc-bal" id="bcBal">0 ₼</span></div>
+      </div>
+      <div class="bank-note">Nağd balansınız real vaxtda göstərilir</div>
+    </section>
+    <section class="view callview" id="v-call">
+      <div class="call-avatar" id="callAvatar">?</div>
+      <div class="call-name" id="callName">—</div>
+      <div class="call-state" id="callState">Zəng edilir...</div>
+      <div class="call-actions">
+        <button class="reject" id="btnHangup"><svg viewBox="0 0 24 24"><path d="M12 9c-4 0-7.6 1.5-10 4l2.6 3c1.8-1.6 4.4-2.5 7.4-2.5s5.6.9 7.4 2.5L22 13c-2.4-2.5-6-4-10-4z" transform="rotate(180 12 13)"/></svg></button>
+        <button class="accept" id="btnAnswer" style="display:none"><svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg></button>
+      </div>
+    </section>
+  </div>
+</div>
+<script src="/resources/%5B196rp%5D/196rp_phone/web/js/app.js"></script>
+</body>
+</html>

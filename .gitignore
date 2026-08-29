@@ -15,3 +15,6 @@ cache/
 # IDE
 .vscode/
 .idea/
+
+# Backup və test artefaktları
+backups/

@@ -1593,3 +1593,33 @@ CREATE TABLE IF NOT EXISTS `196rp_friends` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `identifier_friend` (`identifier`, `friend`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- =============================================================
+-- PAKET 9: İQTİSADİYYAT MƏRKƏZİ (196rp_economy)
+-- Dinamik qiymət indeksi, dövlət xəzinəsi və bütün pul əməliyyatlarının jurnalı
+-- =============================================================
+
+CREATE TABLE IF NOT EXISTS `196rp_economy` (
+  `id` int NOT NULL,
+  `price_index` decimal(6,2) NOT NULL DEFAULT 100.00,
+  `treasury` bigint NOT NULL DEFAULT 0,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `196rp_transactions` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `kind` varchar(24) NOT NULL COMMENT 'purchase | income | transfer | sink',
+  `from_id` varchar(64) DEFAULT NULL,
+  `to_id` varchar(64) DEFAULT NULL,
+  `amount` int NOT NULL DEFAULT 0,
+  `note` varchar(128) DEFAULT '',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_kind` (`kind`),
+  KEY `idx_from` (`from_id`),
+  KEY `idx_created` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `196rp_economy` (`id`, `price_index`, `treasury`, `updated_at`)
+VALUES (1, 100.00, 2000000, NOW());

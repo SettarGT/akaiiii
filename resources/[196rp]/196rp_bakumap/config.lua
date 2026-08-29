@@ -72,12 +72,12 @@ Config.Stations = {
     },
     {
         id = 'dernegul', name = 'Dərnəgül', line = 2, order = 3, city = 'Bakı',
-        coords = vector3(1150.0, -700.0, 57.0),
+        coords = vector3(1320.0, 4250.0, 33.0),
         desc = 'Şimal yaşayış massivi',
     },
     {
         id = '20yanvar', name = '20 Yanvar', line = 3, order = 1, city = 'Bakı',
-        coords = vector3(-880.0, -190.0, 40.0),
+        coords = vector3(-1390.0, -590.0, 30.3),
         desc = 'Qərb qovşağı, universitet şəhərciyi',
     },
     {

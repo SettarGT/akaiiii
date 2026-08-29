@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CMapData>
+  <name>baku_map</name>
+  <parent>v_parent</parent>
+  <flags value="0" />
+  <contentFlags value="65" />
+  <streamingExtentsMin x="-300.0" y="-300.0" z="0" />
+  <streamingExtentsMax x="300.0" y="300.0" z="200" />
+  <entitiesExtentsMin x="-300.0" y="-300.0" z="0" />
+  <entitiesExtentsMax x="300.0" y="300.0" z="200" />
+  <entities>
+    <Item />
+    <Item type="CMapEntity">
+      <archetypeName>baku_metro_entrance</archetypeName>
+      <flags type="uint32" value="1552" />
+      <guid value="0" />
+      <position x="-265.0" y="-957.0" z="30.0" />
+      <rotation x="0.0" y="0.0" z="0.0" w="1.0" />
+      <scaleXY value="1" />
+      <scaleZ value="1" />
+      <parentIndex value="-1" />
+      <lodDist value="100.0" />
+      <childLodDist value="0.0" />
+      <lodLevel>LODTYPES_DEPTH_ORPHANLOD</lodLevel>
+      <numChildren value="0" />
+      <priorityLevel>PRI_REQUIRED</priorityLevel>
+      <numAmbientExtensions value="0" />
+      <ambientOcclusionMultiplier value="255" />
+      <lightAmbientMult value="1" />
+    </Item>
+    <Item type="CMapEntity">
+      <archetypeName>baku_metro_sign</archetypeName>
+      <flags type="uint32" value="1552" />
+      <guid value="0" />
+      <position x="-265.0" y="-954.6" z="31.0" />
+      <rotation x="0.0" y="0.0" z="1.0" w="6.123233995736766e-17" />
+      <scaleXY value="1" />
+      <scaleZ value="1" />
+      <parentIndex value="-1" />
+      <lodDist value="100.0" />
+      <childLodDist value="0.0" />
+      <lodLevel>LODTYPES_DEPTH_ORPHANLOD</lodLevel>
+      <numChildren value="0" />
+      <priorityLevel>PRI_REQUIRED</priorityLevel>
+      <numAmbientExtensions value="0" />
+      <ambientOcclusionMultiplier value="255" />
+      <lightAmbientMult value="1" />
+    </Item>
+    <Item type="CMapEntity">
+      <archetypeName>baku_metro_entrance</archetypeName>
+      <flags type="uint32" value="1552" />
+      <guid value="0" />
+      <position x="-544.0" y="-204.0" z="30.0" />
+      <rotation x="0.0" y="0.0" z="0.0" w="1.0" />
+      <scaleXY value="1" />
+      <scaleZ value="1" />
+      <parentIndex value="-1" />
+      <lodDist value="100.0" />
+      <childLodDist value="0.0" />
+      <lodLevel>LODTYPES_DEPTH_ORPHANLOD</lodLevel>
+      <numChildren value="0" />
+      <priorityLevel>PRI_REQUIRED</priorityLevel>
+      <numAmbientExtensions value="0" />
+      <ambientOcclusionMultiplier value="255" />
+      <lightAmbientMult value="1" />
+    </Item>
+    <Item type="CMapEntity">
+      <archetypeName>baku_metro_sign</archetypeName>
+      <flags type="uint32" value="1552" />
+      <guid value="0" />
+      <position x="-544.0" y="-201.6" z="31.0" />
+      <rotation x="0.0" y="0.0" z="1.0" w="6.123233995736766e-17" />
+      <scaleXY value="1" />
+      <scaleZ value="1" />
+      <parentIndex value="-1" />
+      <lodDist value="100.0" />
+      <childLodDist value="0.0" />
+      <lodLevel>LODTYPES_DEPTH_ORPHANLOD</lodLevel>
+      <numChildren value="0" />
+      <priorityLevel>PRI_REQUIRED</priorityLevel>
+      <numAmbientExtensions value="0" />
+      <ambientOcclusionMultiplier value="255" />
+      <lightAmbientMult value="1" />
+    </Item>
+    <Item type="CMapEntity">
+      <archetypeName>baku_metro_entrance</archetypeName>
+      <flags type="uint32" value="1552" />
+      <guid value="0" />
+      <position x="549.2" y="2669.2" z="30.0" />
+      <rotation x="0.0" y="0.0" z="0.0" w="1.0" />
+      <scaleXY value="1" />
+      <scaleZ value="1" />
+      <parentIndex value="-1" />
+      <lodDist value="100.0" />
+      <childLodDist value="0.0" />
+      <lodLevel>LODTYPES_DEPTH_ORPHANLOD</lodLevel>
+      <numChildren value="0" />
+      <priorityLevel>PRI_REQUIRED</priorityLevel>
+      <numAmbientExtensions value="0" />
+      <ambientOcclusionMultiplier value="255" />
+      <lightAmbientMult value="1" />
+    </Item>
+    <Item type="CMapEntity">
+      <archetypeName>baku_metro_sign</archetypeName>
+      <flags type="uint32" value="1552" />
+      <guid value="0" />
+      <position x="549.2" y="2671.6" z="31.0" />
+      <rotation x="0.0" y="0.0" z="1.0" w="6.123233995736766e-17" />
+      <scaleXY value="1" />
+      <scaleZ value="1" />
+      <parentIndex value="-1" />
+      <lodDist value="100.0" />
+      <childLodDist value="0.0" />
+      <lodLevel>LODTYPES_DEPTH_ORPHANLOD</lodLevel>
+      <numChildren value="0" />
+      <priorityLevel>PRI_REQUIRED</priorityLevel>
+      <numAmbientExtensions value="0" />
+      <ambientOcclusionMultiplier value="255" />
+      <lightAmbientMult value="1" />
+    </Item>
+    <Item type="CMapEntity">
+      <archetypeName>baku_metro_entrance</archetypeName>
+      <flags type="uint32" value="1552" />
+      <guid value="0" />
+      <position x="-530.0" y="5380.0" z="30.0" />
+      <rotation x="0.0" y="0.0" z="0.0" w="1.0" />
+      <scaleXY value="1" />
+      <scaleZ value="1" />
+      <parentIndex value="-1" />
+      <lodDist value="100.0" />
+      <childLodDist value="0.0" />
+      <lodLevel>LODTYPES_DEPTH_ORPHANLOD</lodLevel>
+      <numChildren value="0" />
+      <priorityLevel>PRI_REQUIRED</priorityLevel>
+      <numAmbientExtensions value="0" />
+      <ambientOcclusionMultiplier value="255" />
+      <lightAmbientMult value="1" />
+    </Item>
+    <Item type="CMapEntity">
+      <archetypeName>baku_metro_sign</archetypeName>
+      <flags type="uint32" value="1552" />
+      <guid value="0" />
+      <position x="-530.0" y="5382.4" z="31.0" />
+      <rotation x="0.0" y="0.0" z="1.0" w="6.123233995736766e-17" />
+      <scaleXY value="1" />
+      <scaleZ value="1" />
+      <parentIndex value="-1" />
+      <lodDist value="100.0" />
+      <childLodDist value="0.0" />
+      <lodLevel>LODTYPES_DEPTH_ORPHANLOD</lodLevel>
+      <numChildren value="0" />
+      <priorityLevel>PRI_REQUIRED</priorityLevel>
+      <numAmbientExtensions value="0" />
+      <ambientOcclusionMultiplier value="255" />
+      <lightAmbientMult value="1" />
+    </Item>
+  </entities>
+  <containerLods />
+  <boxOccluders />
+  <occludeModels />
+  <physicsDictionaries />
+  <instancedData />
+  <timeCycleModifiers />
+  <carGenerators />
+  <LODLightsLODs />
+  <entityExtensions />
+</CMapData>

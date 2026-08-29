@@ -1,301 +1,225 @@
--- 196 RP | Telefon sistemi — müştəri tərəfi
+-- 196 RP | Telefon sistemi — premium NUI müştəri tərəfi
+-- Server callback/event-ləri dəyişməyib; yalnız interfeys NUI-ə köçürülüb.
 
 local phoneData = nil
+local isOpen = false
 local callActive = false
 local callWith = nil
+local incomingSrc = nil
 local ringing = false
 
--- Telefonu aç
+-- ==================== AÇ / BAĞLA ====================
+
 local function OpenPhone()
     ESX.TriggerServerCallback('196rp_phone:getPhoneData', function(data)
-        if not data then return end
+        if not data then
+            return
+        end
+
         phoneData = data
-        ShowPhoneMenu()
+
+        local pd = ESX.GetPlayerData() or {}
+
+        SendNUIMessage({
+            action = 'open',
+            number = data.number,
+            name = pd.name or 'Qonaq',
+            money = pd.money or 0,
+            contacts = data.contacts or {},
+            messages = data.messages or {},
+        })
+
+        isOpen = true
+        SetNuiFocus(true, true)
     end)
 end
 
+local function ClosePhone()
+    if not isOpen then
+        return
+    end
+
+    isOpen = false
+    SetNuiFocus(false, false)
+    SendNUIMessage({ action = 'close' })
+end
+
 RegisterCommand('telefon', function()
-    OpenPhone()
+    if isOpen then
+        ClosePhone()
+    else
+        OpenPhone()
+    end
 end, false)
 
 RegisterKeyMapping('telefon', 'Telefonu aç', 'keyboard', 'P')
 
--- /telefon yalnız telefon əşyası ilə? Həm də əşya ilə:
 RegisterNetEvent('196rp_phone:open', function()
     OpenPhone()
 end)
 
--- ==================== ƏSAS MENYU ====================
+-- ==================== NUI CALLBACK-LƏRİ ====================
 
-function ShowPhoneMenu()
-    local menu = {
-        { icon = 'fas fa-mobile-alt', title = ('📱 196 Telefon — ~y~%s~s~'):format(phoneData.number or '?'), unselectable = true },
-        { icon = 'fas fa-address-book', title = ('Kontaktlar (~y~%s~s~)'):format(#phoneData.contacts), name = 'contacts' },
-        { icon = 'fas fa-sms', title = '✉️ SMS yaz', name = 'sms' },
-        { icon = 'fas fa-inbox', title = ('Gələnlər (~y~%s~s~)'):format(#phoneData.messages), name = 'inbox' },
-        { icon = 'fas fa-user-plus', title = '➕ Kontakt əlavə et', name = 'add_contact' },
-    }
-
-    if callActive then
-        menu[#menu + 1] = {
-            icon = 'fas fa-phone-slash',
-            title = '📵 Zəngi bitir',
-            name = 'hangup',
-        }
-    else
-        menu[#menu + 1] = {
-            icon = 'fas fa-phone',
-            title = '📞 Zəng et',
-            name = 'call',
-        }
-    end
-
-    exports['esx_context']:Open('left', menu, function(selected)
-        if selected.name == 'contacts' then ShowContactsMenu() end
-        if selected.name == 'sms' then ShowSMSForm() end
-        if selected.name == 'inbox' then ShowInboxMenu() end
-        if selected.name == 'add_contact' then ShowAddContactForm() end
-        if selected.name == 'call' then ShowCallMenu() end
-        if selected.name == 'hangup' then
-            TriggerServerEvent('196rp_phone:hangup')
-        end
-    end)
-end
-
--- ==================== KONTAKTLAR ====================
-
-function ShowContactsMenu()
-    local menu = {
-        { icon = 'fas fa-address-book', title = '📇 Kontaktlar', unselectable = true },
-    }
-    if #phoneData.contacts == 0 then
-        menu[#menu + 1] = {
-            icon = 'fas fa-info',
-            title = 'Kontakt yoxdur. Əlavə etmək üçün geri qayıdın.',
-            unselectable = true,
-        }
-    else
-        for i = 1, #phoneData.contacts do
-            local c = phoneData.contacts[i]
-            menu[#menu + 1] = {
-                icon = 'fas fa-user',
-                title = ('%s — ~y~%s~s~'):format(c.name, c.number),
-                name = 'contact_' .. c.id,
-            }
-        end
-    end
-    menu[#menu + 1] = {
-        icon = 'fas fa-arrow-left',
-        title = '⬅ Geri',
-        name = 'back',
-    }
-
-    exports['esx_context']:Open('left', menu, function(selected)
-        if selected.name == 'back' then
-            ShowPhoneMenu()
-            return
-        end
-        local contactId = selected.name:match('^contact_(%d+)$')
-        if contactId then
-            local contact = nil
-            for i = 1, #phoneData.contacts do
-                if tostring(phoneData.contacts[i].id) == contactId then
-                    contact = phoneData.contacts[i]
-                    break
-                end
-            end
-            if contact then ShowContactActions(contact) end
-        end
-    end)
-end
-
-function ShowContactActions(contact)
-    local menu = {
-        { icon = 'fas fa-user', title = ('%s — %s'):format(contact.name, contact.number), unselectable = true },
-        { icon = 'fas fa-sms', title = '✉️ SMS göndər', name = 'sms' },
-        { icon = 'fas fa-phone', title = '📞 Zəng et', name = 'call' },
-        { icon = 'fas fa-trash', title = '🗑 Kontaktı sil', name = 'delete' },
-        { icon = 'fas fa-arrow-left', title = '⬅ Geri', name = 'back' },
-    }
-    exports['esx_context']:Open('left', menu, function(selected)
-        if selected.name == 'back' then ShowContactsMenu() end
-        if selected.name == 'sms' then ShowSMSForm(contact.number) end
-        if selected.name == 'call' then MakeCall(contact.number) end
-        if selected.name == 'delete' then
-            ESX.TriggerServerCallback('196rp_phone:removeContact', function(ok)
-                if ok then
-                    ESX.ShowNotification('Kontakt silindi.', 'info')
-                    OpenPhone()
-                end
-            end, contact.id)
-        end
-    end)
-end
-
--- ==================== SMS ====================
-
-function ShowSMSForm(prefillNumber)
-    local menu = {
-        { icon = 'fas fa-sms', title = '✉️ Yeni SMS', unselectable = true },
-        { icon = '', title = 'Nömrə', input = true, inputType = 'text', inputPlaceholder = '0000000', inputValue = prefillNumber or '', name = 'number' },
-        { icon = '', title = 'Mesaj', input = true, inputType = 'text', inputPlaceholder = 'Mesajınız...', name = 'message' },
-        { icon = 'fas fa-paper-plane', title = 'Göndər', name = 'submit' },
-    }
-
-    exports['esx_context']:Open('left', menu, function(selected)
-        if selected.name == 'submit' then
-            local number = tostring(menu[2].inputValue or '')
-            local message = tostring(menu[3].inputValue or '')
-            if number == '' or message == '' then
-                ESX.ShowNotification('Nömrə və mesaj yazın!', 'error')
-                return
-            end
-            ESX.TriggerServerCallback('196rp_phone:sendSMS', function(ok, msg)
-                ESX.ShowNotification(msg, ok and 'success' or 'error', 5000)
-            end, number, message)
-        end
-    end)
-end
-
--- Yeni SMS gəldi
-RegisterNetEvent('196rp_phone:newMessage', function(msg)
-    ESX.ShowNotification(('📩 ~y~%s~s~ (%s): ~w~%s~s~'):format(msg.from, msg.fromNumber, msg.message), 'info', 7000)
-    if phoneData then
-        phoneData.messages[#phoneData.messages + 1] = {
-            from = msg.from,
-            message = msg.message,
-            time = 'indi',
-        }
-    end
+RegisterNUICallback('close', function(_, cb)
+    ClosePhone()
+    cb('ok')
 end)
 
-function ShowInboxMenu()
-    local menu = {
-        { icon = 'fas fa-inbox', title = '📥 Gələnlər qutusu', unselectable = true },
-    }
-    if #phoneData.messages == 0 then
-        menu[#menu + 1] = { icon = 'fas fa-info', title = 'Mesaj yoxdur.', unselectable = true }
-    else
-        for i = 1, math.min(#phoneData.messages, 8) do
-            local m = phoneData.messages[i]
-            menu[#menu + 1] = {
-                icon = 'fas fa-envelope',
-                title = ('%s: %s'):format(m.from, m.message),
-                description = m.time or '',
-                unselectable = true,
-            }
-        end
-    end
-    menu[#menu + 1] = {
-        icon = 'fas fa-arrow-left',
-        title = '⬅ Geri',
-        name = 'back',
-    }
-    exports['esx_context']:Open('left', menu, function(selected)
-        if selected.name == 'back' then ShowPhoneMenu() end
-    end)
-end
+RegisterNUICallback('dial', function(data, cb)
+    local number = tostring(data.number or '')
 
--- ==================== KONTAKT ƏLAVƏ ====================
-
-function ShowAddContactForm()
-    local menu = {
-        { icon = 'fas fa-user-plus', title = '➕ Yeni kontakt', unselectable = true },
-        { icon = '', title = 'Nömrə', input = true, inputType = 'text', inputPlaceholder = '0000000', name = 'number' },
-        { icon = '', title = 'Ad', input = true, inputType = 'text', inputPlaceholder = 'Ad...', name = 'name' },
-        { icon = 'fas fa-check', title = 'Əlavə et', name = 'submit' },
-    }
-    exports['esx_context']:Open('left', menu, function(selected)
-        if selected.name == 'submit' then
-            local number = tostring(menu[2].inputValue or '')
-            local name = tostring(menu[3].inputValue or '')
-            ESX.TriggerServerCallback('196rp_phone:addContact', function(ok, msg)
-                ESX.ShowNotification(msg, ok and 'success' or 'error', 5000)
-                if ok then OpenPhone() end
-            end, number, name)
-        end
-    end)
-end
-
--- ==================== ZƏNGLƏR ====================
-
-function ShowCallMenu()
-    local menu = {
-        { icon = 'fas fa-phone', title = '📞 Zəng et', unselectable = true },
-    }
-    if #phoneData.contacts == 0 then
-        menu[#menu + 1] = { icon = 'fas fa-info', title = 'Kontakt yoxdur!', unselectable = true }
-    else
-        for i = 1, #phoneData.contacts do
-            local c = phoneData.contacts[i]
-            menu[#menu + 1] = {
-                icon = 'fas fa-phone',
-                title = ('%s — %s'):format(c.name, c.number),
-                name = 'call_' .. c.id,
-            }
-        end
-    end
-    menu[#menu + 1] = {
-        icon = 'fas fa-arrow-left',
-        title = '⬅ Geri',
-        name = 'back',
-    }
-    exports['esx_context']:Open('left', menu, function(selected)
-        if selected.name == 'back' then ShowPhoneMenu() return end
-        local contactId = selected.name:match('^call_(%d+)$')
-        if contactId then
-            for i = 1, #phoneData.contacts do
-                if tostring(phoneData.contacts[i].id) == contactId then
-                    MakeCall(phoneData.contacts[i].number)
-                    break
-                end
-            end
-        end
-    end)
-end
-
-function MakeCall(number)
-    if callActive then
-        ESX.ShowNotification('Artıq zəngdəsiniz!', 'error')
+    if number == '' then
+        cb('ok')
         return
     end
+
+    if callActive then
+        ESX.ShowNotification('Artıq zəngdəsiniz!', 'error')
+        cb('ok')
+        return
+    end
+
     TriggerServerEvent('196rp_phone:call', number)
     callActive = true
     ringing = true
-    ESX.ShowNotification('Zəng edilir... Telefon menyusundan bitirə bilərsiniz.', 'info', 4000)
-end
+    cb('ok')
+end)
+
+RegisterNUICallback('sendSMS', function(data, cb)
+    local number = tostring(data.number or '')
+    local message = tostring(data.message or '')
+
+    if number == '' or message == '' then
+        cb('ok')
+        return
+    end
+
+    ESX.TriggerServerCallback('196rp_phone:sendSMS', function(ok, msg)
+        ESX.ShowNotification(msg, ok and 'success' or 'error', 5000)
+    end, number, message)
+
+    cb('ok')
+end)
+
+RegisterNUICallback('addContact', function(data, cb)
+    ESX.TriggerServerCallback('196rp_phone:addContact', function(ok, msg)
+        ESX.ShowNotification(msg, ok and 'success' or 'error', 5000)
+    end, tostring(data.number or ''), tostring(data.name or ''))
+
+    cb('ok')
+end)
+
+RegisterNUICallback('removeContact', function(data, cb)
+    ESX.TriggerServerCallback('196rp_phone:removeContact', function(ok)
+        if ok then
+            ESX.ShowNotification('Kontakt silindi.', 'info')
+        end
+    end, tonumber(data.id) or 0)
+
+    cb('ok')
+end)
+
+RegisterNUICallback('answer', function(_, cb)
+    if incomingSrc then
+        callActive = true
+        callWith = incomingSrc
+        ringing = false
+        TriggerServerEvent('196rp_phone:callResponse', true, incomingSrc)
+    end
+
+    cb('ok')
+end)
+
+RegisterNUICallback('reject', function(_, cb)
+    if incomingSrc then
+        ringing = false
+        TriggerServerEvent('196rp_phone:callResponse', false, incomingSrc)
+        incomingSrc = nil
+    end
+
+    cb('ok')
+end)
+
+RegisterNUICallback('hangup', function(_, cb)
+    TriggerServerEvent('196rp_phone:hangup')
+    callActive = false
+    cb('ok')
+end)
+
+-- ==================== GƏLƏN HADİSƏLƏR ====================
+
+-- Yeni SMS
+RegisterNetEvent('196rp_phone:newMessage', function(msg)
+    ESX.ShowNotification(('📩 ~y~%s~s~ (%s): ~w~%s~s~'):format(
+        msg.from, msg.fromNumber, msg.message), 'info', 7000)
+
+    SendNUIMessage({
+        action = 'newMessage',
+        message = { from = msg.from, fromNumber = msg.fromNumber, message = msg.message },
+    })
+
+    if phoneData then
+        table.insert(phoneData.messages, 1, {
+            from = msg.from,
+            fromNumber = msg.fromNumber,
+            message = msg.message,
+        })
+    end
+end)
 
 -- Gələn zəng
 RegisterNetEvent('196rp_phone:incomingCall', function(data)
     ringing = true
-    ESX.ShowNotification(('📞 ~y~%s~s~ (%s) sizə zəng edir!'):format(data.callerName, data.callerNumber), 'warning', 6000)
+    incomingSrc = data.callerSrc
 
-    local menu = {
-        { icon = 'fas fa-phone', title = ('Zəng: ~y~%s~s~ (%s)'):format(data.callerName, data.callerNumber), unselectable = true },
-        { icon = 'fas fa-check', title = '✅ Qəbul et', name = 'accept' },
-        { icon = 'fas fa-times', title = '❌ Rədd et', name = 'decline' },
-    }
-    exports['esx_context']:Open('center', menu, function(selected)
-        ringing = false
-        if selected.name == 'accept' then
-            callActive = true
-            callWith = data.callerSrc
-            TriggerServerEvent('196rp_phone:callResponse', true, data.callerSrc)
-        else
-            TriggerServerEvent('196rp_phone:callResponse', false, data.callerSrc)
-        end
-    end)
+    SendNUIMessage({
+        action = 'incomingCall',
+        name = data.callerName,
+        number = data.callerNumber,
+    })
+
+    if not isOpen then
+        ESX.ShowNotification(('📞 ~y~%s~s~ sizə zəng edir! [P] ilə açın'):format(data.callerName), 'warning', 6000)
+    end
 end)
 
+-- Zəng bağlandı
 RegisterNetEvent('196rp_phone:callStarted', function(otherSrc)
     callActive = true
     callWith = otherSrc
     ringing = false
-    ESX.ShowNotification('~g~Zəng bağlandı!~s~ Telefon menyusu ilə bitirin.', 'success', 4000)
+    incomingSrc = nil
+
+    SendNUIMessage({ action = 'callStarted' })
 end)
 
+-- Zəng bitdi
 RegisterNetEvent('196rp_phone:callEnded', function()
     callActive = false
     callWith = nil
     ringing = false
+    incomingSrc = nil
+
+    SendNUIMessage({ action = 'callEnded' })
+end)
+
+-- ==================== TƏMİZLƏMƏ ====================
+
+AddEventHandler('onResourceStop', function(resource)
+    if resource ~= GetCurrentResourceName() then
+        return
+    end
+
+    SetNuiFocus(false, false)
+    isOpen = false
+end)
+
+-- ==================== İXRAC ====================
+
+exports('IsOpen', function()
+    return isOpen
+end)
+
+exports('InCall', function()
+    return callActive
 end)

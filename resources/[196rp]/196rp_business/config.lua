@@ -123,7 +123,7 @@ Config.Locations = {
         blip = { sprite = 108, color = 49, scale = 0.8 }, category = 'Maliyyə'
     },
     {
-        id = 'bank_fleeca_4', name = 'Fleeca Bank — Del Perro (Elmlər Akademiyası)',
+        id = 'bank_fleeca_4', name = 'Fleeca Bank — Del Perro (20 Yanvar)',
         desc = 'Fleeca Bank filialı.',
         coords = vector3(-1315.7, -834.7, 16.9), color = { 120, 200, 250 }, marker = 1, size = 1.0,
         blip = { sprite = 108, color = 49, scale = 0.8 }, category = 'Maliyyə'
@@ -179,13 +179,13 @@ Config.Locations = {
         blip = { sprite = 455, color = 66, scale = 0.9 }, category = 'Nəqliyyat'
     },
     {
-        id = 'marina', name = 'Vespucci Marina (Elmlər Akademiyası)',
+        id = 'marina', name = 'Vespucci Marina (20 Yanvar)',
         desc = 'Yaxtaların və qayıqların saxlanıldığı marina.',
         coords = vector3(-1010.0, -640.0, 12.0), color = { 255, 200, 80 }, marker = 1, size = 1.0,
         blip = { sprite = 410, color = 5, scale = 0.8 }, category = 'Nəqliyyat'
     },
     {
-        id = 'taksi_dayanacaq', name = 'Taksi Dayanacağı (Dərnəgül)',
+        id = 'taksi_dayanacaq', name = 'Taksi Dayanacağı (Nəriman Nərimanov)',
         desc = 'Taksi xidmətinin mərkəzi. Taksi işinə buradan başlaya bilərsiniz.',
         coords = vector3(895.0, -179.0, 74.7), color = { 250, 220, 90 }, marker = 1, size = 1.0,
         blip = { sprite = 56, color = 5, scale = 0.9 }, category = 'Nəqliyyat'
@@ -211,7 +211,7 @@ Config.Locations = {
         blip = { sprite = 52, color = 3, scale = 0.8 }, category = 'Ticarət'
     },
     {
-        id = 'market_strawberry', name = '24/7 Market — Strawberry (Elmlər Akademiyası)',
+        id = 'market_strawberry', name = '24/7 Market — Strawberry (20 Yanvar)',
         desc = 'Gündəlik ərzaq və məişət malları mağazası.',
         coords = vector3(-1222.9, -908.3, 12.3), color = { 120, 220, 160 }, marker = 1, size = 1.0,
         blip = { sprite = 52, color = 3, scale = 0.8 }, category = 'Ticarət'
@@ -235,13 +235,13 @@ Config.Locations = {
         blip = { sprite = 52, color = 3, scale = 0.9 }, category = 'Ticarət'
     },
     {
-        id = 'elektronika_mağaza', name = 'Elektronika Mağazası (Elmlər Akademiyası)',
+        id = 'elektronika_mağaza', name = 'Elektronika Mağazası (20 Yanvar)',
         desc = 'Telefonlar, kompüterlər və elektron cihazlar.',
         coords = vector3(-1222.9, -907.0, 12.3), color = { 140, 180, 255 }, marker = 1, size = 0.9,
         blip = { sprite = 500, color = 49, scale = 0.8 }, category = 'Ticarət'
     },
     {
-        id = 'mebel_mağaza', name = 'Mebel Mağazası (Dərnəgül)',
+        id = 'mebel_mağaza', name = 'Mebel Mağazası (Koroğlu)',
         desc = 'Ev üçün mebel və daxili bəzək əşyaları.',
         coords = vector3(1130.0, -400.0, 66.0), color = { 220, 170, 110 }, marker = 1, size = 0.9,
         blip = { sprite = 524, color = 17, scale = 0.8 }, category = 'Ticarət'
@@ -253,7 +253,7 @@ Config.Locations = {
         blip = { sprite = 617, color = 66, scale = 0.8 }, category = 'Ticarət'
     },
     {
-        id = 'kitab_mağaza', name = 'Kitab Mağazası (Elmlər Akademiyası)',
+        id = 'kitab_mağaza', name = 'Kitab Mağazası (20 Yanvar)',
         desc = 'Kitablar və dəftərxana ləvazimatları.',
         coords = vector3(-1222.0, -908.0, 12.3), color = { 200, 170, 130 }, marker = 1, size = 0.8,
         blip = { sprite = 499, color = 2, scale = 0.7 }, category = 'Ticarət'
@@ -333,7 +333,7 @@ Config.Locations = {
         blip = { sprite = 121, color = 2, scale = 0.8 }, category = 'Yemək'
     },
     {
-        id = 'cay_evi', name = 'Çay Evi (Elmlər Akademiyası)',
+        id = 'cay_evi', name = 'Çay Evi (20 Yanvar)',
         desc = 'Ətirli çay, qənd və gözəl söhbətlər.',
         coords = vector3(-1220.0, -910.0, 12.3), color = { 200, 130, 80 }, marker = 1, size = 0.8,
         blip = { sprite = 526, color = 2, scale = 0.7 }, category = 'Yemək'
@@ -365,7 +365,7 @@ Config.Locations = {
         blip = { sprite = 109, color = 3, scale = 0.9 }, category = 'İstirahət'
     },
     {
-        id = 'kazino', name = 'Diamond Kazinosu (Dərnəgül)',
+        id = 'kazino', name = 'Diamond Kazinosu (Nəriman Nərimanov)',
         desc = 'Böyük kazino — amma unutmayın, qumar riskdir!',
         coords = vector3(925.0, 46.0, 81.0), color = { 250, 210, 100 }, marker = 1, size = 1.1,
         blip = { sprite = 617, color = 66, scale = 0.9 }, category = 'İstirahət'
@@ -383,7 +383,7 @@ Config.Locations = {
         blip = { sprite = 502, color = 7, scale = 0.8 }, category = 'İstirahət'
     },
     {
-        id = 'muzey', name = 'Şəhər Muzeyi (Elmlər Akademiyası)',
+        id = 'muzey', name = 'Şəhər Muzeyi (20 Yanvar)',
         desc = 'Tarix və mədəniyyət muzeyi.',
         coords = vector3(-1070.0, -720.0, 32.0), color = { 200, 190, 170 }, marker = 1, size = 0.9,
         blip = { sprite = 499, color = 0, scale = 0.8 }, category = 'İstirahət'
@@ -421,13 +421,13 @@ Config.Locations = {
 
     -- ==================== İŞ YERLƏRİ ====================
     {
-        id = 'balıqçılıq_sahil', name = 'Balıqçılıq Sahili',
+        id = 'balıqçılıq_sahil', name = 'Balıqçılıq Sahili (İçərişəhər)',
         desc = 'Balıq tutmaq üçün ən yaxşı yer. Balıqçılıq işi üçün buraya gəlin!',
         coords = vector3(-1650.0, -1060.0, 13.0), color = { 120, 200, 255 }, marker = 1, size = 1.0,
         blip = { sprite = 68, color = 38, scale = 0.8 }, category = 'İş'
     },
     {
-        id = 'balıqçılıq_göl', name = 'Alamo Gölü — Balıqçılıq (Qara Qarayev)',
+        id = 'balıqçılıq_göl', name = 'Alamo Gölü — Balıqçılıq (Dərnəgül)',
         desc = 'Göl balıqçılığı — sakit və gəlirli iş.',
         coords = vector3(1330.0, 4240.0, 33.0), color = { 120, 200, 255 }, marker = 1, size = 1.0,
         blip = { sprite = 68, color = 38, scale = 0.8 }, category = 'İş'
@@ -639,7 +639,7 @@ Config.Locations = {
         blip = { sprite = 476, color = 17, scale = 0.7 }, category = 'Xidmət'
     },
     {
-        id = 'saat_ustası', name = 'Saat Emalatxanası (Elmlər Akademiyası)',
+        id = 'saat_ustası', name = 'Saat Emalatxanası (20 Yanvar)',
         desc = 'Qiymətli saatların təmiri və satışı.',
         coords = vector3(-1170.0, -880.0, 14.0), color = { 220, 190, 120 }, marker = 1, size = 0.8,
         blip = { sprite = 617, color = 66, scale = 0.7 }, category = 'Xidmət'
@@ -709,7 +709,7 @@ Config.Locations = {
         blip = { sprite = 475, color = 3, scale = 0.8 }, category = 'Əmlak'
     },
     {
-        id = 'villa_bölgəsi', name = 'Villa Bölgəsi — Rockford Hills (20 Yanvar)',
+        id = 'villa_bölgəsi', name = 'Villa Bölgəsi — Rockford Hills (Gənclik)',
         desc = 'Şəhərin ən bahalı evlərinin yerləşdiyi rayon.',
         coords = vector3(-750.0, 300.0, 100.0), color = { 220, 200, 150 }, marker = 1, size = 1.0,
         blip = { sprite = 40, color = 66, scale = 0.8 }, category = 'Əmlak'

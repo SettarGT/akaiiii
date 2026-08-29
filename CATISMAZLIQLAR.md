@@ -1,4 +1,21 @@
-# ÜMUMİ ÇATIŞMAZLIQLAR — 196 RP (2026-08-29 vəziyyəti)
+# ÜMUMİ ÇATIŞMAZLIQLAR — 196 RP (2026-08-29, YENİLƏNİB)
+
+> **2026-08-29 status:** bu sənəddəki bir çox maddə ARTIQ tamamlanıb.
+> Aşağıdakı cədvəl son vəziyyəti göstərir.
+
+## Bu sessiyada TAMAMLANANLAR
+| # | Maddə | Vəziyyət |
+|---|---|---|
+| 3 | Avtomatik test + CI | ✅ `tools/ci/` + `.github/workflows/ci.yml` (7 mərhələ) |
+| 4 | İqtisadiyyat balansı | ✅ `196rp_economy` (dinamik qiymət, vergi, sink, dupe) + 20 unit test |
+| 5 | Backup skripti | ✅ `tools/backup.sh` + `tools/restore.sh` (rotasiya + cron) |
+| 6 | Telefon real UI | ✅ premium NUI (zəng/SMS/kontakt/bank) |
+| 9 | Loading screen | ⏳ hələ yox |
+| — | Server ikonu | ✅ `assets/196-icon.png` + `load_server_icon` |
+| — | 3D boru kəməri | ✅ `tools/3dpipeline/` (ymap/ytyp generatoru + Blender LOD skripti) |
+
+---
+ — 196 RP (2026-08-29 vəziyyəti)
 
 Bu sənəd layihənin **dürüst** vəziyyətini göstərir: nə hazırdır, nə çatışmır,
 nəyi mən (kodla) edə bilərəm, nə üçün xarici asset lazımdır.

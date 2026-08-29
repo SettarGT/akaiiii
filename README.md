@@ -209,6 +209,8 @@ Hamısı qaydasındadırsa, FiveM-də serveri axtarın: **"196 RP"** → daxil o
 | `/dost`, `/dostlar` | hamı | Dost əlavə edir / dost siyahısı (xəritədə göstərmə, pul göndərmə) |
 | `/missiya`, `/missiyadayandır` | hamı | Missiya lövhəsindən tapşırıq götürür / ləğv edir |
 | `/telefondukan` | hamı | Telefon kataloqu (20 model) — yalnız mağazada işləyir |
+| `/telefon` və ya `P` | hamı | Premium NUI telefonu açır |
+| `/iqtisadiyyat` | hamı | Bazar indeksi və dövlət xəzinəsini göstərir |
 | `/metro` | hamı | Ən yaxın metro stansiyasını və xətti göstərir |
 | `/xerite` | hamı | Original dizaynlı interaktiv xəritə (36 şəhər/rayon, 3 metro xətti, canlı mövqe) |
 | `/harada` | hamı | Hazırkı Bakı rayonunu göstərir |
@@ -279,6 +281,8 @@ akaiiii/
 | `196rp_social` | Hədiyyə, evlilik, dostluq, missiya sistemi |
 | `196rp_bakumap` | Azərbaycan xəritə qatı: 36 şəhər/rayon (12 Bakı metro stansiyası + 24 region), 3 xətt + original dizaynlı interaktiv xəritə UI (`web/`). Sənədlər: `DESIGN-2026.md`, `CATISMAZLIQLAR.md` |
 | `196rp_phoneshop` | Telefon mağazası — 20 model (10 Aifon + 10 Samsan, parodiya adlar) |
+| `196rp_economy` | İqtisadiyyat mərkəzi: dinamik qiymət, vergilər, money sink, dupe qorunması |
+| `196rp_phone` | Telefon: premium NUI (zəng/SMS/kontakt/bank) — `web/` |
 
 ---
 

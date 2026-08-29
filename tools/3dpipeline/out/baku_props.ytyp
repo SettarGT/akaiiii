@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CMapTypes>
+  <extensions />
+  <archetypes>
+    <Item type="CBaseArchetypeDef">
+      <lodDist value="120" />
+      <flags value="32" />
+      <specialAttribute value="0" />
+      <bbMin x="-4" y="-4" z="0" />
+      <bbMax x="4" y="4" z="6" />
+      <bsCentre x="0" y="0" z="0" />
+      <bsRadius value="8" />
+      <hdTextureDist value="30" />
+      <name>baku_metro_entrance</name>
+      <textureDictionary>baku_txd</textureDictionary>
+      <clipDictionary />
+      <drawableDictionary />
+      <physicsDictionary />
+      <assetType>ASSET_TYPE_DRAWABLE</assetType>
+      <assetName>baku_metro_entrance</assetName>
+      <extensions />
+    </Item>
+    <Item type="CBaseArchetypeDef">
+      <lodDist value="60" />
+      <flags value="32" />
+      <specialAttribute value="0" />
+      <bbMin x="-1" y="-0.3" z="0" />
+      <bbMax x="1" y="0.3" z="3" />
+      <bsCentre x="0" y="0" z="0" />
+      <bsRadius value="2" />
+      <hdTextureDist value="30" />
+      <name>baku_metro_sign</name>
+      <textureDictionary>baku_txd</textureDictionary>
+      <clipDictionary />
+      <drawableDictionary />
+      <physicsDictionary />
+      <assetType>ASSET_TYPE_DRAWABLE</assetType>
+      <assetName>baku_metro_sign</assetName>
+      <extensions />
+    </Item>
+  </archetypes>
+</CMapTypes>
