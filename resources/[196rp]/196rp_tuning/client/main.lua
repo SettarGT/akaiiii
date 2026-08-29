@@ -98,7 +98,7 @@ end
 
 function OpenTuningMenu(veh)
     local menu = {
-        { icon = 'fas fa-wrench', title = ' Tuninq emalatxanası', unselectable = true },
+        { icon = 'fas fa-wrench', title = 'Tuninq emalatxanası', unselectable = true },
     }
 
     for i, cat in ipairs(Config.Categories) do

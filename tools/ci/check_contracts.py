@@ -63,6 +63,10 @@ CORE_EXPORTS = {
     ('esx_context', 'Close'),
     ('esx_context', 'Refresh'),
     ('esx_context', 'Preview'),
+    ('esx_textui', 'TextUI'),
+    ('esx_textui', 'HideUI'),
+    ('esx_progressbar', 'Progressbar'),
+    ('esx_progressbar', 'CancelProgressbar'),
     # 196rp_spawner: server entity yarada bilmədiyi üçün client-də spawn edən vasitəçi
     ('196rp_spawner', 'RequestSpawn'),
     ('196rp_spawner', 'SpawnVehicleAwait'),
