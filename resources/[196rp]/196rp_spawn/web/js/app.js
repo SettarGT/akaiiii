@@ -1,9 +1,18 @@
+// 196 RP - Spawn seçimi NUI
+
 const grid = document.getElementById('spawnGrid');
+
+// Səhifə açılanda GİZLİ olsun — server 'open' göndərəndə görünür, 'close' ilə gizlənir.
+// (Əvvəlki versiyada close mesajı səhifəni gizlətmirdi — ekran "yapışıb" qalırdı.)
+document.body.style.display = 'none';
 
 window.addEventListener('message', (event) => {
     const data = event.data || {};
     if (data.action === 'open') {
+        document.body.style.display = '';
         render(data.spawns || []);
+    } else if (data.action === 'close') {
+        document.body.style.display = 'none';
     }
 });
 
@@ -22,6 +31,7 @@ function render(spawns) {
         `;
 
         card.addEventListener('click', () => {
+            document.body.style.display = 'none';
             fetch(`https://196rp_spawn/selectSpawn`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -33,23 +43,20 @@ function render(spawns) {
     });
 }
 
+function closeSelf() {
+    document.body.style.display = 'none';
+    fetch(`https://196rp_spawn/close`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({})
+    });
+}
+
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        fetch(`https://196rp_spawn/close`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({})
-        });
-    }
+    if (e.key === 'Escape') closeSelf();
 });
 
 // Ehtiyat: bəzi CEF versiyalarında Escape yalnız keyup-da çatır
 document.addEventListener('keyup', (e) => {
-    if (e.key === 'Escape') {
-        fetch(`https://196rp_spawn/close`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({})
-        });
-    }
+    if (e.key === 'Escape') closeSelf();
 });
