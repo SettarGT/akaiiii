@@ -91,3 +91,59 @@ bash tools/ci/run_ci.sh     # lokal tam yoxlama (7 mərhələ, 54 unit test)
 ```
 
 Suallar və düzəlişlər üçün: hansı detalı bəyənmədinizsə, deyin — birlikdə düzəldək.
+
+
+---
+
+## E. FXSERVER-İ YÜKLƏMƏK VƏ FAYLLARI YERLƏŞDİRMƏK
+
+Bizim repo yalnız **resurs + konfiq + sql**-dir. FiveM-in öz işlədicisi (FXServer)
+ayrıca, rəsmi mənbədən yüklənir:
+
+- **Windows:** https://fivem.net → "Download" (server build)
+- **Linux:**
+  ```bash
+  cd ~ && mkdir -p fxserver && cd fxserver
+  curl -Lo fx.tar.xz https://runtime.fivem.net/artifacts/fivem/build_server_linux/master/latest
+  tar xf fx.tar.xz
+  ```
+
+### Qovluq quruluşu (nə hara gedir)
+
+```
+fxserver/
+├── run.sh / FXServer.exe          ← FXServer-dən gəlir
+├── server.cfg                     ← BİZİM server.cfg
+├── assets/196-icon.png            ← BİZİM ikon (server kökü)
+└── resources/
+    ├── [core]/…                   ← BİZİM resources/[core]
+    ├── [196rp]/…                  ← BİZİM resources/[196rp]
+    └── [oxmysql]/…                ← BİZİM resources/[oxmysql]
+```
+
+| Bizim fayl | Haraya |
+|---|---|
+| `resources/[core],[196rp],[oxmysql]` | `fxserver/resources/` altına |
+| `server.cfg` | `fxserver/server.cfg` (DB şifrəsi + lisenziya) |
+| `assets/196-icon.png` | `fxserver/assets/196-icon.png` |
+| `196rp.sql` | bazaya idxal — qovluğa atılmır |
+
+### Baza və açar
+```bash
+mysql -u root -p -e "CREATE DATABASE 196rp CHARACTER SET utf8mb4"
+mysql -u root -p 196rp < 196rp.sql
+```
+`server.cfg`-də:
+```
+set mysql_connection "mysql://root:SIFRE@localhost/196rp"
+set sv_licenseKey "KEYMASTER-DƏN-ACAR"   # https://keymaster.fivem.net (pulsuz)
+```
+
+### İşə sal + hamıya aç
+```bash
+./run.sh
+```
+- Port **30120** (TCP+UDP) açıq olsun (router/firewall).
+- Lisenziya açarı düzgün olanda server FiveM siyahısında görünür → hamı qoşulur.
+- Yoxlamaq: FiveM → `connect localhost:30120`.
+- Əvvəl: `bash tools/ci/run_ci.sh`
