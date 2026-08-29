@@ -42,3 +42,14 @@ document.addEventListener('keydown', (e) => {
         });
     }
 });
+
+// Ehtiyat: bəzi CEF versiyalarında Escape yalnız keyup-da çatır
+document.addEventListener('keyup', (e) => {
+    if (e.key === 'Escape') {
+        fetch(`https://196rp_spawn/close`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({})
+        });
+    }
+});
