@@ -1,0 +1,86 @@
+local Translations = {
+    headers = {
+        ['bsm'] = 'Rəis Menyusu - ',
+    },
+    body = {
+        ['manage'] = 'İşçiləri idarə et',
+        ['managed'] = 'İşçilər siyahısına bax',
+        ['hire'] = 'İşçi işə al',
+        ['hired'] = 'Yaxınlıqdakı mülki şəxsləri işə al',
+        ['storage'] = 'Anbara giriş',
+        ['storaged'] = 'Anbarı aç',
+        ['outfits'] = 'Formalar',
+        ['outfitsd'] = 'Saxlanılmış formalara bax',
+        ['money'] = 'Pul idarəetməsi',
+        ['moneyd'] = 'Şirkət balansınıza baxın',
+        ['mempl'] = 'İşçiləri idarə et - ',
+        ['mngpl'] = 'İdarə et ',
+        ['grade'] = 'Rütbə: ',
+        ['fireemp'] = 'İşçini işdən çıxar',
+        ['hireemp'] = 'İşçi işə al - ',
+        ['cid'] = 'Citizen ID: ',
+        ['balance'] = 'Balans: $',
+        ['deposit'] = 'Əmanət',
+        ['depositd'] = 'Hesaba pul qoy',
+        ['withdraw'] = 'Çıxarış',
+        ['withdrawd'] = 'Hesabdan pul çıxar',
+        ['depositm'] = 'Pulu qoy <br> Mövcud balans: $',
+        ['withdrawm'] = 'Pulu çıxar <br> Mövcud balans: $',
+        ['submit'] = 'Təsdiqlə',
+        ['amount'] = 'Məbləğ',
+        ['return'] = 'Geri',
+        ['exit'] = 'Geri',
+    },
+    drawtext = {
+        ['label'] = '[E] İş idarəetməsini aç',
+    },
+    target = {
+        ['label'] = 'Rəis Menyusu',
+    },
+    headersgang = {
+        ['bsm'] = 'Qrup İdarəetməsi - ',
+    },
+    bodygang = {
+        ['manage'] = 'Qrup üzvlərini idarə et',
+        ['managed'] = 'Qrup üzvü işə al və ya qov',
+        ['hire'] = 'Üzv işə al',
+        ['hired'] = 'Qrup üzvü işə al',
+        ['storage'] = 'Anbara giriş',
+        ['storaged'] = 'Qrup anbarını aç',
+        ['outfits'] = 'Formalar',
+        ['outfitsd'] = 'Geyim dəyiş',
+        ['money'] = 'Pul idarəetməsi',
+        ['moneyd'] = 'Qrup balansınıza baxın',
+        ['mempl'] = 'Qrup üzvlərini idarə et - ',
+        ['mngpl'] = 'İdarə et ',
+        ['grade'] = 'Rütbə: ',
+        ['fireemp'] = 'Qov',
+        ['hireemp'] = 'Qrup üzvü işə al - ',
+        ['cid'] = 'Citizen ID: ',
+        ['balance'] = 'Balans: $',
+        ['deposit'] = 'Əmanət',
+        ['depositd'] = 'Hesaba pul qoy',
+        ['withdraw'] = 'Çıxarış',
+        ['withdrawd'] = 'Hesabdan pul çıxar',
+        ['depositm'] = 'Pulu qoy <br> Mövcud balans: $',
+        ['withdrawm'] = 'Pulu çıxar <br> Mövcud balans: $',
+        ['submit'] = 'Təsdiqlə',
+        ['amount'] = 'Məbləğ',
+        ['return'] = 'Geri',
+        ['exit'] = 'Çıx',
+    },
+    drawtextgang = {
+        ['label'] = '[E] Qrup idarəetməsini aç',
+    },
+    targetgang = {
+        ['label'] = 'Qrup Menyusu',
+    }
+}
+
+if GetConvar('qb_locale', 'en') == 'az' then
+    Lang = Locale:new({
+        phrases = Translations,
+        warnOnMissing = true,
+        fallbackLang = Lang,
+    })
+end

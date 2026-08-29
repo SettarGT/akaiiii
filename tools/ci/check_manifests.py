@@ -16,8 +16,8 @@ problems = []
 # FiveM server artifacts ilə birlikdə gələn, repo-da saxlanmayan resurslar
 CFX_BUILTIN = {
     'chat', 'spawnmanager', 'sessionmanager', 'sessionmanager-rdr3', 'mapmanager',
-    'hardknight', 'monitor', 'rconlog', 'yarn', 'webpack', 'oxmysql', 'es_extended',
-    'esx_lib', 'skinchanger', 'cron',
+    'hardknight', 'monitor', 'rconlog', 'yarn', 'webpack', 'oxmysql', 'qb-core',
+    'ox_lib', 'baseevents', 'basic-gamemode', 'hardcap',
 }
 
 
@@ -66,9 +66,11 @@ for res, path in res_dirs():
                 other = ref[1:]
                 base = other.split('/')[0]
                 candidates = [
-                    os.path.join('resources', '[core]', other),
+                    os.path.join('resources', '[qb]', other),
+                    os.path.join('resources', '[standalone]', other),
                     os.path.join('resources', '[196rp]', other),
-                    os.path.join('resources', '[oxmysql]', other),
+                    os.path.join('resources', '[voice]', other),
+                    os.path.join('resources', '[defaultmaps]', other),
                 ]
                 if not any(os.path.exists(c) for c in candidates):
                     problems.append('%s: idxal olunan fayl yoxdur → %s' % (res, ref))
@@ -82,7 +84,18 @@ for res, path in res_dirs():
 if os.path.exists('server.cfg'):
     cfg = open('server.cfg', encoding='utf-8').read()
     ensured = set(re.findall(r'^ensure\s+([A-Za-z0-9_\-\[\]]+)', cfg, re.M))
-    existing = {name for name, _ in res_dirs()}
+    bracket_ensured = set(re.findall(r'^ensure\s+(\[[^\]]+\])', cfg, re.M))
+    existing = set()
+    for root_dir in sorted(os.listdir('resources')):
+        rp = os.path.join('resources', root_dir)
+        if os.path.isdir(rp):
+            for name in sorted(os.listdir(rp)):
+                if os.path.isdir(os.path.join(rp, name)):
+                    existing.add(name)
+    for br in bracket_ensured:
+        for name in sorted(os.listdir(os.path.join('resources', br))):
+            if os.path.isdir(os.path.join('resources', br, name)):
+                ensured.add(name)
 
     for name in sorted(ensured):
         if name.startswith('[') or name in CFX_BUILTIN:

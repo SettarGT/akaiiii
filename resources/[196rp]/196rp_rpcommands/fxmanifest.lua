@@ -1,20 +1,24 @@
 fx_version 'cerulean'
-game 'common'
+game 'gta5'
+lua54 'yes'
 
-name '196rp_rpcommands'
-description '196 RP - Rol-pley əmrləri (/me, /do, /try, /ooc, /report)'
 author '196 RP'
+description '196 RP - RP əmrləri (/me /do /ame /try və s. Azərbaycanca)'
 version '1.0.0'
 
 shared_scripts {
-    '@es_extended/imports.lua',
-    '@es_extended/locale.lua'
+    'config.lua',
+    '@qb-core/shared/locale.lua',
+}
+
+client_scripts {
+    'client/main.lua',
 }
 
 server_scripts {
-    'server/main.lua'
+    'server/main.lua',
 }
 
 dependencies {
-    'es_extended'
+    'qb-core',
 }

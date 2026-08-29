@@ -1,110 +1,44 @@
 Config = {}
 
--- Animasiya kateqoriyaları
--- növ: 'scenario' (TaskStartScenarioInPlace) və ya 'anim' (TaskPlayAnim)
-Config.Categories = {
-    {
-        name = 'oturmaq',
-        label = '🪑 Oturmaq',
-        items = {
-            { label = 'Skamyada otur', scenario = 'PROP_HUMAN_SEAT_BENCH' },
-            { label = 'Yerdə otur', scenario = 'WORLD_HUMAN_PICNIC' },
-            { label = 'Divanda otur', scenario = 'PROP_HUMAN_SEAT_CHAIR_MP_PLAYER' },
-            { label = 'Dəzgahda otur (iş)', scenario = 'PROP_HUMAN_SEAT_SEWING' },
-            { label = 'Kresloda otur', scenario = 'PROP_HUMAN_SEAT_MUSCLE_BENCH_PRESS' },
-            { label = 'Stulda otur', scenario = 'PROP_HUMAN_SEAT_CHAIR' },
-        }
-    },
-    {
-        name = 'salam',
-        label = '👋 Salam və jestlər',
-        items = {
-            { label = 'Əl yellə', dict = 'mp_facial', lib = 'shrug_0' },
-            { label = 'Salam ver', dict = 'gestures@m@standing@casual', lib = 'gesture_hello' },
-            { label = 'Baş əy', dict = 'gestures@m@standing@casual', lib = 'gesture_bow' },
-            { label = 'Baş yellə (hə)', dict = 'gestures@m@standing@casual', lib = 'gesture_nod_yes_hard' },
-            { label = 'Baş yellə (yox)', dict = 'gestures@m@standing@casual', lib = 'gesture_no_soft' },
-            { label = 'Çiyin çək', dict = 'gestures@m@standing@casual', lib = 'gesture_shrug_hard' },
-            { label = 'Hərbi salam', dict = 'mp_player_int_upperarse_pick', lib = 'mp_player_int_arse_pick' },
-            { label = 'Yumruq vur (salamlaşma)', dict = 'gestures@m@standing@casual', lib = 'gesture_hand_forward' },
-        }
-    },
-    {
-        name = 'faaliyyet',
-        label = '💼 Fəaliyyətlər',
-        items = {
-            { label = 'Telefonla danış', dict = 'cellphone@', lib = 'cellphone_call_listen_base' },
-            { label = 'Telefona bax', dict = 'cellphone@', lib = 'cellphone_text_read_base' },
-            { label = 'Siqaret çək', dict = 'amb@world_human_smoking@male@male_a@base', lib = 'base' },
-            { label = 'Qəzet oxu', dict = 'amb@world_human_seat_wall_table@male@male_a@base', lib = 'base' },
-            { label = 'Qol çarpazla', dict = 'amb@world_human_cross_road@male@base', lib = 'base' },
-            { label = 'Ayaq üstə dayan', dict = 'amb@world_human_stand_guard@base', lib = 'base' },
-            { label = 'Gözlə (küçədə)', dict = 'amb@world_human_stand_impatient@male@base', lib = 'base' },
-            { label = 'Alqışla', dict = 'amb@world_human_cheering@male_a@base', lib = 'base' },
-        }
-    },
-    {
-        name = 'isek',
-        label = '🥤 İçki / yemək',
-        items = {
-            { label = 'Stəkandan iç', dict = 'mp_player_intdrink', lib = 'intro_bottle' },
-            { label = 'Şüşədən iç', dict = 'amb@world_human_drinking@beer@male@base', lib = 'base' },
-            { label = 'Kofe iç', dict = 'amb@world_human_drinking@coffee@male@base', lib = 'base' },
-            { label = 'Yemək ye', dict = 'amb@code_human_in_car_mp_actions@eat@b_base@base', lib = 'base' },
-            { label = 'Burger ye', dict = 'amb@code_human_in_car_mp_actions@eat@burrito@base', lib = 'base' },
-        }
-    },
-    {
-        name = 'idman',
-        label = '🏋️ İdman',
-        items = {
-            { label = 'Ştanq qaldır', dict = 'amb@world_human_muscle_flex@base', lib = 'base' },
-            { label = 'Təkan qaldır', dict = 'amb@world_human_push_ups@base', lib = 'base' },
-            { label = 'Oturub qalx', dict = 'amb@world_human_sit_ups@base', lib = 'base' },
-            { label = 'Yerində qaç', dict = 'amb@world_human_jog_standing@base', lib = 'base' },
-            { label = 'Yoga', dict = 'amb@world_human_yoga@base', lib = 'base' },
-        }
-    },
-    {
-        name = 'reqs',
-        label = '💃 Rəqs',
-        items = {
-            { label = 'Klub rəqsi (yavaş)', dict = 'anim@mp_nightclub@mini@dance@dance_solo@female@var_a@', lib = 'med_center' },
-            { label = 'Klub rəqsi (sürətli)', dict = 'anim@mp_nightclub@mini@dance@dance_solo@female@var_b@', lib = 'high_center' },
-            { label = 'Solo rəqs (kişi)', dict = 'anim@mp_nightclub@mini@dance@dance_solo@male@var_a@', lib = 'med_center' },
-            { label = 'Cütlük rəqsi', dict = 'anim@mp_nightclub@mini@dance@dance_paired@dance_a@', lib = 'med_center' },
-            { label = 'Gecə klubu (əyləşmə)', scenario = 'WORLD_HUMAN_PARTYING' },
-            { label = 'DJ kimi', dict = 'anim@mp_nightclub@dj@idle@', lib = 'idle_a' },
-            { label = 'Musiqi ilə yellənmə', dict = 'anim@mp_nightclub@lazlow@ig1_v2@', lib = 'low_idle' },
-        }
-    },
-    {
-        name = 'selfi',
-        label = '📸 Selfi və foto',
-        items = {
-            { label = 'Selfi çək', dict = 'cellphone@self@trevor@', lib = 'chest_bump' },
-            { label = 'Selfi (gülümsə)', dict = 'cellphone@self@franklin@', lib = 'peace' },
-            { label = 'Foto çək', dict = 'cellphone@in_car@ps', lib = 'cellphone_text_read_base' },
-            { label = 'Kamera tut', scenario = 'WORLD_HUMAN_PAPARAZZI' },
-            { label = 'Qrup fotosu', dict = 'cellphone@self@michael@', lib = 'finger_point' },
-        }
-    },
-    {
-        name = 'diger',
-        label = '🎭 Digər',
-        items = {
-            { label = 'Yerə uzan', scenario = 'WORLD_HUMAN_SUNBATHE' },
-            { label = 'Dua et', dict = 'amb@prop_human_praying@male@base', lib = 'base' },
-            { label = 'Dərd çək', dict = 'amb@world_human_drunk@male@base', lib = 'base' },
-            { label = 'Qəzəblənmə', dict = 'amb@world_human_greeting_police', lib = 'gesture_hello' },
-            { label = 'Ağla', dict = 'mp_facial', lib = 'cry_0' },
-            { label = 'Gül', dict = 'mp_facial', lib = 'smile_0' },
-            { label = 'Yerə otur (düşüncəli)', scenario = 'WORLD_HUMAN_STAND_IMPATIENT' },
-        }
-    },
+Config.Key = 47 -- U düyməsi
+
+Config.Animations = {
+    { label = 'Otur', type = 'scenario', scenario = 'WORLD_HUMAN_SEAT_LEDGE' },
+    { label = 'Otur (yerdə)', type = 'scenario', scenario = 'WORLD_HUMAN_PICNIC' },
+    { label = 'Yerə uzan', type = 'scenario', scenario = 'WORLD_HUMAN_SUNBATHE' },
+    { label = 'Siqaret çək', type = 'scenario', scenario = 'WORLD_HUMAN_SMOKING' },
+    { label = 'Qəhvə iç', type = 'scenario', scenario = 'WORLD_HUMAN_DRINKING' },
+    { label = 'Telefonda danış', type = 'scenario', scenario = 'WORLD_HUMAN_MOBILE_PHONE' },
+    { label = 'Kompüterlə işlə', type = 'scenario', scenario = 'WORLD_HUMAN_STAND_MOBILE' },
+    { label = 'Ayaq üstə gözlə', type = 'scenario', scenario = 'WORLD_HUMAN_AA_SMOKE' },
+    { label = 'Yaz', type = 'scenario', scenario = 'WORLD_HUMAN_CLIPBOARD' },
+    { label = 'Bax', type = 'scenario', scenario = 'WORLD_HUMAN_BINOCULARS' },
+    { label = 'Salavat', type = 'scenario', scenario = 'WORLD_HUMAN_GUARD_STAND' },
+    { label = 'Salam ver', dict = 'gestures@m@standing@casual', anim = 'gesture_hello' },
+    { label = 'Əl yellə', dict = 'gestures@m@standing@casual', anim = 'gesture_wave' },
+    { label = 'Ayağa qalx', dict = 'gestures@m@standing@casual', anim = 'gesture_cheer' },
+    { label = 'Əlləri aç', dict = 'gestures@m@standing@casual', anim = 'gesture_howdy' },
+    { label = 'Başını tərpət', dict = 'gestures@m@standing@casual', anim = 'gesture_nod_yes' },
+    { label = 'Başını yoxla', dict = 'gestures@m@standing@casual', anim = 'gesture_nod_no' },
+    { label = 'Rəqs et (klassik)', dict = 'anim@amb@nightclub@lazlow@hi_peds@', anim = 'low_center_dance_male_female' },
+    { label = 'Rəqs et (klub)', dict = 'anim@amb@nightclub@lazlow@hi_peds@', anim = 'low_down_dance_male_female' },
+    { label = 'Qazanc', dict = 'anim@amb@casino@valet@', anim = 'idle_a' },
+    { label = 'İdman (təkan)', dict = 'amb@world_human_push_ups@male@base', anim = 'base' },
+    { label = 'İdman (çömbəlmə)', dict = 'amb@world_human_squat@male@base', anim = 'base' },
+    { label = 'Ağrı', dict = 'misscommon@respond', anim = 'pain_reaction' },
+    { label = 'Sərxoş', dict = 'random@drunk_driving', anim = 'drunk_driver_lead_away_fail' },
 }
 
--- Animasiyanı dayandırmaq üçün istifadə olunan düymə (ESC)
-Config.CancelKey = 177  -- BACKSPACE
-
--- Qeyd: X düyməsi (73) və ya hər hansı hərəkət animasiyanı kəsir
+Config.CancelAnims = {
+    'WORLD_HUMAN_SEAT_LEDGE',
+    'WORLD_HUMAN_PICNIC',
+    'WORLD_HUMAN_SUNBATHE',
+    'WORLD_HUMAN_SMOKING',
+    'WORLD_HUMAN_DRINKING',
+    'WORLD_HUMAN_MOBILE_PHONE',
+    'WORLD_HUMAN_STAND_MOBILE',
+    'WORLD_HUMAN_AA_SMOKE',
+    'WORLD_HUMAN_CLIPBOARD',
+    'WORLD_HUMAN_BINOCULARS',
+    'WORLD_HUMAN_GUARD_STAND',
+}

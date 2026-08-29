@@ -1,19 +1,22 @@
 fx_version 'cerulean'
 game 'gta5'
-description '196 RP - Animasiya menyusu (/anim)'
 lua54 'yes'
+
+author '196 RP'
+description '196 RP - Animasiya menyusu (U düyməsi / /anim)'
 version '1.0.0'
 
 shared_scripts {
-    '/config.lua',
-    '@es_extended/imports.lua',
+    'config.lua',
+    '@qb-core/shared/locale.lua',
 }
 
 client_scripts {
-    '/client/main.lua',
+    'client/main.lua',
 }
 
 dependencies {
-    'es_extended',
-    'esx_context',
+    'qb-core',
+    'qb-menu',
+    'qb-input',
 }

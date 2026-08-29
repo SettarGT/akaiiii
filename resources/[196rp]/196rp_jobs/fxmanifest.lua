@@ -1,28 +1,28 @@
 fx_version 'cerulean'
 game 'gta5'
+lua54 'yes'
 
-name '196rp_jobs'
-description '196 RP - İş sistemi (balıqçılıq, mədən, taksi, avtobus və s.)'
 author '196 RP'
+description '196 RP - İş Mərkəzi (mülki işlərə düzəlmə)'
 version '1.0.0'
 
 shared_scripts {
-    '@es_extended/imports.lua',
-    '@es_extended/locale.lua',
-    'config.lua'
+    'config.lua',
+    '@qb-core/shared/locale.lua',
 }
 
 client_scripts {
-    'client/main.lua'
+    'client/main.lua',
 }
 
 server_scripts {
-    'server/main.lua'
+    '@oxmysql/lib/MySQL.lua',
+    'server/main.lua',
 }
 
 dependencies {
-    'es_extended',
-    'esx_progressbar',
-    'esx_textui',
-    'esx_notify'
+    'qb-core',
+    'qb-menu',
+    'qb-target',
+    'oxmysql',
 }

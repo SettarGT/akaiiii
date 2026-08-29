@@ -1,185 +1,109 @@
--- 196 RP | Rol-pley əmrləri — server tərəfi
--- /me /do /try /ooc /report /b
+local QBCore = exports['qb-core']:GetCoreObject()
 
-local ESX = exports['es_extended']:getSharedObject()
-
-local function PlayerName(src)
-    local xPlayer = ESX.GetPlayerFromId(src)
-    if not xPlayer then
-        return ('ID %s'):format(src)
-    end
-    return ('%s %s'):format(xPlayer.get('firstName') or '?', xPlayer.get('lastName') or '?')
-end
-
-local function Nearby(src, radius)
+local function GetNearbyPlayers(src, radius)
     local ped = GetPlayerPed(src)
-    if not ped or ped == 0 then
-        return { src }
-    end
-
-    local coords = GetEntityCoords(ped)
+    local pCoords = GetEntityCoords(ped)
     local list = {}
-
-    for _, pid in pairs(ESX.GetPlayers()) do
-        local other = GetPlayerPed(pid)
-        if other and other ~= 0 and #(GetEntityCoords(other) - coords) <= radius then
-            list[#list + 1] = pid
+    for _, player in ipairs(GetPlayers()) do
+        local targetPed = GetPlayerPed(player)
+        local tCoords = GetEntityCoords(targetPed)
+        if targetPed == ped or #(pCoords - tCoords) <= radius then
+            list[#list + 1] = player
         end
     end
-
     return list
 end
 
--- ==================== /me — hərəkət ====================
+local function SendWebhook(content)
+    if Config.ReportWebhook == '' or not Config.ReportWebhook then return end
+    PerformHttpRequest(Config.ReportWebhook, function(err, text, headers) end, 'POST',
+        json.encode({
+            username = '196 RP | Report',
+            embeds = { {
+                title = '🛑 Yeni Report',
+                description = content,
+                color = 15158332,
+                footer = { text = '196 RP' },
+                timestamp = os.date('!%Y-%m-%dT%H:%M:%SZ'),
+            } }
+        }),
+        { ['Content-Type'] = 'application/json' })
+end
 
-RegisterCommand('me', function(source, args)
-    if source == 0 or #args == 0 then
-        return
-    end
-
-    local text = table.concat(args, ' ')
-    for _, pid in pairs(Nearby(source, 20.0)) do
-        TriggerClientEvent('chat:addMessage', pid, {
-            color = { 200, 140, 255 },
+-- Çat mesajı (yalnız yaxınlıqdakılara)
+RegisterNetEvent('196rp_rpcommands:chatMessage', function(msg, color)
+    local src = source
+    for _, player in ipairs(GetNearbyPlayers(src, 15.0)) do
+        TriggerClientEvent('chat:addMessage', player, {
+            color = color or { 147, 196, 255 },
             multiline = true,
-            args = { ('%s (ID %s)'):format(PlayerName(source), source), text }
+            args = { msg }
         })
     end
-end, false)
+end)
 
--- ==================== /do — vəziyyət təsviri ====================
-
-RegisterCommand('do', function(source, args)
-    if source == 0 or #args == 0 then
-        return
+-- /do — 3D mətn
+RegisterNetEvent('196rp_rpcommands:doMessage', function(msg)
+    local src = source
+    local name = GetPlayerName(src)
+    for _, player in ipairs(GetNearbyPlayers(src, 20.0)) do
+        TriggerClientEvent('QBCore:Command:ShowMe3D', player, src, ('* %s %s'):format(name, msg))
     end
+end)
 
-    local text = table.concat(args, ' ')
-    for _, pid in pairs(Nearby(source, 20.0)) do
-        TriggerClientEvent('chat:addMessage', pid, {
-            color = { 130, 180, 255 },
-            multiline = true,
-            args = { 'DO', ('%s ((%s))'):format(text, PlayerName(source)) }
-        })
-    end
-end, false)
+-- /report — adminlərə bildiriş
+QBCore.Commands.Add('report', 'Bir problemi adminlərə bildir', {
+    { name = 'message', help = 'Problem təsviri (daha çox söz üçün dırnaq işarələri istifadə edin)' }
+}, false, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(source)
+    if not Player then return end
 
--- ==================== /try — şans əməli ====================
+    local fullText = table.concat(args, ' ')
+    if fullText == '' then return end
+    fullText = fullText:gsub('[~<].-[>~]', ''):sub(1, 250)
 
-RegisterCommand('try', function(source, args)
-    if source == 0 or #args == 0 then
-        return
-    end
+    local msg = ('🔴 [REPORT] %s (%d): %s'):format(Player.PlayerData.charinfo.firstname .. ' ' ..
+        (Player.PlayerData.charinfo.lastname or ''), source, fullText)
 
-    local text = table.concat(args, ' ')
-    local success = math.random(1, 100) <= 50
-
-    for _, pid in pairs(Nearby(source, 20.0)) do
-        TriggerClientEvent('chat:addMessage', pid, {
-            color = success and { 120, 220, 120 } or { 230, 120, 120 },
-            multiline = true,
-            args = { 'TRY', ('%s — %s ((%s))'):format(text, success and 'uğurlu' or 'uğursuz', PlayerName(source)) }
-        })
-    end
-end, false)
-
--- ==================== /ooc — kənar söhbət ====================
-
-RegisterCommand('ooc', function(source, args)
-    if source == 0 or #args == 0 then
-        return
-    end
-
-    local text = table.concat(args, ' ')
-    for _, pid in pairs(Nearby(source, 25.0)) do
-        TriggerClientEvent('chat:addMessage', pid, {
-            color = { 160, 160, 160 },
-            multiline = true,
-            args = { ('OOC %s'):format(source), text }
-        })
-    end
-end, false)
-
--- ==================== /b — yaxın kənar söhbət ====================
-
-RegisterCommand('b', function(source, args)
-    if source == 0 or #args == 0 then
-        return
-    end
-
-    local text = table.concat(args, ' ')
-    for _, pid in pairs(Nearby(source, 10.0)) do
-        TriggerClientEvent('chat:addMessage', pid, {
-            color = { 150, 150, 150 },
-            multiline = true,
-            args = { ('%s'):format(source), text }
-        })
-    end
-end, false)
-
--- ==================== /report — adminə şikayət ====================
-
-RegisterCommand('report', function(source, args)
-    if source == 0 or #args == 0 then
-        TriggerClientEvent('chat:addMessage', source, {
-            color = { 230, 120, 120 },
-            multiline = true,
-            args = { 'Report', 'İstifadə: /report [ID] [səbəb]' }
-        })
-        return
-    end
-
-    local targetId = tonumber(args[1])
-    table.remove(args, 1)
-    local reason = table.concat(args, ' ')
-
-    if not targetId or reason == '' then
-        TriggerClientEvent('chat:addMessage', source, {
-            color = { 230, 120, 120 },
-            multiline = true,
-            args = { 'Report', 'İstifadə: /report [ID] [səbəb]' }
-        })
-        return
-    end
-
-    local xTarget = ESX.GetPlayerFromId(targetId)
-    if not xTarget then
-        TriggerClientEvent('chat:addMessage', source, {
-            color = { 230, 120, 120 },
-            multiline = true,
-            args = { 'Report', 'Bu ID-li oyunçu onlayn deyil!' }
-        })
-        return
-    end
-
-    TriggerClientEvent('chat:addMessage', source, {
-        color = { 120, 220, 120 },
-        multiline = true,
-        args = { 'Report', 'Şikayətiniz adminlərə göndərildi. Təşəkkürlər!' }
-    })
-
-    for _, pid in pairs(ESX.GetPlayers()) do
-        local xPlayer = ESX.GetPlayerFromId(pid)
-        if xPlayer and xPlayer.getGroup() == 'admin' then
-            TriggerClientEvent('chat:addMessage', pid, {
-                color = { 255, 100, 150 },
+    for _, admin in ipairs(QBCore.Functions.GetPlayers()) do
+        if IsPlayerAceAllowed(admin, 'command') then
+            TriggerClientEvent('chat:addMessage', admin, {
+                color = { 255, 80, 80 },
                 multiline = true,
-                args = { 'REPORT', ('%s (ID %s) → %s (ID %s): %s'):format(
-                    PlayerName(source), source, PlayerName(targetId), targetId, reason) }
+                args = { msg }
             })
+            TriggerClientEvent('QBCore:Notify', admin, ('Report: %s'):format(fullText), 'error')
         end
     end
+
+    TriggerClientEvent('chat:addMessage', source, {
+        color = { 255, 80, 80 },
+        multiline = true,
+        args = { ('🟠 Reportınız göndərildi.'):format() }
+    })
+
+    SendWebhook(msg)
 end, false)
 
--- ==================== /id — öz ID-ni göstər ====================
+-- /pm — şəxsi mesaj
+QBCore.Commands.Add('pm', 'Oyunçuya şəxsi mesaj göndər', {
+    { name = 'id', help = 'Oyunçu ID-si' },
+    { name = 'message', help = 'Mesaj' }
+}, false, function(source, args)
+    local target = tonumber(args[1])
+    if not target then return end
+    local fullText = table.concat(args, ' ', 2):gsub('[~<].-[>~]', '')
+    if fullText == '' then return end
 
-RegisterCommand('id', function(source)
-    if source == 0 then
-        return
-    end
-    TriggerClientEvent('chat:addMessage', source, {
-        color = { 200, 200, 200 },
+    local senderName = GetPlayerName(source)
+    TriggerClientEvent('chat:addMessage', target, {
+        color = { 255, 200, 100 },
         multiline = true,
-        args = { 'ID', ('Sizin server ID-niz: %s'):format(source) }
+        args = { ('[PM] %s: %s'):format(senderName, fullText) }
+    })
+    TriggerClientEvent('chat:addMessage', source, {
+        color = { 255, 200, 100 },
+        multiline = true,
+        args = { ('[PM -> %s] %s'):format(target, fullText) }
     })
 end, false)

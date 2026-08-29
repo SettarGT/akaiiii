@@ -58,19 +58,28 @@ for p in sorted(files):
 # Hər ikisi yoxlanılıb: es_extended/shared/main.lua → getSharedObject,
 # esx_context/main.lua → Open/Close/Refresh/Preview.
 CORE_EXPORTS = {
-    ('es_extended', 'getSharedObject'),
-    ('esx_context', 'Open'),
-    ('esx_context', 'Close'),
-    ('esx_context', 'Refresh'),
-    ('esx_context', 'Preview'),
-    ('esx_textui', 'TextUI'),
-    ('esx_textui', 'HideUI'),
-    ('esx_progressbar', 'Progressbar'),
-    ('esx_progressbar', 'CancelProgressbar'),
-    # 196rp_spawner: server entity yarada bilmədiyi üçün client-də spawn edən vasitəçi
-    ('196rp_spawner', 'RequestSpawn'),
-    ('196rp_spawner', 'SpawnVehicleAwait'),
-    ('196rp_spawner', 'SpawnPedAwait'),
+    ('qb-core', 'GetCoreObject'),
+    ('qb-input', 'ShowInput'),
+    ('qb-menu', 'openMenu'),
+    ('qb-target', 'AddBoxZone'),
+    ('qb-target', 'RemoveZone'),
+    ('qb-inventory', 'OpenInventory'),
+    ('qb-inventory', 'OpenInventoryById'),
+    ('qb-clothing', 'reloadSkin'),
+    ('qb-clothing', 'IsCreatingCharacter'),
+    ('qb-clothing', 'getOutfits'),
+    # oxmysql: server tərəfində MySQL.ready / MySQL.query kimi modul
+}
+
+# QBCore / digər resurslardan gələn xarici client eventlər
+EXTERNAL_CLIENT_EVENTS = {
+    'QBCore:Notify',
+    'QBCore:Command:ShowMe3D',
+    'chat:addMessage',
+    'qb-clothing:client:openMenu',
+    'InteractSound_SV:PlayOnSource',
+    'qb-radio:client:SetRadioState',
+    'qb-radio:client:UseItem',
 }
 
 problems = 0
@@ -82,7 +91,7 @@ for name, where in sorted(client_cb):
 
 print('== client events declared: %d ==' % len(client_events))
 for name, p, i in sorted(server_trigger_client):
-    if name.startswith('esx:') or name.startswith('chat'):
+    if name in EXTERNAL_CLIENT_EVENTS or name.startswith('chat'):
         continue
     if name not in client_events:
         print('  NO client RegisterNetEvent for %s (triggered at %s:%d)' % (name, p, i)); problems += 1
@@ -108,11 +117,16 @@ for mf in glob.glob(os.path.join(root, '*', 'fxmanifest.lua')):
         ref = m.group(1)
         if ref.startswith('@'):
             other = ref[1:]
-            target = os.path.join('resources', '[core]' if other.split('/')[0].startswith('es') or other.split('/')[0] in ('skinchanger','cron') else '[196rp]', other)
-            if not os.path.exists(target):
-                target2 = os.path.join('resources', '[196rp]', other)
-                if not os.path.exists(target2):
-                    print('  MISSING import %s in %s' % (ref, mf)); problems += 1
+            dep = other.split('/')[0]
+            candidates = [
+                os.path.join('resources', '[qb]', other),
+                os.path.join('resources', '[standalone]', other),
+                os.path.join('resources', '[196rp]', other),
+                os.path.join('resources', '[voice]', other),
+                os.path.join('resources', '[defaultmaps]', other),
+            ]
+            if not any(os.path.exists(c) for c in candidates):
+                print('  MISSING import %s in %s' % (ref, mf)); problems += 1
         else:
             if not os.path.exists(os.path.join(base, ref)):
                 print('  MISSING file %s in %s' % (ref, mf)); problems += 1

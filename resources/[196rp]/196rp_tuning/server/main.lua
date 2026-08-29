@@ -1,27 +1,28 @@
--- 196 RP | Tuninq — server tərəfi
--- Ödəniş yoxlaması: pul kifayət edirsə silir, əks halda rədd edir.
+local QBCore = exports['qb-core']:GetCoreObject()
 
-local ESX = exports['es_extended']:getSharedObject()
-
-ESX.RegisterServerCallback('196rp_tuning:pay', function(source, cb, price, label)
-    local xPlayer = ESX.GetPlayerFromId(source)
-    if not xPlayer then
-        return cb(false)
+-- Ödəniş callback: nağd pul kifayət deyilsə bankdan çıxar
+QBCore.Functions.CreateCallback('196rp_tuning:pay', function(source, cb, price, label)
+    local Player = QBCore.Functions.GetPlayer(source)
+    if not Player then
+        cb(false)
+        return
     end
-
-    price = tonumber(price) or 0
-    if price <= 0 then
-        return cb(false)
+    price = tonumber(price)
+    if not price or price <= 0 then
+        cb(false)
+        return
     end
-
-    if xPlayer.getMoney() < price then
-        TriggerClientEvent('esx:showNotification', source,
-            ('Pulunuz kifayət etmir! %s üçün ~y~%s$~s~ lazımdır.'):format(label or 'Hissə', price), 'error')
-        return cb(false)
+    local cash = Player.Functions.GetMoney('cash')
+    if cash >= price then
+        Player.Functions.RemoveMoney('cash', price, '196rp_tuning: ' .. tostring(label))
+        cb(true)
+        return
     end
-
-    xPlayer.removeMoney(price)
-    TriggerClientEvent('esx:showNotification', source,
-        ('~g~%s quraşdırıldı!~s~ Ödəniş: ~y~%s$~s~'):format(label or 'Hissə', price), 'success')
-    cb(true)
+    local bank = Player.Functions.GetMoney('bank')
+    if bank >= price then
+        Player.Functions.RemoveMoney('bank', price, '196rp_tuning: ' .. tostring(label))
+        cb(true)
+        return
+    end
+    cb(false)
 end)

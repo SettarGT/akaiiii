@@ -1,138 +1,75 @@
--- 196 RP | Animasiya menyusu
--- /anim əmri ilə açılır: kateqoriya → animasiya seç → oynanır.
--- ESC / hərəkət animasiyanı dayandırır.
+local QBCore = exports['qb-core']:GetCoreObject()
 
--- Əvvəlcədən elan (qarşılıqlı çağırışlar üçün)
-local OpenAnimMenu
+local currentScenario = nil
+local currentAnim = nil
 
-local playing = false
-local currentDict = nil
-
-local function StopAnimation()
-    if not playing then
-        return
-    end
-    local ped = PlayerPedId()
-    ClearPedTasksImmediately(ped)
-    if currentDict then
-        RemoveAnimDict(currentDict)
-        currentDict = nil
-    end
-    playing = false
-end
-
-exports('StopAnimation', StopAnimation)
-
--- Hərəkət edəndə animasiyanı dayandır
-CreateThread(function()
-    while true do
-        Wait(500)
-        if playing then
-            local ped = PlayerPedId()
-            if IsPedWalking(ped) or IsPedRunning(ped) or IsPedSprinting(ped) or IsPedJumping(ped) or IsPedFalling(ped) then
-                StopAnimation()
-            end
-        end
-    end
-end)
-
--- ESC (BACKSPACE) ilə dayandır
-CreateThread(function()
-    while true do
-        Wait(0)
-        if IsControlJustPressed(0, Config.CancelKey) and playing then
-            StopAnimation()
-        end
-        Wait(50)
-    end
-end)
-
-local function PlayItem(item)
-    if item.scenario then
-        local ped = PlayerPedId()
-        TaskStartScenarioInPlace(ped, item.scenario, 0, true)
-        playing = true
-        return
-    end
-
-    local dict = item.dict
-    if not HasAnimDictLoaded(dict) then
-        RequestAnimDict(dict)
-        local tries = 0
-        while not HasAnimDictLoaded(dict) and tries < 100 do
-            Wait(10)
-            tries = tries + 1
-        end
-    end
-
-    if HasAnimDictLoaded(dict) then
-        local ped = PlayerPedId()
-        TaskPlayAnim(ped, dict, item.lib, 8.0, -8.0, -1, 1, 0, false, false, false)
-        currentDict = dict
-        playing = true
-    else
-        ESX.ShowNotification('Animasiya yüklənə bilmədi!', 'error')
-    end
-end
-
--- Kateqoriya menyusunu göstər
-local function OpenCategoryMenu()
-    local menu = {}
-    for i = 1, #Config.Categories do
-        local cat = Config.Categories[i]
-        menu[#menu + 1] = {
-            icon = 'fas fa-angle-right',
-            title = cat.label,
-            name = cat.name,
-        }
-    end
-
-    exports['esx_context']:Open('left', menu, function(selected)
-        for i = 1, #Config.Categories do
-            if Config.Categories[i].name == selected.name then
-                OpenAnimMenu(i)
+local function StopCurrent()
+    if currentScenario then
+        for _, scenario in ipairs(Config.CancelAnims) do
+            if scenario == currentScenario then
+                ClearPedTasksImmediately(PlayerPedId())
                 break
             end
         end
-    end)
+        currentScenario = nil
+    end
+    if currentAnim then
+        ClearPedTasksImmediately(PlayerPedId())
+        currentAnim = nil
+    end
 end
 
--- Kateqoriyanın animasiyalarını göstər
-OpenAnimMenu = function(catIndex)
-    local cat = Config.Categories[catIndex]
-    local menu = {}
-    for j = 1, #cat.items do
-        local it = cat.items[j]
+local function PlayAnimation(anim)
+    local ped = PlayerPedId()
+    StopCurrent()
+    if anim.type == 'scenario' then
+        currentScenario = anim.scenario
+        TaskStartScenarioInPlace(ped, anim.scenario, 0, true)
+    else
+        currentAnim = anim
+        RequestAnimDict(anim.dict)
+        while not HasAnimDictLoaded(anim.dict) do
+            Wait(10)
+        end
+        TaskPlayAnim(ped, anim.dict, anim.anim, 8.0, 8.0, -1, 1, 0, false, false, false)
+    end
+end
+
+local function OpenMenu()
+    local menu = {
+        { header = 'Animasiya', isMenuHeader = true, icon = 'fas fa-person-running' },
+        { header = 'Animasiyanı dayandır', icon = 'fas fa-ban', txt = 'Cari animasiyanı ləğv et', params = { stop = true } },
+    }
+    for i, anim in ipairs(Config.Animations) do
         menu[#menu + 1] = {
-            icon = 'fas fa-play',
-            title = it.label,
-            name = tostring(j),
+            header = anim.label,
+            icon = 'fas fa-person-walking',
+            params = { index = i },
         }
     end
-    menu[#menu + 1] = {
-        icon = 'fas fa-arrow-left',
-        title = '⬅ Geri',
-        name = 'back',
-    }
-
-    exports['esx_context']:Open('left', menu, function(selected)
-        if selected.name == 'back' then
-            OpenCategoryMenu()
-        else
-            local idx = tonumber(selected.name)
-            if idx and cat.items[idx] then
-                PlayItem(cat.items[idx])
-            end
+    exports['qb-menu']:openMenu(menu, function(selected)
+        if not selected then return end
+        if selected.params and selected.params.stop then
+            StopCurrent()
+            return
+        end
+        if selected.params and selected.params.index then
+            PlayAnimation(Config.Animations[selected.params.index])
         end
     end)
 end
 
 RegisterCommand('anim', function()
-    if playing then
-        StopAnimation()
-        return
-    end
-    OpenCategoryMenu()
+    OpenMenu()
 end, false)
 
 RegisterKeyMapping('anim', 'Animasiya menyusu', 'keyboard', 'U')
+
+CreateThread(function()
+    while true do
+        Wait(0)
+        if IsControlJustPressed(0, Config.Key) then
+            OpenMenu()
+        end
+    end
+end)

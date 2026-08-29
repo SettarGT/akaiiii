@@ -1,0 +1,22 @@
+{
+    "language": "az",
+    "translators": [
+        {
+            "name": "196 RP",
+            "emails": [],
+            "github": "https://github.com/SettarGT/akaiiii"
+        }
+    ],
+    "translations": {
+        "keyboard": "Klaviatura",
+        "controller": "Kontroller",
+        "keybind_key_up": "Menyuda yuxarı",
+        "keybind_key_down": "Menyuda aşağı",
+        "keybind_key_left": "Menyuda sol",
+        "keybind_key_right": "Menyuda sağ",
+        "keybind_key_enter": "Menyudakı elementi təsdiqlə",
+        "keybind_key_close": "Menyunu bağla",
+        "keybind_key_close_all": "Bütün menyuları bağla (valideynlər daxil)",
+        "open_menu": "Bu düymə ilə '%s' menyusunu aç"
+    }
+}

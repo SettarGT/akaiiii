@@ -38,16 +38,20 @@ PATTERN = re.compile(r"\b(" + "|".join(FORBIDDEN) + r")\s*\(")
 CLIENT_OS_PATTERN = re.compile(r"\bos\.(date|time)\s*\(")
 
 
+# Yoxlama yalnız öz 196rp resurslarımıza tətbiq olunur.
+# QBCore server skriptləri (qb-core, qb-adminmenu, qb-mechanicjob və s.)
+# FiveM server sandbox-da işləyən entity native-lərindən qanuni istifadə edir.
+SERVER_ONLY = ROOT / "resources/[196rp]"
+
+
 def server_files():
-    for base in ROOT.glob("resources/*/server"), ROOT.glob("resources/*/*/server"):
-        for d in base:
-            if d.is_dir():
-                yield from d.rglob("*.lua")
+    if SERVER_ONLY.is_dir():
+        yield from (SERVER_ONLY / "server").rglob("*.lua")
+        yield from SERVER_ONLY.glob("server.lua") if False else []
 
 
 def client_files():
-    for base in ROOT.glob("resources/*/client"), ROOT.glob("resources/*/*/client"), \
-                    ROOT.glob("resources/*/shared"), ROOT.glob("resources/*/*/shared"):
+    for base in ROOT.glob("resources/[196rp]/client"), ROOT.glob("resources/[196rp]/*/client"):
         for d in base:
             if d.is_dir():
                 yield from d.rglob("*.lua")

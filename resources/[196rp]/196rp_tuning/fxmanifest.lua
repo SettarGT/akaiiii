@@ -1,14 +1,14 @@
 fx_version 'cerulean'
 game 'gta5'
+lua54 'yes'
 
-name '196rp_tuning'
-description '196 RP - Tuninq emalatxanası (mühərrik, əyləc, ötürücü, asqı, zireh, turbo, ksenon, rəng)'
 author '196 RP'
+description '196 RP - Tuninq emalatxanası (mühərrik, əyləc, turbo, ksenon, rəng)'
 version '1.0.0'
 
 shared_scripts {
-    '@es_extended/imports.lua',
     'config.lua',
+    '@qb-core/shared/locale.lua',
 }
 
 client_scripts {
@@ -20,7 +20,7 @@ server_scripts {
 }
 
 dependencies {
-    'es_extended',
-    'esx_context',
-    'esx_textui',
+    'qb-core',
+    'qb-menu',
+    'qb-target',
 }

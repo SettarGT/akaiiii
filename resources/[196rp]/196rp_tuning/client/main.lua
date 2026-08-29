@@ -1,165 +1,173 @@
--- 196 RP | Tuninq — client tərəfi
--- Emalatxanaya yaxın + maşında sürücü yerində: [E] ilə menyu açılır.
--- Bütün vizual native-lər client-dədir (server yalnız ödənişi yoxlayır).
-
-local uiShown = false
-
--- ==================== BLİPLƏR ====================
-
-CreateThread(function()
-    for _, shop in ipairs(Config.Shops) do
-        local blip = AddBlipForCoord(shop.coords.x, shop.coords.y, shop.coords.z)
-        SetBlipSprite(blip, Config.BlipSprite)
-        SetBlipColour(blip, Config.BlipColor)
-        SetBlipScale(blip, 0.8)
-        BeginTextCommandSetBlipName('STRING')
-        AddTextComponentString(shop.name)
-        EndTextCommandSetBlipName(blip)
-    end
-end)
-
--- ==================== TƏTBİQ ====================
+local QBCore = exports['qb-core']:GetCoreObject()
 
 local function ApplyMod(veh, slot, level)
     SetVehicleModKit(veh, 0)
     SetVehicleMod(veh, slot, level - 1, false)
 end
 
-local function ApplyStock(veh)
-    SetVehicleModKit(veh, 0)
-    for _, cat in ipairs(Config.Categories) do
-        RemoveVehicleMod(veh, cat.slot)
-    end
-    ToggleVehicleMod(veh, 18, false) -- turbo
-    ToggleVehicleMod(veh, 22, false) -- ksenon
+local function SetVehicleColor(veh, c1, c2)
+    SetVehicleColours(veh, c1, c2)
 end
 
-local function Buy(price, label, applyFn)
-    ESX.TriggerServerCallback('196rp_tuning:pay', function(ok)
-        if ok and applyFn then
+local function ResetVehicle(veh)
+    SetVehicleModKit(veh, 0)
+    for _, slot in ipairs({ 11, 12, 13, 15, 16 }) do
+        RemoveVehicleMod(veh, slot)
+    end
+    ToggleVehicleMod(veh, 18, false)
+    ToggleVehicleMod(veh, 22, false)
+end
+
+local function Buy(label, price, applyFn)
+    QBCore.Functions.TriggerCallback('196rp_tuning:pay', function(ok)
+        if ok then
             applyFn()
+            QBCore.Functions.Notify(Config.Text.paid:gsub('%%{price}', tostring(price)), 'success')
+        else
+            QBCore.Functions.Notify(Config.Text.not_enough, 'error')
         end
     end, price, label)
 end
 
--- ==================== MENYULAR ====================
-
 local function OpenColorMenu(veh)
     local menu = {
-        { icon = 'fas fa-palette', title = 'Rəng seçin', unselectable = true },
-        { icon = 'fas fa-angle-left', title = 'Geri', name = 'back' },
+        { header = Config.Text.color_menu, isMenuHeader = true, icon = 'fas fa-palette' },
+        { header = Config.Text.close, icon = 'fas fa-arrow-left', params = { back = true } },
     }
-    for i, col in ipairs(Config.Colors) do
-        menu[#menu + 1] = { icon = 'fas fa-circle', title = col.label, name = tostring(i) }
+    for i, color in ipairs(Config.Colors) do
+        menu[#menu + 1] = {
+            header = color.label,
+            icon = 'fas fa-circle',
+            params = { color = i },
+        }
     end
-
-    exports['esx_context']:Open('right', menu, function(selected)
-        if selected.name == 'back' then
+    exports['qb-menu']:openMenu(menu, function(selected)
+        if not selected then return end
+        if selected.params and selected.params.back then
             OpenTuningMenu(veh)
             return
         end
-        local col = Config.Colors[tonumber(selected.name) or 0]
-        if col then
-            SetVehicleModKit(veh, 0)
-            SetVehicleColours(veh, col.c1, col.c2)
-            ESX.ShowNotification(('~g~Rəng dəyişdirildi:~s~ %s'):format(col.label), 'success')
+        local color = Config.Colors[selected.params.color]
+        if color then
+            Buy(color.label, 300, function()
+                SetVehicleColor(veh, color.color1, color.color2)
+            end)
         end
     end)
 end
 
-local function OpenCatMenu(veh, catIndex)
-    local cat = Config.Categories[catIndex]
+local function OpenCatMenu(cat, veh)
     local menu = {
-        { icon = 'fas fa-cog', title = cat.label, unselectable = true },
-        { icon = 'fas fa-angle-left', title = 'Geri', name = 'back' },
+        { header = cat.label, isMenuHeader = true, icon = 'fas fa-cog' },
+        { header = Config.Text.close, icon = 'fas fa-arrow-left', params = { back = true } },
     }
-    for i = 1, cat.maxLevel do
+    for level, lvl in ipairs(cat.levels) do
         menu[#menu + 1] = {
-            icon = 'fas fa-angle-right',
-            title = ('%s — %s$'):format(cat.levels[i], cat.prices[i]),
-            name = tostring(i),
+            header = ('Səviyyə %d — $%d'):format(level, lvl.price),
+            icon = 'fas fa-gauge',
+            params = { level = level },
         }
     end
-
-    exports['esx_context']:Open('right', menu, function(selected)
-        if selected.name == 'back' then
+    exports['qb-menu']:openMenu(menu, function(selected)
+        if not selected then return end
+        if selected.params and selected.params.back then
             OpenTuningMenu(veh)
             return
         end
-        local level = tonumber(selected.name)
-        if not level then
-            return
+        local level = selected.params.level
+        if level then
+            Buy(cat.label .. ' ' .. level, cat.levels[level].price, function()
+                ApplyMod(veh, cat.slot, level)
+            end)
         end
-        Buy(cat.prices[level], cat.label .. ' ' .. cat.levels[level], function()
-            ApplyMod(veh, cat.slot, level)
-        end)
     end)
 end
 
 function OpenTuningMenu(veh)
     local menu = {
-        { icon = 'fas fa-wrench', title = 'Tuninq emalatxanası', unselectable = true },
+        { header = Config.Text.header, isMenuHeader = true, icon = 'fas fa-wrench' },
     }
-
     for i, cat in ipairs(Config.Categories) do
-        menu[#menu + 1] = { icon = 'fas fa-angle-right', title = cat.label, name = 'cat_' .. i }
+        menu[#menu + 1] = {
+            header = cat.label,
+            icon = 'fas fa-arrow-right',
+            params = { cat = i },
+        }
     end
-
-    menu[#menu + 1] = { icon = 'fas fa-bolt', title = ('Turbo — %s$'):format(Config.TurboPrice), name = 'turbo' }
-    menu[#menu + 1] = { icon = 'fas fa-lightbulb', title = ('Ksenon faralar — %s$'):format(Config.XenonPrice), name = 'xenon' }
-    menu[#menu + 1] = { icon = 'fas fa-palette', title = 'Rəng', name = 'colors' }
-    menu[#menu + 1] = { icon = 'fas fa-undo', title = 'Fabrik vəziyyəti (pulsuz)', name = 'stock' }
-
-    exports['esx_context']:Open('right', menu, function(selected)
-        if selected.name and selected.name:sub(1, 4) == 'cat_' then
-            OpenCatMenu(veh, tonumber(selected.name:sub(5)) or 1)
-        elseif selected.name == 'turbo' then
-            Buy(Config.TurboPrice, 'Turbo', function()
-                SetVehicleModKit(veh, 0)
+    menu[#menu + 1] = {
+        header = Config.Text.turbo .. ' — $' .. Config.TurboPrice,
+        icon = 'fas fa-bolt',
+        params = { turbo = true },
+    }
+    menu[#menu + 1] = {
+        header = Config.Text.xenon .. ' — $' .. Config.XenonPrice,
+        icon = 'fas fa-lightbulb',
+        params = { xenon = true },
+    }
+    menu[#menu + 1] = {
+        header = Config.Text.color_menu,
+        icon = 'fas fa-palette',
+        params = { colors = true },
+    }
+    menu[#menu + 1] = {
+        header = Config.Text.stock,
+        icon = 'fas fa-undo',
+        params = { stock = true },
+    }
+    exports['qb-menu']:openMenu(menu, function(selected)
+        if not selected or not selected.params then return end
+        if selected.params.cat then
+            OpenCatMenu(Config.Categories[selected.params.cat], veh)
+        elseif selected.params.turbo then
+            Buy(Config.Text.turbo, Config.TurboPrice, function()
                 ToggleVehicleMod(veh, 18, true)
             end)
-        elseif selected.name == 'xenon' then
-            Buy(Config.XenonPrice, 'Ksenon faralar', function()
-                SetVehicleModKit(veh, 0)
+        elseif selected.params.xenon then
+            Buy(Config.Text.xenon, Config.XenonPrice, function()
                 ToggleVehicleMod(veh, 22, true)
             end)
-        elseif selected.name == 'colors' then
+        elseif selected.params.colors then
             OpenColorMenu(veh)
-        elseif selected.name == 'stock' then
-            ApplyStock(veh)
-            ESX.ShowNotification('~g~Maşın fabrik vəziyyətinə qaytarıldı.~s~', 'success')
+        elseif selected.params.stock then
+            ResetVehicle(veh)
+            QBCore.Functions.Notify(Config.Text.stock_done, 'success')
         end
     end)
 end
 
--- ==================== YAXINLIQ + [E] ====================
-
 CreateThread(function()
-    while true do
-        Wait(300)
-        local ped = PlayerPedId()
-        local coords = GetEntityCoords(ped)
-        local veh = GetVehiclePedIsIn(ped, false)
+    for i, shop in ipairs(Config.Shops) do
+        local blip = AddBlipForCoord(shop.coords.x, shop.coords.y, shop.coords.z)
+        SetBlipSprite(blip, 72)
+        SetBlipColour(blip, 5)
+        SetBlipScale(blip, 0.8)
+        BeginTextCommandSetBlipName('STRING')
+        AddTextComponentString(shop.name)
+        EndTextCommandSetBlipName(blip)
 
-        local near = nil
-        for i = 1, #Config.Shops do
-            if #(coords - Config.Shops[i].coords) < Config.InteractDist then
-                near = Config.Shops[i]
-                break
-            end
-        end
-
-        if near and veh ~= 0 and GetPedInVehicleSeat(veh, -1) == ped then
-            if not uiShown then
-                uiShown = true
-                exports['esx_textui']:TextUI(('[E] Tuninq — %s'):format(near.name), 'info')
-            end
-            if IsControlJustPressed(0, 38) then
-                OpenTuningMenu(veh)
-            end
-        elseif uiShown then
-            uiShown = false
-            exports['esx_textui']:HideUI()
-        end
+        exports['qb-target']:AddBoxZone('196tune_' .. i, shop.coords, 3.0, 3.0, {
+            name = '196tune_' .. i,
+            heading = shop.heading,
+            debugPoly = false,
+            minZ = shop.coords.z - 1,
+            maxZ = shop.coords.z + 3,
+        }, {
+            options = {
+                {
+                    label = '[E] ' .. shop.name,
+                    icon = 'fa-solid fa-wrench',
+                    action = function()
+                        local veh = GetVehiclePedIsIn(PlayerPedId(), false)
+                        if veh == 0 then return end
+                        if GetPedInVehicleSeat(veh, -1) ~= PlayerPedId() then
+                            QBCore.Functions.Notify(Config.Text.need_driver, 'error')
+                            return
+                        end
+                        OpenTuningMenu(veh)
+                    end,
+                },
+            },
+            distance = 2.5,
+        })
     end
 end)
