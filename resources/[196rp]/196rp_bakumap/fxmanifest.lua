@@ -8,11 +8,13 @@ version '1.0.0'
 
 shared_scripts {
     'config.lua',
+    'objects.lua',
 }
 
 client_scripts {
     '@es_extended/imports.lua',
     'client/main.lua',
+    'client/objects.lua',
 }
 
 server_scripts {

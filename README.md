@@ -212,6 +212,9 @@ Hamısı qaydasındadırsa, FiveM-də serveri axtarın: **"196 RP"** → daxil o
 | `/metro` | hamı | Ən yaxın metro stansiyasını və xətti göstərir |
 | `/xerite` | hamı | Bakı stansiyaları və rayonları siyahısı |
 | `/harada` | hamı | Hazırkı Bakı rayonunu göstərir |
+| `/xerite3d` | hamı | Bakı 3D obyekt qatını yandırır / söndürür (FPS nəzarəti) |
+| `/obyekt <model adı>` | hamı | Model adını oyunda yoxlayır və qarşında yaradır |
+| `/obyektsil`, `/obyektsay` | hamı | Test obyektini silir / aktiv obyekt sayını göstərir |
 
 ---
 
@@ -274,7 +277,7 @@ akaiiii/
 | `196rp_home` | Ev imkanları: açarlar, seyf, divar rəngi, icarə, telefon, balkon, qonaqlar, yataq |
 | `196rp_policeadv` | Qərargah, polis radarı, yol polisi, K9, SWAT, staj əlavəsi, helikopter, fövqəladə elan |
 | `196rp_social` | Hədiyyə, evlilik, dostluq, missiya sistemi |
-| `196rp_bakumap` | Bakı xəritəsi qatı: 12 metro stansiyası, 3 xətt, rayon təyinatı |
+| `196rp_bakumap` | Bakı xəritəsi qatı: 12 metro stansiyası, 3 xətt, rayon təyinatı, 3D obyekt qatı (155 obyekt, hamısı rəsmi GTA V prop siyahısından) |
 | `196rp_phoneshop` | Telefon mağazası — 20 model (10 Aifon + 10 Samsan, parodiya adlar) |
 
 ---
