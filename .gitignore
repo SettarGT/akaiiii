@@ -1,6 +1,6 @@
 # FXServer binary (artifact) - bu qovluq GitHub-a yüklənmir,
 # install-fxserver.sh / .bat skriptləri ilə yerli olaraq endirilir
-server/
+/server/
 
 # txAdmin məlumatları
 txData/

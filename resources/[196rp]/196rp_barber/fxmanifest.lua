@@ -11,7 +11,6 @@ shared_scripts {
 
 server_scripts {
     '/server/main.lua',
-    '/server/tattoo.lua',
 }
 
 client_scripts {

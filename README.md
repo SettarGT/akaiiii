@@ -32,6 +32,14 @@
 | 🚑 **TİB (EMS) sistemi** | Növbə, ölüm/respawn, müalicə, xəstəxana avtomobili |
 | 🛡️ **Admin sistemi** | `/setjob`, `/giveitem`, `/givecar`, `/ban`, `/kick`, `/tp`, `/goto` və s. |
 | 💬 **RP əmrləri** | `/me`, `/do`, `/try`, `/ooc`, `/report` |
+| 🚌 **Nömrəli avtobuslar** | 4 marşrut (Mərkəz, Sahil, Şimal, Hava Limanı) — NPC sürücülər sürür, `/avtobus` tətbiqi hansı nömrənin hara getdiyini göstərir |
+| 🚏 **Avtovağzal + taksi** | Şəhərlərarası 6 xətt (Sandy, Paleto, Grapeseed, ...) + `/taksi` çağırışı |
+| 🚧 **Bələdiyyə işləri** | Günün saatına görə fərqli iş: səhər yol təmiri, gündüz təmizlik, axşam işıq dirəyi — hər dəfə təsadüfi yerdə |
+| 📸 **Sürət kameraları** | 13 kamera (yalnız müəyyən yollarda), 100 m qalmış xəritədə işarə + bildiriş, sürəti aşsan cərimə |
+| 🚸 **Yol nişanları** | 8 sürət həddi zonası — zonaya girəndə limit bildirilir |
+| 🐾 **Ev heyvanları** | Mağazada 7 it + pişik növləri; gəzdirmə, əmrlər, yemləmə, aclıq/sevinc sistemi (`/heyvan`) |
+| 🚔 **Dövlət formaları** | Polis (4 rütbə), TİB (3), Yanğınsöndürən (2) — **196 loqosu yalnız bu formalardadır**, mülki geyimlərdə yoxdur |
+| 🏙️ **Canlı şəhər** | Piyada və avtomobil trafiki həmişə aktiv — şəhər heç vaxt boş qalmır |
 
 ---
 
@@ -41,6 +49,26 @@
 - **FXServer** — quraşdırma skripti ilə (aşağıda)
 - **MySQL / MariaDB** — verilənlər bazası (v8+)
 - **Node.js 18+** *(opsional — yalnız txAdmin idarə paneli üçün)*
+
+---
+
+## 🚔 Dövlət formaları və 196 loqosu
+
+**Qayda:** `196` loqosu və adı **yalnız dövlət orqanlarının formalarında** istifadə olunur.
+Mülki (vətəndaş) geyimlərində heç bir 196 işarəsi yoxdur — onlar adi geyim mağazalarındadır.
+
+| Orqan | Formalar | Harada |
+|---|---|---|
+| 👮 196 Polis | Patrul, Serjant, SWAT, Rəis (rütbəyə görə açılır) | Polis idarələrindəki geyim otaqları |
+| 🚑 196 TİB | Feldşer, Həkim xalatı, Reanimasiya briqadası | Xəstəxanalardakı geyim otaqları |
+| 🚒 196 Yanğınsöndürən | Döyüş forması, Briqadir | Yanğın stansiyasında |
+
+Forma geyinəndə ekranda **196 dövlət nişanı** görünür (yalnız növbədə/formada olanlara).
+Mülki geyimə qayıtmaq üçün həmin şkafda "Mülki geyimə keç" seçin.
+
+> Forma indekslərini (`component` / `prop` dəyərlərini) öz serverinizdə sınayıb
+> `resources/[196rp]/196rp_dutyuniform/config.lua` faylında dəyişə bilərsiniz —
+> kod dəyişmədən bütün geyimlər oradan idarə olunur.
 
 ---
 
@@ -147,6 +175,11 @@ Hamısı qaydasındadırsa, FiveM-də serveri axtarın: **"196 RP"** → daxil o
 | `/tp x y z` | admin | Koordinatlara yollanır |
 | `/goto [id]` | admin | Oyunçunun yanına gedir |
 | `/bring [id]` | admin | Oyunçunu yanına çağırır |
+| `/avtobus` | hamı | Avtobus tətbiqi — hansı nömrə hara gedir |
+| `/taksi` | hamı | Taksi çağırır (növbədəki sürücülərə xəbər gedir) |
+| `/heyvan` | hamı | Ev heyvanları menyusu (çağır, gəzdir, yemlə, sat) |
+| `/coords` | admin | Hazırkı koordinatları göstərir |
+| `/heal [id]`, `/revive [id]` | admin | Oyunçunu müalicə edir / canlandırır |
 
 ---
 
@@ -195,6 +228,25 @@ akaiiii/
 | `196rp_ems` | TİB növbəsi, müalicə, respawn |
 | `196rp_rpcommands` | `/me /do /try /ooc /report` |
 | `196rp_admin` | Admin əmrləri + ban sistemi |
+
+---
+
+## 🧩 Server təbəqəsi (vacib)
+
+Bu repozitoriyada bütün resursların **server tərəfi kodu** (`server/main.lua`) mövcuddur və commit olunur.
+
+> ⚠️ **Texniki qeyd:** `.gitignore` faylında əvvəllər `server/` qaydası var idi. Bu qayda təkcə kök
+> qovluqdakı FXServer ikilik faylını deyil, **bütün resursların `server/` qovluqlarını** da Git-dən
+> gizlədirdi — yəni server kodu heç vaxt commit olunmurdu. Qayda `/server/` (yalnız kök qovluq)
+> kimi düzəldilib. Əgər köhnə klonunuz varsa, server qovluqlarını yenidən çəkin (`git pull`).
+
+Eyni səbəbdən aşağıdakı üçüncü tərəf komponentləri repoya tam şəkildə əlavə olunub:
+
+| Komponent | Vəziyyət |
+|---|---|
+| `es_extended` (server qovluğu) | ✅ v1.14.1 rəsmi mənbəyindən bərpa olunub |
+| `esx_identity`, `esx_skin`, `esx_multicharacter`, `cron` (server qovluqları) | ✅ bərpa olunub |
+| `oxmysql` (`lib/`, `dist/build.js`, `web/build/`) | ✅ v2.13.0 — mənbədən qurulub |
 
 ---
 

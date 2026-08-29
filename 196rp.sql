@@ -1154,6 +1154,7 @@ CREATE TABLE IF NOT EXISTS `196rp_houses` (
   `house_id` varchar(50) NOT NULL,
   `owner` varchar(60) DEFAULT NULL,
   `price` int(11) NOT NULL DEFAULT 0,
+  `locked` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `house_id` (`house_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -1229,3 +1230,68 @@ CREATE TABLE IF NOT EXISTS `196rp_furniture` (
   PRIMARY KEY (`id`),
   KEY `house_id` (`house_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ====================================================================
+-- 196 RP ƏLAVƏ PAKET: SERVER TƏRƏFİ SİSTEMLƏR
+-- (qaraj parametrləri, döymələr, ev heyvanları, çatışmayan əşyalar)
+-- Bu bölmə MySQL 8 və MariaDB-də eyni cür işləyir.
+-- ====================================================================
+
+-- ---------- Çatışmayan əşyalar ----------
+INSERT IGNORE INTO `items` (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES
+('baliq', 'Balıq', 1, 0, 1),
+('corek', 'Çörək', 1, 0, 1),
+('su', 'Su', 1, 0, 1),
+('filiz', 'Filiz', 2, 0, 1),
+('odun', 'Odun', 2, 0, 1),
+('bandaj', 'Bandaj', 1, 0, 1),
+('temir_desti', 'Təmir dəsti', 3, 0, 1),
+('tibbi_dest', 'Tibbi dəst', 2, 0, 1),
+('it_yemi', 'İt yemi', 1, 0, 1),
+('pisik_yemi', 'Pişik yemi', 1, 0, 1);
+
+-- ---------- Qaraj: saxlanılan maşın parametrləri ----------
+CREATE TABLE IF NOT EXISTS `196rp_vehicle_props` (
+  `plate` varchar(12) NOT NULL,
+  `props` longtext DEFAULT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`plate`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------- Bərbər: döymələr ----------
+CREATE TABLE IF NOT EXISTS `196rp_tattoos` (
+  `identifier` varchar(60) NOT NULL,
+  `tattoos` longtext DEFAULT NULL,
+  PRIMARY KEY (`identifier`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------- Ev heyvanları ----------
+CREATE TABLE IF NOT EXISTS `196rp_pets` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `owner` varchar(60) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `model` varchar(40) NOT NULL,
+  `species` varchar(10) NOT NULL DEFAULT 'dog',
+  `hunger` tinyint(4) NOT NULL DEFAULT 100,
+  `happy` tinyint(4) NOT NULL DEFAULT 100,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `owner` (`owner`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------- Evlərdə qıfıl sütunu (köhnə quraşdırmalar üçün təhlükəsiz) ----------
+SET @col := (SELECT COUNT(*) FROM information_schema.COLUMNS
+             WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '196rp_houses' AND COLUMN_NAME = 'locked');
+SET @q := IF(@col = 0,
+  'ALTER TABLE `196rp_houses` ADD COLUMN `locked` tinyint(1) NOT NULL DEFAULT 0',
+  'DO 0');
+PREPARE st FROM @q; EXECUTE st; DEALLOCATE PREPARE st;
+
+-- ---------- user_licenses: id avtomatik artan olsun ----------
+SET @auto := (SELECT COUNT(*) FROM information_schema.COLUMNS
+              WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'user_licenses'
+                AND COLUMN_NAME = 'id' AND EXTRA LIKE '%auto_increment%');
+SET @q2 := IF(@auto = 0,
+  'ALTER TABLE `user_licenses` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT',
+  'DO 0');
+PREPARE st2 FROM @q2; EXECUTE st2; DEALLOCATE PREPARE st2;

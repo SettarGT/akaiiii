@@ -29,12 +29,17 @@
 
 ## 💼 İŞLƏR VƏ PƏŞƏLƏR (16–40)
 
-16. 🟡⭐⭐ **Pizza çatdırma işi** — sifariş götür, çatdır, məsləhət al
-17. 🟡⭐⭐ **Kuryer işi** — paketləri ünvana çatdır (✅ kuryer əsası var, genişləndir)
-18. 🟡⭐⭐ **Avtobus marşrutu** — müəyyən marşrutla sərnişin daşımaq
-19. 🟡⭐⭐ **Taksi çağırışı** — oyunçu telefonla taksi çağırır, taksi sürücüsü qəbul edir (✅ taksi işi var, çağırış yoxdur)
+16. 🟡⭐⭐ **Pizza çatdırma işi** — sifariş götür, çatdır, məsləhət al  
+    ✅ **QİSMƏN** — 196rp_traffic: şəhər boş qalmır, piyada və avtomobil trafiki aktiv
+17. 🟡⭐⭐ **Kuryer işi** — paketləri ünvana çatdır (✅ kuryer əsası var, genişləndir)  
+    ✅ **QİSMƏN** — 196rp_traffic: şəhər canlılığı; kuryer işi genişləndirilməyi qalır
+18. 🟡⭐⭐ **Avtobus marşrutu** — müəyyən marşrutla sərnişin daşımaq  
+    ✅ **HAZIRDIR** — 196rp_bus: 4 nömrəli marşrut, NPC sürücülü avtobuslar, `/avtobus` tətbiqi
+19. 🟡⭐⭐ **Taksi çağırışı** — oyunçu telefonla taksi çağırır, taksi sürücüsü qəbul edir (✅ taksi işi var, çağırış yoxdur)  
+    ✅ **HAZIRDIR** — 196rp_bus: `/taksi` çağırışı, sürücüyə xəritədə bildiriş, gediş haqqı
 20. 🟡⭐⭐ **Yanacaqdoldurma məntəqəsi işçisi** — maşınları doldurmaq, gecə növbəsi (✅ yanacaq sistemi var)
-21. 🔴⭐⭐⭐ **Bələdiyyə işləri paketi** — yol təmiri, küçə təmizliyi, işıq dirəklərinin dəyişdirilməsi
+21. 🔴⭐⭐⭐ **Bələdiyyə işləri paketi** — yol təmiri, küçə təmizliyi, işıq dirəklərinin dəyişdirilməsi  
+    ✅ **HAZIRDIR** — 196rp_municipal: günün saatına görə yol təmiri / təmizlik / işıq dirəyi, təsadüfi yerlərdə
 22. 🟡⭐⭐ **Jurnalist işi** — hadisə yerinə get, şəkil çək, qəzetə sat (✅ jurnalist işi var)
 23. 🟢⭐ **Balerina / rəqqasə işi** — gecə klubunda rəqs etmək
 24. 🟡⭐⭐ **Yük maşını logistikası** — yük götür, şəhərlərarası daşı, yanacaq xərci
@@ -59,17 +64,22 @@
 
 ## 🚗 NƏQLİYYAT (41–55)
 
-41. 🟡⭐⭐ **Avtomobil yuma** — avtoyuma məntəqəsi, çirkli maşınlar (✅ qarajda yuma var, genişləndir)
-42. 🔴⭐⭐⭐ **Benzin qiymət dəyişkənliyi** — gün ərzində qiymətlər dəyişir
-43. 🟡⭐⭐ **Sürət kameraları** — sürəti aşsan cərimə şəkli + bildiriş
-44. 🟢⭐ **Yol nişanları** — sürət həddi göstərən nişanlar (yol hərəkəti qaydaları)
+41. 🟡⭐⭐ **Avtomobil yuma** — avtoyuma məntəqəsi, çirkli maşınlar (✅ qarajda yuma var, genişləndir)  
+    ✅ **HAZIRDIR** — 196rp_garage server: 6 servis məntəqəsində təmir və yuma
+42. 🔴⭐⭐⭐ **Benzin qiymət dəyişkənliyi** — gün ərzində qiymətlər dəyişir  
+    ✅ **HAZIRDIR** — 196rp_fuel: hər gün qiymət ±30% dəyişir
+43. 🟡⭐⭐ **Sürət kameraları** — sürəti aşsan cərimə şəkli + bildiriş  
+    ✅ **HAZIRDIR** — 196rp_speedcam: 13 kamera, 100 m qalmış xəritədə işarə + bildiriş + cərimə
+44. 🟢⭐ **Yol nişanları** — sürət həddi göstərən nişanlar (yol hərəkəti qaydaları)  
+    ✅ **HAZIRDIR** — 196rp_speedcam: 8 sürət həddi zonası, nişan bildirişi
 45. 🟡⭐⭐ **Maşın açarları** — maşını açarla kilidlə, oğurluğa qarşı
 46. 🟢⭐ **SİQNAL vermə** — dönmə işıqlarını açmaq/söndürmək
 47. 🟡⭐⭐ **Avtomobil icarəsi** — gündəlik/aylıq icarə, geri qaytarma
 48. 🟢⭐ **Velosiped icarəsi** — şəhərdə velosiped stansiyaları
 49. 🟡⭐⭐ **Elektrik skuterlər** — telefonla skuter icarəyə götür
 50. 🟡⭐⭐ **Motodeliver** — motosikletlə yemək çatdırma
-51. 🟢⭐ **Avtovağzal** — şəhərlərarası avtobus xətləri (✅ avtovağzal məkanı var)
+51. 🟢⭐ **Avtovağzal** — şəhərlərarası avtobus xətləri (✅ avtovağzal məkanı var)  
+    ✅ **HAZIRDIR** — 196rp_bus: avtovağzaldan 6 şəhərlərarası xətt
 52. 🟡⭐⭐ **Qayıq icarəsi** — göl/limanda qayıq gəzintisi
 53. 🔴⭐⭐⭐ **Helikopter taksi** — hava limanından şəhərə helikopter
 54. 🟢⭐ **Pilot vəsiqəsi** — təyyarə uçurmaq üçün xüsusi imtahan
@@ -105,7 +115,8 @@
 74. 🟢⭐ **Divar rəngi dəyişmə** — interyerin rəngini dəyiş
 75. 🟡⭐⭐ **İcarəyə vermək** — evini başqa oyunçuya icarəyə ver
 76. 🟢⭐ **Ev telefonu** — evdə telefon, zənglər
-77. 🟡⭐⭐ **Ev heyvanı** — pişik/it al, bəslə
+77. 🟡⭐⭐ **Ev heyvanı** — pişik/it al, bəslə  
+    ✅ **HAZIRDIR** — 196rp_pets: 7 it + 1 pişik növü, gəzdirmə, yemləmə, `/heyvan`
 78. 🟢⭐ **Balkon/bağça** — evin xaricində əyləncə zonası
 79. 🔴⭐⭐⭐ **Ev qonaqlığı** — ev sahibi qonaq dəvət et, qonaq girişi icazəsi
 80. 🟢⭐ **Yataq otağı effekti** — yataqda yatmaq, spawn nöqtəsi təyin etmək
@@ -123,8 +134,8 @@
 87. 🟡⭐⭐ **TİB helikopteri** — təcili yardım helikopteri
 88. 🟢⭐ **Yanğınsöndürən dərəcələri** — rütbə ilə yeni səlahiyyətlər (✅ yanğın sistemi var)
 89. 🟡⭐⭐ **Mülki müdafiə xəbərdarlığı** — fövqəladə vəziyyət elanı
-90. 🟢⭐ **Vəzifə libası** — hər iş üçün xüsusi geyim dəsti (✅ polis/TİB geyimləri var)
-
+90. 🟢⭐ **Vəzifə libası** — hər iş üçün xüsusi geyim dəsti (✅ polis/TİB geyimləri var)  
+    ✅ **HAZIRDIR** — 196rp_dutyuniform: 196 loqosu YALNIZ dövlət formalarında (polis/TİB/yanğınsöndürən)
 ---
 
 ## 🎉 ƏYLƏNCƏ, SOSİAL VƏ DİGƏR (91–100)
