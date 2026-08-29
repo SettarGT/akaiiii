@@ -200,6 +200,40 @@ akaiiii/
 
 ---
 
+## ❓ Tez-tez verilən suallar (FAQ)
+
+**FXServer fayllarına ehtiyac var? Hardan alım?**
+Bəli — server işləməsi üçün mütləq FXServer (rəsmi FiveM server faylı) lazımdır. CitizenFX-in qaydalarına görə bu fayl GitHub repozitoriyasına qoyula bilməz, ona görə **iki skript** əlavə etmişik:
+- **Windows:** `install-fxserver.bat` (iki dəfə kliklə)
+- **Linux:** `bash install-fxserver.sh`
+
+Skriptlər rəsmi `runtime.fivem.net` saytından ən son build-i endirib `server/` qovluğuna açır.
+
+**`install-fxserver.bat` işləmir — nə etməliyəm?**
+Skript indi bir neçə ehtiyat yolla işləyir (TLS 1.2 + `curl.exe` + PowerShell + `tar`/7-Zip). Yenə işləmirsə:
+
+1. **Windows 10/11 istifadə etdiyini yoxla** — köhnə Windows (7/8) dəstəklənmir.
+2. **Əl ilə endir:** brauzerdə [runtime.fivem.net](https://runtime.fivem.net/) → **Windows Server** → tövsiyə olunan build-in linkinə sağ-klik → *Linki yadda saxla* → `fx.tar.xz` endir.
+3. `server` qovluğu yarat, `fx.tar.xz`-i içinə qoy.
+4. **7-Zip qur** ([7-zip.org](https://www.7-zip.org/)), `fx.tar.xz` faylına sağ-klik → **7-Zip → Extract here** (birinci dəfə `.tar` alınır — onu da yenidən aç). Nəticədə `server\FXServer.exe` görünməlidir.
+
+**"tar is not recognized" xətası gəlir**
+Windows-un köhnə versiyasıdır. Yuxarıdakı 7-Zip üsulundan istifadə et.
+
+**"SSL/TLS secure channel" xətası gəlir**
+Skript artıq bunu həll edir (PowerShell-i TLS 1.2 ilə çağırır). Köhnə skripti yenisi ilə əvəz et (bu repodan yenidən endir).
+
+**Server açılmır, "Couldn't find the game executable" yazır**
+`server\FXServer.exe` (Windows) və ya `server/FXServer` (Linux) faylı yoxdur — 1-ci addımı tamamla.
+
+**"Invalid license key" xətası**
+`server.cfg` faylında `sv_licenseKey` dəyərini [keymaster.fivem.net](https://keymaster.fivem.net) saytından aldığın açarla dəyiş.
+
+**Oyunçular qoşula bilmir / server görünmür**
+`endpoint_add_tcp/udp "0.0.0.0:30120"` sətri server.cfg-də olmalıdır və routerdə **port 30120** (TCP+UDP) açılmalıdır. Serveri işə salarkən `sv_licenseKey` boş qalmamalıdır.
+
+---
+
 ## 📜 Lisenziya / Qeyd
 
 - Bu paket açıq mənbəli [ESX Framework (esx-legacy)](https://github.com/esx-framework/esx_legacy) və [oxmysql](https://github.com/overextended/oxmysql) üzərində qurulub.
