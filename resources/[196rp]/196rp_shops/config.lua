@@ -37,7 +37,7 @@ Config.Shops = {
     },
     {
         id = 'market_sandy',
-        name = '24/7 Market — Qara Qarayev',
+        name = '24/7 Market — Gəncə',
         coords = vector3(549.2, 2669.2, 42.2),
         blip = { sprite = 52, color = 3 },
         items = {
@@ -50,7 +50,7 @@ Config.Shops = {
     },
     {
         id = 'market_paleto',
-        name = '24/7 Market — İçərişəhər',
+        name = '24/7 Market — İmişli',
         coords = vector3(-3038.9, 585.9, 7.9),
         blip = { sprite = 52, color = 3 },
         items = {
@@ -62,7 +62,7 @@ Config.Shops = {
     },
     {
         id = 'market_ocean',
-        name = '24/7 Market — İçərişəhər',
+        name = '24/7 Market — Xırdalan',
         coords = vector3(-3241.9, 1001.2, 12.8),
         blip = { sprite = 52, color = 3 },
         items = {

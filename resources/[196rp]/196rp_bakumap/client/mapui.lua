@@ -22,6 +22,7 @@ local function BuildPayload()
             line = s.line,
             order = s.order,
             desc = s.desc,
+            city = s.city,
             x = c.x,
             y = c.y,
         }

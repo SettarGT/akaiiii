@@ -134,7 +134,25 @@
   function renderList() {
     el.stationList.innerHTML = '';
 
+    // şəhərlərə görə qruplaşdırırıq (Bakı → 12 stansiya, regionlar → 1)
+    var groups = {}, order = [];
     state.stations.forEach(function (s) {
+      var c = s.city || 'Digər';
+      if (!groups[c]) { groups[c] = []; order.push(c); }
+      groups[c].push(s);
+    });
+
+    order.forEach(function (cityName) {
+      var head = document.createElement('li');
+      head.className = 'city-head';
+      head.textContent = cityName + (groups[cityName].length > 1 ? ' · ' + groups[cityName].length : '');
+      el.stationList.appendChild(head);
+
+      groups[cityName].forEach(function (s) { appendStationRow(s); });
+    });
+  }
+
+  function appendStationRow(s) {
       var ln = byId(s.line);
       var li = document.createElement('li');
       li.className = 'st' + (state.selected === s.id ? ' active' : '');
@@ -156,15 +174,14 @@
       mt.className = 'mt';
       mt.textContent = fmt(dist(state.player.x, state.player.y, s.x, s.y));
 
-      li.appendChild(bar); li.appendChild(wrap); li.appendChild(mt);
+    li.appendChild(bar); li.appendChild(wrap); li.appendChild(mt);
 
-      li.addEventListener('click', function () {
-        state.selected = s.id;
-        renderAll();
-      });
-
-      el.stationList.appendChild(li);
+    li.addEventListener('click', function () {
+      state.selected = s.id;
+      renderAll();
     });
+
+    el.stationList.appendChild(li);
   }
 
   // ---------- SVG ----------
@@ -272,7 +289,10 @@
       '<div class="d-head">' +
         '<div class="d-chip" style="background:' + lineColour(ln) + '"></div>' +
         '<div><div class="d-name">' + s.name + '</div>' +
-        '<div class="d-line">' + (ln ? ln.name : '') + ' · stansiya ' + s.order + '/' + same.length + '</div></div>' +
+        '<div class="d-line">' +
+          (ln ? ln.name + ' · stansiya ' + s.order + '/' + same.length
+              : (s.city ? s.city + ' · regional mərkəz' : 'regional mərkəz')) +
+        '</div></div>' +
       '</div>' +
 
       '<div class="d-card"><h4>Məsafə</h4>' +
@@ -284,7 +304,8 @@
 
       '<div class="d-card"><h4>Rayon haqqında</h4><p>' + (s.desc || '—') + '</p></div>' +
 
-      '<div class="d-card"><h4>Xətt üzrə</h4><div class="d-next">' + next + '</div></div>';
+      (ln ? '<div class="d-card"><h4>Xətt üzrə</h4><div class="d-next">' + next + '</div></div>'
+          : '<div class="d-card"><h4>Şəhər haqqında</h4><p>' + (s.desc || '—') + '</p></div>');
   }
 
   // ---------- ümumi ----------

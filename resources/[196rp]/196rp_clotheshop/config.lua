@@ -20,14 +20,14 @@ Config.ClothesShops = {
     },
     {
         id = 'sandy_clothes',
-        name = 'Geyim Mağazası — Sandy Shores (Qara Qarayev)',
+        name = 'Geyim Mağazası — Sandy Shores (Gəncə)',
         coords = vector3(615.2, 2759.6, 42.1),
         blip = { sprite = 73, color = 7 },
         dressingRoom = vector3(616.8, 2761.5, 42.1)
     },
     {
         id = 'paleto_clothes',
-        name = 'Geyim Mağazası — Paleto Bay (20 Yanvar)',
+        name = 'Geyim Mağazası — Paleto Bay (Naftalan)',
         coords = vector3(-1096.5, 2708.8, 19.1),
         blip = { sprite = 73, color = 7 },
         dressingRoom = vector3(-1095.0, 2710.5, 19.1)

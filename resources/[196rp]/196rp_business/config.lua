@@ -41,7 +41,7 @@ Config.Locations = {
         blip = { sprite = 60, color = 38, scale = 0.8 }, category = 'Dövlət'
     },
     {
-        id = 'polis_paleto', name = 'Paleto Bay Polis Bölməsi (Qara Qarayev)',
+        id = 'polis_paleto', name = 'Paleto Bay Polis Bölməsi (Zaqatala)',
         desc = 'Şimal sahilinin polis bölməsi.',
         coords = vector3(-447.0, 6014.0, 31.7), color = { 66, 135, 245 }, marker = 1, size = 1.0,
         blip = { sprite = 60, color = 38, scale = 0.8 }, category = 'Dövlət'
@@ -53,7 +53,7 @@ Config.Locations = {
         blip = { sprite = 60, color = 38, scale = 0.8 }, category = 'Dövlət'
     },
     {
-        id = 'hebsxana', name = 'Bolingbroke Həbsxanası (Qara Qarayev)',
+        id = 'hebsxana', name = 'Bolingbroke Həbsxanası (Qazax)',
         desc = 'Şəhər həbsxanası. Cəza çəkənlər burada saxlanılır.',
         coords = vector3(1845.0, 2585.0, 45.7), color = { 160, 160, 160 }, marker = 1, size = 1.2,
         blip = { sprite = 237, color = 0, scale = 0.9 }, category = 'Dövlət'
@@ -79,7 +79,7 @@ Config.Locations = {
         blip = { sprite = 61, color = 1, scale = 0.8 }, category = 'Səhiyyə'
     },
     {
-        id = 'klinika_paleto', name = 'Paleto Bay Klinikası (Qara Qarayev)',
+        id = 'klinika_paleto', name = 'Paleto Bay Klinikası (Zaqatala)',
         desc = 'Şimal sahilinin tibb məntəqəsi.',
         coords = vector3(-247.0, 6330.0, 32.4), color = { 240, 80, 80 }, marker = 1, size = 1.0,
         blip = { sprite = 61, color = 1, scale = 0.8 }, category = 'Səhiyyə'
@@ -129,13 +129,13 @@ Config.Locations = {
         blip = { sprite = 108, color = 49, scale = 0.8 }, category = 'Maliyyə'
     },
     {
-        id = 'bank_fleeca_5', name = 'Fleeca Bank — Paleto (İçərişəhər)',
+        id = 'bank_fleeca_5', name = 'Fleeca Bank — Paleto (İmişli)',
         desc = 'Fleeca Bank filialı.',
         coords = vector3(-2961.2, 482.6, 15.7), color = { 120, 200, 250 }, marker = 1, size = 1.0,
         blip = { sprite = 108, color = 49, scale = 0.8 }, category = 'Maliyyə'
     },
     {
-        id = 'bank_sandy', name = 'Fleeca Bank — Sandy Shores (Qara Qarayev)',
+        id = 'bank_sandy', name = 'Fleeca Bank — Sandy Shores (Göygöl)',
         desc = 'Fleeca Bank filialı.',
         coords = vector3(1175.1, 2706.4, 38.1), color = { 120, 200, 250 }, marker = 1, size = 1.0,
         blip = { sprite = 108, color = 49, scale = 0.8 }, category = 'Maliyyə'
@@ -173,7 +173,7 @@ Config.Locations = {
         blip = { sprite = 64, color = 5, scale = 0.8 }, category = 'Nəqliyyat'
     },
     {
-        id = 'liman_elysian', name = 'Elysian Limanı (Ağ şəhər)',
+        id = 'liman_elysian', name = 'Elysian Limanı (Astara)',
         desc = 'Yük gəmilərinin çatdığı ən böyük liman. Liman işləri burada aparılır.',
         coords = vector3(1050.0, -3100.0, 5.9), color = { 255, 200, 80 }, marker = 1, size = 1.3,
         blip = { sprite = 455, color = 66, scale = 0.9 }, category = 'Nəqliyyat'
@@ -205,7 +205,7 @@ Config.Locations = {
         blip = { sprite = 52, color = 3, scale = 0.8 }, category = 'Ticarət'
     },
     {
-        id = 'market_ocaen', name = '24/7 Market — Great Ocean (İçərişəhər)',
+        id = 'market_ocaen', name = '24/7 Market — Great Ocean (Xırdalan)',
         desc = 'Gündəlik ərzaq və məişət malları mağazası.',
         coords = vector3(-3241.9, 1001.2, 12.8), color = { 120, 220, 160 }, marker = 1, size = 1.0,
         blip = { sprite = 52, color = 3, scale = 0.8 }, category = 'Ticarət'
@@ -217,13 +217,13 @@ Config.Locations = {
         blip = { sprite = 52, color = 3, scale = 0.8 }, category = 'Ticarət'
     },
     {
-        id = 'market_sandy', name = '24/7 Market — Sandy Shores (Qara Qarayev)',
+        id = 'market_sandy', name = '24/7 Market — Sandy Shores (Gəncə)',
         desc = 'Gündəlik ərzaq və məişət malları mağazası.',
         coords = vector3(549.2, 2669.2, 42.2), color = { 120, 220, 160 }, marker = 1, size = 1.0,
         blip = { sprite = 52, color = 3, scale = 0.8 }, category = 'Ticarət'
     },
     {
-        id = 'market_paleto', name = '24/7 Market — Paleto Bay (İçərişəhər)',
+        id = 'market_paleto', name = '24/7 Market — Paleto Bay (İmişli)',
         desc = 'Gündəlik ərzaq və məişət malları mağazası.',
         coords = vector3(-3038.9, 585.9, 7.9), color = { 120, 220, 160 }, marker = 1, size = 1.0,
         blip = { sprite = 52, color = 3, scale = 0.8 }, category = 'Ticarət'
@@ -265,7 +265,7 @@ Config.Locations = {
         blip = { sprite = 522, color = 2, scale = 0.7 }, category = 'Ticarət'
     },
     {
-        id = 'heyvan_mağaza', name = 'Heyvan Mağazası (Qara Qarayev)',
+        id = 'heyvan_mağaza', name = 'Heyvan Mağazası (Gəncə)',
         desc = 'Ev heyvanları və onlar üçün ləvazimatlar.',
         coords = vector3(560.0, 2700.0, 42.2), color = { 200, 160, 240 }, marker = 1, size = 0.8,
         blip = { sprite = 406, color = 7, scale = 0.7 }, category = 'Ticarət'
@@ -433,25 +433,25 @@ Config.Locations = {
         blip = { sprite = 68, color = 38, scale = 0.8 }, category = 'İş'
     },
     {
-        id = 'mədən', name = 'Mədən Sahəsi (Gənclik)',
+        id = 'mədən', name = 'Mədən Sahəsi (Gədəbəy)',
         desc = 'Fil və qiymətli daşların çıxarıldığı mədən.',
         coords = vector3(-590.0, 2090.0, 130.0), color = { 200, 180, 150 }, marker = 1, size = 1.0,
         blip = { sprite = 478, color = 0, scale = 0.8 }, category = 'İş'
     },
     {
-        id = 'meşə', name = 'Meşə Təsərrüfatı (Qara Qarayev)',
+        id = 'meşə', name = 'Meşə Təsərrüfatı (Şəki)',
         desc = 'Ağac kəsmə və odun hazırlama işi.',
         coords = vector3(-530.0, 5380.0, 70.0), color = { 150, 190, 120 }, marker = 1, size = 1.0,
         blip = { sprite = 476, color = 3, scale = 0.8 }, category = 'İş'
     },
     {
-        id = 'ferma', name = 'Grapeseed Ferması (Qara Qarayev)',
+        id = 'ferma', name = 'Grapeseed Ferması (Ağdaş)',
         desc = 'Əkinçilik və heyvandarlıq — kənd həyatının ürəyi.',
         coords = vector3(2450.0, 4970.0, 46.0), color = { 220, 200, 120 }, marker = 1, size = 1.0,
         blip = { sprite = 476, color = 66, scale = 0.8 }, category = 'İş'
     },
     {
-        id = 'üzüm_bağı', name = 'Üzüm Bağı (20 Yanvar)',
+        id = 'üzüm_bağı', name = 'Üzüm Bağı (Bərdə)',
         desc = 'Üzüm yığımı və şərab istehsalı.',
         coords = vector3(-1870.0, 2945.0, 42.0), color = { 200, 120, 160 }, marker = 1, size = 1.0,
         blip = { sprite = 478, color = 2, scale = 0.8 }, category = 'İş'
@@ -469,7 +469,7 @@ Config.Locations = {
         blip = { sprite = 468, color = 66, scale = 0.8 }, category = 'İş'
     },
     {
-        id = 'yük_şirkəti', name = 'Yük Daşıma Şirkəti (Xətai)',
+        id = 'yük_şirkəti', name = 'Yük Daşıma Şirkəti (Şirvan)',
         desc = 'Şəhərlərarası yük daşıma işi. Böyük maşınlar və böyük qazanclar!',
         coords = vector3(900.0, -2100.0, 30.0), color = { 255, 200, 120 }, marker = 1, size = 1.0,
         blip = { sprite = 478, color = 66, scale = 0.8 }, category = 'İş'
@@ -487,13 +487,13 @@ Config.Locations = {
         blip = { sprite = 513, color = 66, scale = 0.8 }, category = 'İş'
     },
     {
-        id = 'çörək_zavodu', name = 'Çörək Zavodu (Xətai)',
+        id = 'çörək_zavodu', name = 'Çörək Zavodu (Şirvan)',
         desc = 'Təzə çörək və şirniyyat istehsalı.',
         coords = vector3(1000.0, -2000.0, 30.0), color = { 230, 190, 120 }, marker = 1, size = 1.0,
         blip = { sprite = 476, color = 17, scale = 0.8 }, category = 'İş'
     },
     {
-        id = 'ət_kombinatı', name = 'Ət Kombinatı (Xətai)',
+        id = 'ət_kombinatı', name = 'Ət Kombinatı (Şirvan)',
         desc = 'Ət emalı və qəssablıq işi.',
         coords = vector3(1010.0, -2120.0, 30.0), color = { 220, 140, 120 }, marker = 1, size = 1.0,
         blip = { sprite = 476, color = 1, scale = 0.8 }, category = 'İş'
@@ -505,7 +505,7 @@ Config.Locations = {
         blip = { sprite = 476, color = 7, scale = 0.8 }, category = 'İş'
     },
     {
-        id = 'dəmirçi', name = 'Dəmirçi Emalatxanası (Nəriman Nərimanov)',
+        id = 'dəmirçi', name = 'Dəmirçi Emalatxanası (Culfa)',
         desc = 'Metal emalı və alət istehsalı.',
         coords = vector3(1300.0, 1100.0, 100.0), color = { 200, 150, 100 }, marker = 1, size = 0.9,
         blip = { sprite = 478, color = 17, scale = 0.8 }, category = 'İş'
@@ -517,7 +517,7 @@ Config.Locations = {
         blip = { sprite = 467, color = 66, scale = 0.8 }, category = 'İş'
     },
     {
-        id = 'su_anbarı', name = 'Su Anbarı / Bənd (Qara Qarayev)',
+        id = 'su_anbarı', name = 'Su Anbarı / Bənd (Göygöl)',
         desc = 'Şəhərin su təchizatı obyekti.',
         coords = vector3(915.0, 2310.0, 48.0), color = { 120, 200, 255 }, marker = 1, size = 0.9,
         blip = { sprite = 68, color = 38, scale = 0.8 }, category = 'İş'
@@ -597,7 +597,7 @@ Config.Locations = {
         blip = { sprite = 71, color = 2, scale = 0.7 }, category = 'Xidmət'
     },
     {
-        id = 'bərbərxana_2', name = 'Bərbərxana — Paleto (Qara Qarayev)',
+        id = 'bərbərxana_2', name = 'Bərbərxana — Paleto (Zaqatala)',
         desc = 'Saç düzümü və baxım.',
         coords = vector3(-278.1, 6228.5, 31.7), color = { 240, 180, 200 }, marker = 1, size = 0.8,
         blip = { sprite = 71, color = 2, scale = 0.7 }, category = 'Xidmət'
@@ -621,13 +621,13 @@ Config.Locations = {
         blip = { sprite = 73, color = 7, scale = 0.8 }, category = 'Xidmət'
     },
     {
-        id = 'paltar_3', name = 'Geyim Mağazası — Sandy Shores (Qara Qarayev)',
+        id = 'paltar_3', name = 'Geyim Mağazası — Sandy Shores (Gəncə)',
         desc = 'Gündəlik geyim və aksesuarlar.',
         coords = vector3(615.2, 2759.6, 42.1), color = { 220, 170, 220 }, marker = 1, size = 1.0,
         blip = { sprite = 73, color = 7, scale = 0.8 }, category = 'Xidmət'
     },
     {
-        id = 'paltar_4', name = 'Geyim Mağazası — Paleto Bay (20 Yanvar)',
+        id = 'paltar_4', name = 'Geyim Mağazası — Paleto Bay (Naftalan)',
         desc = 'Gündəlik geyim və aksesuarlar.',
         coords = vector3(-1096.5, 2708.8, 19.1), color = { 220, 170, 220 }, marker = 1, size = 1.0,
         blip = { sprite = 73, color = 7, scale = 0.8 }, category = 'Xidmət'
@@ -645,7 +645,7 @@ Config.Locations = {
         blip = { sprite = 617, color = 66, scale = 0.7 }, category = 'Xidmət'
     },
     {
-        id = 'şüşəbənd', name = 'Şüşəbənd Emalatxanası (Xətai)',
+        id = 'şüşəbənd', name = 'Şüşəbənd Emalatxanası (Şirvan)',
         desc = 'Vitraj və şüşə işləri.',
         coords = vector3(810.0, -2000.0, 30.0), color = { 180, 220, 240 }, marker = 1, size = 0.8,
         blip = { sprite = 476, color = 38, scale = 0.7 }, category = 'Xidmət'
@@ -677,13 +677,13 @@ Config.Locations = {
         blip = { sprite = 361, color = 1, scale = 0.8 }, category = 'Yanacaq'
     },
     {
-        id = 'yanacaq_5', name = 'Yanacaqdoldurma Məntəqəsi — Paleto (İçərişəhər)',
+        id = 'yanacaq_5', name = 'Yanacaqdoldurma Məntəqəsi — Paleto (Sumqayıt)',
         desc = 'Avtomobilinizi yanacaqla doldurun.',
         coords = vector3(-2096.9, -320.4, 13.2), color = { 250, 120, 80 }, marker = 1, size = 1.0,
         blip = { sprite = 361, color = 1, scale = 0.8 }, category = 'Yanacaq'
     },
     {
-        id = 'yanacaq_6', name = 'Yanacaqdoldurma Məntəqəsi — Sandy Shores (Dərnəgül)',
+        id = 'yanacaq_6', name = 'Yanacaqdoldurma Məntəqəsi — Sandy Shores (Naxçıvan)',
         desc = 'Avtomobilinizi yanacaqla doldurun.',
         coords = vector3(2580.5, 362.1, 108.5), color = { 250, 120, 80 }, marker = 1, size = 1.0,
         blip = { sprite = 361, color = 1, scale = 0.8 }, category = 'Yanacaq'
@@ -695,7 +695,7 @@ Config.Locations = {
         blip = { sprite = 361, color = 1, scale = 0.8 }, category = 'Yanacaq'
     },
     {
-        id = 'yanacaq_8', name = 'Yanacaqdoldurma Məntəqəsi — Route 68 (20 Yanvar)',
+        id = 'yanacaq_8', name = 'Yanacaqdoldurma Məntəqəsi — Route 68 (Tovuz)',
         desc = 'Avtomobilinizi yanacaqla doldurun.',
         coords = vector3(-2555.3, 2334.4, 33.1), color = { 250, 120, 80 }, marker = 1, size = 1.0,
         blip = { sprite = 361, color = 1, scale = 0.8 }, category = 'Yanacaq'
@@ -723,31 +723,31 @@ Config.Locations = {
 
     -- ==================== TƏBİƏT VƏ GÖRMƏLİ YERLƏR ====================
     {
-        id = 'dağ', name = 'Cilead Dağı (Qara Qarayev)',
+        id = 'dağ', name = 'Cilead Dağı (Qəbələ)',
         desc = 'Şəhərin ən hündür nöqtəsi. Mənzərə nəfəs kəsəndir!',
         coords = vector3(500.0, 5600.0, 800.0), color = { 200, 210, 220 }, marker = 1, size = 1.1,
         blip = { sprite = 318, color = 0, scale = 0.9 }, category = 'Təbiət'
     },
     {
-        id = 'alaamo_gölü', name = 'Alamo Gölü (Qara Qarayev)',
+        id = 'alaamo_gölü', name = 'Alamo Gölü (Göygöl)',
         desc = 'Böyük göl — balıqçılıq və istirahət üçün ideal.',
         coords = vector3(1030.0, 2450.0, 40.0), color = { 120, 200, 255 }, marker = 1, size = 1.1,
         blip = { sprite = 68, color = 38, scale = 0.9 }, category = 'Təbiət'
     },
     {
-        id = 'kanyon', name = 'Raton Kanyonu (20 Yanvar)',
+        id = 'kanyon', name = 'Raton Kanyonu (Gədəbəy)',
         desc = 'Nəfəs kəsən təbiət mənzərəsi.',
         coords = vector3(-700.0, 2300.0, 150.0), color = { 200, 160, 120 }, marker = 1, size = 1.0,
         blip = { sprite = 318, color = 17, scale = 0.8 }, category = 'Təbiət'
     },
     {
-        id = 'şəlalə', name = 'Şəlalə (Qara Qarayev)',
+        id = 'şəlalə', name = 'Şəlalə (Şahdağ)',
         desc = 'Təbiətin səsi — istirahət üçün gözəl yer.',
         coords = vector3(-450.0, 4500.0, 300.0), color = { 120, 200, 255 }, marker = 1, size = 1.0,
         blip = { sprite = 68, color = 38, scale = 0.8 }, category = 'Təbiət'
     },
     {
-        id = 'palıd_meşə', name = 'Palmer-Taylor Meşəsi (Qara Qarayev)',
+        id = 'palıd_meşə', name = 'Palmer-Taylor Meşəsi (Şəki)',
         desc = 'Şəhərin ən böyük meşəsi.',
         coords = vector3(-800.0, 5200.0, 250.0), color = { 120, 180, 100 }, marker = 1, size = 1.0,
         blip = { sprite = 318, color = 3, scale = 0.8 }, category = 'Təbiət'
@@ -755,7 +755,7 @@ Config.Locations = {
 
     -- ==================== SƏNAYE ====================
     {
-        id = 'sənaye_zona', name = 'La Mesa Sənaye Zonası (Xətai)',
+        id = 'sənaye_zona', name = 'La Mesa Sənaye Zonası (Şirvan)',
         desc = 'Fabriklər və anbarların yerləşdiyi sənaye rayonu.',
         coords = vector3(1000.0, -2300.0, 30.0), color = { 200, 190, 170 }, marker = 1, size = 1.0,
         blip = { sprite = 478, color = 0, scale = 0.8 }, category = 'Sənaye'
@@ -767,7 +767,7 @@ Config.Locations = {
         blip = { sprite = 478, color = 0, scale = 0.8 }, category = 'Sənaye'
     },
     {
-        id = 'neft_platforması', name = 'Neft Platforması (Ağ şəhər)',
+        id = 'neft_platforması', name = 'Neft Platforması (Lənkəran)',
         desc = 'Sahildən görünən neft platforması.',
         coords = vector3(-1990.0, -3370.0, 5.0), color = { 180, 160, 140 }, marker = 1, size = 0.9,
         blip = { sprite = 436, color = 0, scale = 0.7 }, category = 'Sənaye'

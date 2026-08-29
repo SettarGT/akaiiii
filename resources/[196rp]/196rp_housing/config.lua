@@ -19,12 +19,12 @@ Config.Houses = {
     { id = 'ev_3', name = 'Mənzil — Davis (Xətai)', desc = 'Sakit məhəllədə sərfəli mənzil.', price = 60000, coords = vector3(100.0, -1920.0, 21.0), heading = 330.0 },
     { id = 'ev_4', name = 'Sahil Evi — Del Perro', desc = 'Çimərliyə baxan gözəl sahil evi.', price = 350000, coords = vector3(-1450.0, -1000.0, 8.0), heading = 250.0 },
     { id = 'ev_5', name = 'Villa — Rockford Hills (20 Yanvar)', desc = 'Şəhərin ən dəbdəbəli villası.', price = 1200000, coords = vector3(-740.0, 260.0, 99.0), heading = 20.0 },
-    { id = 'ev_6', name = 'Kənd Evi — Grapeseed (Qara Qarayev)', desc = 'Təbiət qoynunda kənd evi.', price = 90000, coords = vector3(2450.0, 4960.0, 46.0), heading = 220.0 },
+    { id = 'ev_6', name = 'Kənd Evi — Grapeseed (Ağdaş)', desc = 'Təbiət qoynunda kənd evi.', price = 90000, coords = vector3(2450.0, 4960.0, 46.0), heading = 220.0 },
     { id = 'ev_7', name = 'Ev — Sandy Shores (Qara Qarayev)', desc = 'Səhrada rahat ailə evi.', price = 45000, coords = vector3(1600.0, 3700.0, 34.0), heading = 20.0 },
-    { id = 'ev_8', name = 'Ev — Paleto Bay (Qara Qarayev)', desc = 'Sakit sahil şəhərində ev.', price = 80000, coords = vector3(-250.0, 6300.0, 32.0), heading = 320.0 },
-    { id = 'ev_9', name = 'Ev — Harmony (Qara Qarayev)', desc = 'Yoldan kənarda sərfəli ev.', price = 55000, coords = vector3(400.0, 3590.0, 35.0), heading = 90.0 },
+    { id = 'ev_8', name = 'Ev — Paleto Bay (Zaqatala)', desc = 'Sakit sahil şəhərində ev.', price = 80000, coords = vector3(-250.0, 6300.0, 32.0), heading = 320.0 },
+    { id = 'ev_9', name = 'Ev — Harmony (Mingəçevir)', desc = 'Yoldan kənarda sərfəli ev.', price = 55000, coords = vector3(400.0, 3590.0, 35.0), heading = 90.0 },
     { id = 'ev_10', name = 'Göl Evi — Alamo (Qara Qarayev)', desc = 'Gölə baxan mənzərəli ev.', price = 120000, coords = vector3(1320.0, 4250.0, 33.0), heading = 180.0 },
-    { id = 'ev_11', name = 'Dağ Evi (Qara Qarayev)', desc = 'Təpədə, mənzərəli dağ evi.', price = 180000, coords = vector3(450.0, 5400.0, 150.0), heading = 270.0 },
+    { id = 'ev_11', name = 'Dağ Evi (Qəbələ)', desc = 'Təpədə, mənzərəli dağ evi.', price = 180000, coords = vector3(450.0, 5400.0, 150.0), heading = 270.0 },
     { id = 'ev_12', name = 'Mənzil — Strawberry (Elmlər Akademiyası)', desc = 'Məhəllə həyatının ortasında mənzil.', price = 75000, coords = vector3(-1150.0, -900.0, 14.0), heading = 90.0 },
 }
 
