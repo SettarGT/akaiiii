@@ -189,32 +189,37 @@ function Actions:SlowLoop()
 end
 
 function Actions:Init()
-    -- Re-seed the cached values on every (re)login. The change handlers below are
-    -- registered once at file load so a relogin never stacks duplicate handlers.
-    ESX.SetPlayerData("ped", xLib.cache.ped)
-    ESX.SetPlayerData("weapon", xLib.cache.weapon)
+    -- xLib.cache modulu bu quraşdırmada mövcud deyil — ped/weapon birbaşa native-lərlə izlənilir
+    ESX.SetPlayerData("ped", PlayerPedId())
+    ESX.SetPlayerData("weapon", GetSelectedPedWeapon(PlayerPedId()))
+
+    CreateThread(function()
+        local lastPed = PlayerPedId()
+        local lastWeapon = GetSelectedPedWeapon(lastPed)
+        while true do
+            Wait(500)
+            local ped = PlayerPedId()
+            if ped ~= lastPed then
+                lastPed = ped
+                ESX.SetPlayerData("ped", ped)
+                TriggerEvent("esx:playerPedChanged", ped)
+            end
+            local weapon = GetSelectedPedWeapon(ped)
+            if weapon ~= lastWeapon then
+                lastWeapon = weapon
+                ESX.SetPlayerData("weapon", weapon)
+                TriggerEvent("esx:weaponChanged", weapon)
+            end
+        end
+    end)
 
     self:SlowLoop()
     self:TrackPedCoordsOnce()
 end
 
 -- Mirror the lib cache into ESX.PlayerData and re-emit the legacy esx: events.
-AddEventHandler("xLib:cache:ped", function(ped)
-    ESX.SetPlayerData("ped", ped)
-    TriggerEvent("esx:playerPedChanged", ped)
+AddEventHandler("xLib:cache:ped", function() end) -- köhnə hadisə saxlanılır (heç vaxt atəşlənmir)
 
-    if Config.EnableDebug then
-        print("[DEBUG] Player ped changed:", ped)
-    end
-end)
-
-AddEventHandler("xLib:cache:weapon", function(weapon)
-    ESX.SetPlayerData("weapon", weapon)
-    TriggerEvent("esx:weaponChanged", weapon)
-
-    if Config.EnableDebug then
-        print("[DEBUG] Weapon changed:", weapon)
-    end
-end)
+AddEventHandler("xLib:cache:weapon", function() end) -- köhnə hadisə saxlanılır (heç vaxt atəşlənmir)
 
 Actions:Init()

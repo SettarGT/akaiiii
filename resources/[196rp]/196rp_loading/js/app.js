@@ -1,4 +1,25 @@
 // 196 RP - Yüklənmə ekranı
+
+// ===== MUSIQI =====
+// Qovluğa (resources/[196rp]/196rp_loading/) öz mp3 faylınızı "music.mp3" adı ilə qoyun —
+// məs. Babek Nur - Sevgi Dolu Nifret ("Eşqinə xəstə düşmüşəm").
+// Fayl yoxdursa və ya URL açılmırsa ekran səssiz qalır, xəta vermir.
+const MUSIC_SOURCES = ['music.mp3'];
+(function startMusic() {
+    const audio = new Audio();
+    audio.loop = true;
+    audio.volume = 0.7;
+    let i = 0;
+    audio.addEventListener('error', () => {
+        i += 1;
+        if (i < MUSIC_SOURCES.length) {
+            audio.src = MUSIC_SOURCES[i];
+            audio.play().catch(() => {});
+        }
+    });
+    audio.src = MUSIC_SOURCES[0];
+    audio.play().catch(() => {});
+})();
 const tips = [
     'İpucu: İş axtarırsınızsa, Bələdiyyə binasına yaxınlaşın və oradakı elan lövhəsindən iş seçin!',
     'İpucu: Balıq tutmaq üçün sahilə gedin, balıqçılıq işi ən gəlirli işlərdən biridir!',

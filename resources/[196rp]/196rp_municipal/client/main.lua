@@ -35,7 +35,7 @@ CreateThread(function()
     while true do
         local wait = 750
 
-        if active and os.time() < activeUntil then
+        if active and GetPosixTime() < activeUntil then
             local work = Config.WorkTypes[active.workId]
             local loc = Config.Locations[active.location]
             local ped = PlayerPedId()
@@ -70,7 +70,7 @@ CreateThread(function()
                 end
             end
         else
-            if active and os.time() >= activeUntil then
+            if active and GetPosixTime() >= activeUntil then
                 active = nil
                 if workBlip and DoesBlipExist(workBlip) then
                     RemoveBlip(workBlip)

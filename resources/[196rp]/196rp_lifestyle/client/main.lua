@@ -61,8 +61,19 @@ local function Clamp(n, min, max)
     return n
 end
 
+-- FiveM client-də os.date/os.time YOXDUR (sandbox) — ayı posix vaxtdan hesablayırıq
+local function CurrentMonth()
+    local days = math.floor(GetPosixTime() / 86400) + 719468
+    local era = math.floor(days / 146097)
+    local doe = days - era * 146097
+    local yoe = math.floor((doe - math.floor(doe / 1460) + math.floor(doe / 36524) - math.floor(doe / 146096)) / 365)
+    local doy = doe - (365 * yoe + math.floor(yoe / 4) - math.floor(yoe / 100))
+    local mp = math.floor((5 * doy + 2) / 153)
+    return mp + (mp < 10 and 3 or -9)
+end
+
 local function GetSeasonByMonth()
-    local month = tonumber(os.date('%m'))
+    local month = CurrentMonth()
     return Config.Seasons.months[month] or 'spring'
 end
 

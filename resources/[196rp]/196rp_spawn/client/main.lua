@@ -55,6 +55,21 @@ RegisterNUICallback('close', function(_, cb)
     HideSpawnSelector()
 end)
 
+-- Ekran açıq ikən fokusu qoruyur (başqa NUI fokusu oğurlaya bilər — ESC işləməzdi)
+CreateThread(function()
+    while true do
+        Wait(500)
+        if isOpen then
+            SetNuiFocus(true, true)
+            if IsPauseMenuActive() then
+                HideSpawnSelector()
+            elseif IsControlJustPressed(0, 200) then
+                HideSpawnSelector()
+            end
+        end
+    end
+end)
+
 -- İlk spawn olduqda seçim ekranını göstər
 local isFirstSpawn = true
 AddEventHandler('esx:onPlayerSpawn', function()
