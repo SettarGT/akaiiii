@@ -114,7 +114,7 @@ ayrıca, rəsmi mənbədən yüklənir:
 fxserver/
 ├── run.sh / FXServer.exe          ← FXServer-dən gəlir
 ├── server.cfg                     ← BİZİM server.cfg
-├── assets/196-icon.png            ← BİZİM ikon (server kökü)
+├── icon.png                         ← BİZİM ikon (server kökü)
 └── resources/
     ├── [core]/…                   ← BİZİM resources/[core]
     ├── [196rp]/…                  ← BİZİM resources/[196rp]
@@ -125,7 +125,7 @@ fxserver/
 |---|---|
 | `resources/[core],[196rp],[oxmysql]` | `fxserver/resources/` altına |
 | `server.cfg` | `fxserver/server.cfg` (DB şifrəsi + lisenziya) |
-| `assets/196-icon.png` | `fxserver/assets/196-icon.png` |
+| `icon.png` | `fxserver/icon.png` (server kökü) |
 | `196rp.sql` | bazaya idxal — qovluğa atılmır |
 
 ### Baza və açar
