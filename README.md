@@ -16,6 +16,12 @@
 | 🍞 **Həyat statusu + HUD** | Aclıq, susuzluq və enerji sistemi — yemək/içki əşyaları işləyir; can/zireh/pul/saat paneli (HUD) |
 | 🎭 **Animasiya menyusu** | `/anim` və ya `U` düyməsi — otur, salam ver, siqaret çək, idman et və s. (30+ animasiya) |
 | 📣 **Discord loqları** | Qoşulma/çıxma, admin əməlləri (`/setjob`, `/ban`...) və reportlar Discord webhook-a düşür |
+| 🚗 **Sürücülük məktəbi (DMV)** | AZ dilində yazılı imtahan + sürmə imtahanı → vəsiqə; vəsiqəsiz sürsən xəbərdarlıq (polis cərimə edə bilər) |
+| 🚒 **Yanğınsöndürən** | Təsadüfi yanğınlar, xəritədə yanğın işarəsi, yanğın maşını, söndürmə + pul, TİB xəbərdarlığı |
+| ✂️ **Bərbər + Döymə salonu** | Saç/saqqal/makiyaj dəyişmə (esx_skin menyusu) + bədənə döymə vurma (saxlanılır) |
+| 🎰 **Kazino + Lotereya** | Blackjack (kart oyunu), rulet (rəng mərci), 10 dəqiqədən bir lotereya tirajı |
+| 📱 **Telefon sistemi** | Hər oyunçunun nömrəsi, kontaktlar, SMS (bazada saxlanır), zənglər (qəbul/rədd) |
+| 🛋️ **Ev interyeri (mebel)** | Mebel mağazası, mebel al, evdə yerləşdir (R ilə fırlat), anbara yığ, sat |
 | 🚪 **Ayrıca giriş (cinematic) ekranı** | İlk qoşulmada filmvari yüklənmə ekranı + "harada doğulmaq istəyirsiniz?" spawn seçimi |
 | 👕 **Ayrıca paltar dəyişmə məntəqəsi** | Şəhərin müxtəlif yerlərində geyim dükanları (kişi/qadın geyimləri, aksesuarlar) |
 | 🏦 **Real iqtisadiyyat** | Nağd pul + bank hesabı, bank əməliyyatları, maaş sistemi, avtomobil və ev alışı |
@@ -130,6 +136,8 @@ Hamısı qaydasındadırsa, FiveM-də serveri axtarın: **"196 RP"** → daxil o
 | `/report <mətn>` | hamı | Adminə şikayət göndərir |
 | `/setjob [id] [iş] [rütbə]` | admin | İş dəyişir (məs: `/setjob 2 polis 2`) |
 | `/anim` və ya `U` | hamı | Animasiya menyusu (oturmaq, salam, idman və s.) |
+| `/telefon` və ya `P` | hamı | Telefon menyusu (SMS, kontaktlar, zənglər) |
+| `/mebel` | ev sahibi | Ev interyerində mebel yerləşdirmə |
 | `/giveitem [id] [əşya] [say]` | admin | Əşya verir (məs: `/giveitem 2 kola 5`) |
 | `/givecar [id] [model]` | admin | Avtomobil verir |
 | `/kick [id] [səbəb]` | admin | Oyunçunu atır |
@@ -170,6 +178,12 @@ akaiiii/
 | `196rp_status` | Həyat statusu (aclıq/susuzluq/enerji) + HUD paneli |
 | `196rp_animations` | `/anim` animasiya menyusu |
 | `196rp_discord` | Discord webhook loqları (qoşulma, admin, report) |
+| `196rp_dmv` | Sürücülük məktəbi (yazılı + sürmə imtahanı, vəsiqə) |
+| `196rp_fire` | Yanğınsöndürən (yanğınlar, maşın, mükafat) |
+| `196rp_barber` | Bərbər + döymə salonu |
+| `196rp_casino` | Kazino (blackjack, rulet) + lotereya |
+| `196rp_phone` | Telefon (SMS, kontaktlar, zənglər) |
+| `196rp_furniture` | Ev interyeri (mebel al, yerləşdir) |
 | `196rp_shops` | 49 mağaza kateqoriyası (market, yemək, geyim və s.) |
 | `196rp_clotheshop` | Geyim dəyişmə məntəqələri (esx_skin ilə) |
 | `196rp_bank` | Bank əməliyyatları (pul qoyma/çıxarma/balans) |

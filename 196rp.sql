@@ -1171,3 +1171,61 @@ CREATE TABLE IF NOT EXISTS `196rp_bans` (
 
 -- ---------- ADMIN OLMAG ÜÇÜN (aşağıdakı sətirin şərhini açın) ----------
 -- UPDATE `users` SET `group` = 'admin' WHERE `identifier` = 'license:BU_BURAYA_OZ_LISENZIYANIZI_YAZIN';
+
+-- ---------- 196 RP ƏLAVƏ PAKETLƏR (DMV, YANĞINSÖNDÜRƏN, TELEFON, KAZİNO, MEBEL) ----------
+
+-- Yanğınsöndürən işi
+DELETE FROM `jobs` WHERE `name` = 'firefighter';
+INSERT INTO `jobs` (`name`, `label`, `type`, `whitelisted`) VALUES ('firefighter', 'Yanğınsöndürən', 'job', 0);
+DELETE FROM `job_grades` WHERE `job_name` = 'firefighter';
+INSERT INTO `job_grades` (`job_name`, `grade`, `name`, `label`, `salary`, `skin_male`, `skin_female`) VALUES
+('firefighter', 0, 'sinaq', 'Sınaq müddətli', 100, '{}', '{}'),
+('firefighter', 1, 'yanyan', 'Yanğınsöndürən', 180, '{}', '{}'),
+('firefighter', 2, 'bas', 'Briqadir', 260, '{}', '{}'),
+('firefighter', 3, 'reis', 'Yanğın rəisi', 380, '{}', '{}');
+
+-- Lotereya bileti
+CREATE TABLE IF NOT EXISTS `196rp_lottery` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `round` int(11) NOT NULL DEFAULT 1,
+  `identifier` varchar(60) NOT NULL,
+  `ticket` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `round` (`round`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Telefon SMS mesajları
+CREATE TABLE IF NOT EXISTS `196rp_phone_messages` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sender` varchar(60) NOT NULL,
+  `receiver` varchar(60) NOT NULL,
+  `message` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `receiver` (`receiver`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Telefon kontaktları
+CREATE TABLE IF NOT EXISTS `196rp_phone_contacts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `owner` varchar(60) NOT NULL,
+  `number` varchar(20) NOT NULL,
+  `name` varchar(60) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `owner` (`owner`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Ev mebeli
+CREATE TABLE IF NOT EXISTS `196rp_furniture` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `house_id` varchar(50) NOT NULL,
+  `owner` varchar(60) NOT NULL,
+  `model` varchar(60) NOT NULL,
+  `label` varchar(80) NOT NULL,
+  `placed` tinyint(1) NOT NULL DEFAULT 0,
+  `coords` text DEFAULT NULL,
+  `rotation` float NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `house_id` (`house_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
