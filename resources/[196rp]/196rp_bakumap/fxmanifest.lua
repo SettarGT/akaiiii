@@ -15,6 +15,15 @@ client_scripts {
     '@es_extended/imports.lua',
     'client/main.lua',
     'client/objects.lua',
+    'client/mapui.lua',
+}
+
+ui_page 'web/index.html'
+
+files {
+    'web/index.html',
+    'web/css/style.css',
+    'web/js/app.js',
 }
 
 server_scripts {

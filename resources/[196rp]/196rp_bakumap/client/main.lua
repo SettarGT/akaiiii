@@ -130,41 +130,7 @@ RegisterCommand('metro', function()
         table.concat(names, ' → ')), 'info', 12000)
 end, false)
 
-RegisterCommand('xerite', function()
-    local elements = {}
-
-    for i = 1, #Config.Stations do
-        local s = Config.Stations[i]
-        local line = Config.Lines[s.line]
-
-        elements[#elements + 1] = {
-            label = ('🚇 %s — %s'):format(s.name, line and line.name or ''),
-            value = s.id,
-        }
-    end
-
-    ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'baku_map', {
-        title = '🗺️ Bakı — metro stansiyaları və rayonlar',
-        align = 'top-left',
-        elements = elements,
-    }, function(data, menu)
-        menu.close()
-
-        local s = Baku.GetStation(data.current.value)
-        if not s then
-            return
-        end
-
-        local coords = Baku.Coords(s.id)
-        local dist = #(GetEntityCoords(PlayerPedId()) - coords)
-        local line = Config.Lines[s.line]
-
-        ESX.ShowNotification(('🚇 ~y~%s~s~\n%s\n%s\nMəsafə: ~b~%s m~s~'):format(
-            s.name, line and line.name or '', s.desc, math.floor(dist)), 'info', 10000)
-    end, function(data, menu)
-        menu.close()
-    end)
-end, false)
+-- Qeyd: /xerite əmri artıq interaktiv NUI xəritəsini açır — bax: client/mapui.lua
 
 -- ==================== İXRACLAR ====================
 

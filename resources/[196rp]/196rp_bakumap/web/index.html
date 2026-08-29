@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<title>Bakı Xəritə — 196 RP</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="root" class="hidden">
+  <div class="backdrop"></div>
+
+  <main class="panel">
+
+    <header class="bar">
+      <div class="brand">
+        <span class="mark">196</span>
+        <span class="word">BAKI <em>XƏRİTƏ</em></span>
+      </div>
+
+      <div class="bar-mid">
+        <div class="pill" id="districtPill">
+          <span class="dot"></span><span id="districtName">—</span>
+        </div>
+        <div class="clock" id="clock">--:--</div>
+      </div>
+
+      <button class="close" id="btnClose" aria-label="Bağla">✕</button>
+    </header>
+
+    <section class="body">
+
+      <!-- SOL: xətlər + stansiyalar -->
+      <aside class="side">
+        <h2 class="caption">Xətlər</h2>
+        <div class="lines" id="lines"></div>
+
+        <h2 class="caption">Stansiyalar</h2>
+        <ul class="stations" id="stationList"></ul>
+      </aside>
+
+      <!-- MƏRKƏZ: xəritə -->
+      <div class="map">
+        <svg id="svg" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+              <path d="M50 0 L0 0 0 50" fill="none" stroke="rgba(122,162,255,.07)" stroke-width="1"/>
+            </pattern>
+            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="4" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+
+          <rect width="1000" height="700" fill="url(#grid)"/>
+          <g id="lineLayer"></g>
+          <g id="nodeLayer"></g>
+          <g id="playerLayer"></g>
+        </svg>
+
+        <div class="map-hint">Stansiyanın üzərinə klikləyin · <kbd>ESC</kbd> bağlayır</div>
+      </div>
+
+      <!-- SAĞ: seçilmiş stansiya -->
+      <aside class="detail" id="detail">
+        <div class="empty">
+          <div class="empty-icon">◎</div>
+          <p>Soldan bir stansiya seçin</p>
+          <small>Məsafə və xətt məlumatı burada görünəcək</small>
+        </div>
+      </aside>
+
+    </section>
+
+    <footer class="foot">
+      <span class="tag">Original dizayn · 196 RP · 2026</span>
+      <span class="tag dim" id="counter">—</span>
+    </footer>
+
+  </main>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

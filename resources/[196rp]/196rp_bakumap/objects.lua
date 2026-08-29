@@ -1,8 +1,14 @@
 -- 196 RP | Bakı xəritəsi — 3D obyekt qatı (shared config)
 --
--- Bütün model adları GTA V-nin RƏSMİ obyekt siyahısından götürülüb və yoxlanılıb
--- (DurtyFree/gta-v-data-dumps → ObjectList.ini, 21 631 ad).
--- Heç bir real brend loqosu istifadə olunmur.
+-- DİQQƏT: bu qat SÖNDÜRÜLÜB (Config.Objects.Enabled = false).
+-- Səbəb: buradakı modellər GTA V-nin öz obyekt kitabxanasındandır. Server
+-- onsuz da GTA V üstündə işlədiyi üçün bu "kopyalama" deyil, amma tam original
+-- dizayn tələbinə uyğun olaraq standart vəziyyətdə işləmir.
+-- Original 3D həndəsə yalnız ayrıca modelləşdirmə paketindən (.ydr/.ytyp) gəlir
+-- — bax: DESIGN-2026.md. Bu fayl həmin paket quraşdırılana qədər arxivdir.
+--
+-- İstəsəniz bir sətirlə yandırıla bilər: Config.Objects.Enabled = true
+-- Bütün model adları rəsmi obyekt siyahısı ilə yoxlanılıb (14/14 OK).
 --
 -- PERFORMANS QAYDALARI (kasma olmaması üçün):
 --   1. Yalnız SpawnDistance daxilindəki obyektlər mövcuddur (adətən 12-24 ədəd)
@@ -13,7 +19,7 @@
 
 Config.Objects = {}
 
-Config.Objects.Enabled = true
+Config.Objects.Enabled = false
 Config.Objects.GroundSnap = true          -- obyektləri yerə oturdur
 Config.Objects.SpawnDistance = 120.0      -- bu məsafəyə qədər spawn olunur
 Config.Objects.DespawnDistance = 180.0    -- bu məsafədən sonra silinir
