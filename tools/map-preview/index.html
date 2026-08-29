@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<title>196 RP — Bakı Xəritə UI (dizayn baxışı)</title>
+<!-- Bu səhifə YALNIZ dizaynı brauzerdə görmək üçündür (FiveM-də istifadə olunmur).
+     Eyni CSS/JS fayllarını yükləyir və NUI mesajlarını təqlid edir. -->
+<link rel="stylesheet" href="/resources/%5B196rp%5D/196rp_bakumap/web/css/style.css">
+<style>
+  body{background:#05080d}
+  #note{
+    position:fixed;left:14px;bottom:12px;z-index:9;
+    font:12px system-ui,sans-serif;color:#8b9aab;
+    background:rgba(9,13,20,.85);border:1px solid rgba(122,162,255,.16);
+    padding:7px 12px;border-radius:999px;
+  }
+  #note b{color:#35e0c0}
+</style>
+</head>
+<body>
+
+<div id="note">Dizayn baxışı · <b>/xerite</b> əmri oyunda bu interfeysi açır · ESC bağlayır</div>
+
+<div id="root" class="hidden">
+  <div class="backdrop"></div>
+
+  <main class="panel">
+    <header class="bar">
+      <div class="brand">
+        <span class="mark">196</span>
+        <span class="word">BAKI <em>XƏRİTƏ</em></span>
+      </div>
+      <div class="bar-mid">
+        <div class="pill"><span class="dot"></span><span id="districtName">—</span></div>
+        <div class="clock" id="clock">--:--</div>
+      </div>
+      <button class="close" id="btnClose" aria-label="Bağla">✕</button>
+    </header>
+
+    <section class="body">
+      <aside class="side">
+        <h2 class="caption">Xətlər</h2>
+        <div class="lines" id="lines"></div>
+        <h2 class="caption">Stansiyalar</h2>
+        <ul class="stations" id="stationList"></ul>
+      </aside>
+
+      <div class="map">
+        <svg id="svg" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+              <path d="M50 0 L0 0 0 50" fill="none" stroke="rgba(122,162,255,.07)" stroke-width="1"/>
+            </pattern>
+            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="4" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <rect width="1000" height="700" fill="url(#grid)"/>
+          <g id="lineLayer"></g>
+          <g id="nodeLayer"></g>
+          <g id="playerLayer"></g>
+        </svg>
+        <div class="map-hint">Stansiyanın üzərinə klikləyin · <kbd>ESC</kbd> bağlayır</div>
+      </div>
+
+      <aside class="detail" id="detail">
+        <div class="empty">
+          <div class="empty-icon">◎</div>
+          <p>Soldan bir stansiya seçin</p>
+          <small>Məsafə və xətt məlumatı burada görünəcək</small>
+        </div>
+      </aside>
+    </section>
+
+    <footer class="foot">
+      <span class="tag">Original dizayn · 196 RP · 2026</span>
+      <span class="tag dim" id="counter">—</span>
+    </footer>
+  </main>
+</div>
+
+<script src="/resources/%5B196rp%5D/196rp_bakumap/web/js/app.js"></script>
+<script>
+// config.lua-dakı real məlumat (12 stansiya, 3 xətt)
+var stations = [
+  {id:'iceriseher',name:'İçərişəhər',line:1,order:1,desc:'Tarixi mərkəz, sahil, turizm zonası',x:-1850,y:-1231},
+  {id:'sahil',name:'Sahil',line:1,order:2,desc:'Dənizkənarı bulvar, çimərlik və kafelər',x:-1240,y:-1490},
+  {id:'28may',name:'28 May',line:1,order:3,desc:'Əsas nəqliyyat qovşağı, şəhər mərkəzi',x:-265,y:-957},
+  {id:'genclik',name:'Gənclik',line:1,order:4,desc:'Ticarət mərkəzləri, mağazalar, restoranlar',x:-544,y:-204},
+  {id:'neriman',name:'Nəriman Nərimanov',line:1,order:5,desc:'Yaşayış və iş məhəlləsi',x:150,y:-180},
+  {id:'koroglu',name:'Koroğlu',line:1,order:6,desc:'Nəqliyyat qovşağı, sənaye zonası',x:1140,y:-980},
+  {id:'qaraqarayev',name:'Qara Qarayev',line:1,order:7,desc:'Şərq yaşayış massivi',x:1900,y:3720},
+  {id:'xetai',name:'Xətai',line:2,order:1,desc:'Cənub yaşayış rayonu',x:240,y:-1720},
+  {id:'agseher',name:'Ağ şəhər',line:2,order:2,desc:'Yeni işgüzar məhəllə, liman zonası',x:-450,y:-2960},
+  {id:'dernegul',name:'Dərnəgül',line:2,order:3,desc:'Şimal yaşayış massivi',x:1150,y:-700},
+  {id:'20yanvar',name:'20 Yanvar',line:3,order:1,desc:'Qərb qovşağı, universitet şəhərciyi',x:-880,y:-190},
+  {id:'elmler',name:'Elmlər Akademiyası',line:3,order:2,desc:'Elm və təhsil mərkəzi',x:-680,y:-880}
+];
+var lines = [
+  {id:1,name:'Qırmızı xətt',colour:1},
+  {id:2,name:'Yaşıl xətt',colour:3},
+  {id:3,name:'Bənövşəyi xətt',colour:7}
+];
+
+function post(d){ window.postMessage(d, '*'); }
+
+post({action:'open', stations:stations, lines:lines, player:{x:-265,y:-957}, district:'28may', clock:'21:40'});
+
+// oyunçu hərəkətini təqlid edirik (canlı nöqtə)
+var t = 0;
+setInterval(function(){
+  t += 0.06;
+  var x = -265 + Math.cos(t) * 420;
+  var y = -957 + Math.sin(t) * 320;
+  post({action:'update', player:{x:x,y:y}, clock:'21:4' + (Math.floor(t) % 10)});
+}, 900);
+</script>
+</body>
+</html>
