@@ -12,6 +12,10 @@
 |---|---|
 | 🏙️ **120+ real məkan** | Bələdiyyə, məhkəmə, polis, xəstəxana, banklar, marketlər, restoranlar, kafe, çay evi, gecə klubu, idman zalı, hovuz, kazino, liman, hava limanı, avtovağzal, meşə, mədən, ferma, üzüm bağı, çimərlik, göl və s. — hamısı xəritədə işarə (blip + marker) ilə |
 | 💼 **70+ iş** | Balıqçı 🎣, mədənçi ⛏️, meşəçi 🪓, fermer 🌾, üzüm yığan 🍇, zibilçi ♻️, bələdiyyə işçisi 🏛️, çörəkçi 🥖, qəssab 🥩, elektrikçi ⚡, liman işçisi ⚓, dəmirçi 🔨, bağban 🌿, taksi 🚕, avtobus 🚌, yük maşını 🚛, kuryer 📦, polis 🚓, təcili yardım 🚑 və s. |
+| 📋 **İş elanları lövhəsi** | Bələdiyyə və İş Mərkəzindəki lövhədən oyunçu özü işə düzəlir (polis, TİB, taksi, mexanik + bələdiyyə işləri) |
+| 🍞 **Həyat statusu + HUD** | Aclıq, susuzluq və enerji sistemi — yemək/içki əşyaları işləyir; can/zireh/pul/saat paneli (HUD) |
+| 🎭 **Animasiya menyusu** | `/anim` və ya `U` düyməsi — otur, salam ver, siqaret çək, idman et və s. (30+ animasiya) |
+| 📣 **Discord loqları** | Qoşulma/çıxma, admin əməlləri (`/setjob`, `/ban`...) və reportlar Discord webhook-a düşür |
 | 🚪 **Ayrıca giriş (cinematic) ekranı** | İlk qoşulmada filmvari yüklənmə ekranı + "harada doğulmaq istəyirsiniz?" spawn seçimi |
 | 👕 **Ayrıca paltar dəyişmə məntəqəsi** | Şəhərin müxtəlif yerlərində geyim dükanları (kişi/qadın geyimləri, aksesuarlar) |
 | 🏦 **Real iqtisadiyyat** | Nağd pul + bank hesabı, bank əməliyyatları, maaş sistemi, avtomobil və ev alışı |
@@ -81,7 +85,17 @@ Skript ən son **tövsiyə olunan** rəsmi build-i `https://runtime.fivem.net` �
    ```
 3. İstəsəniz `sv_hostname` və `sv_maxclients` dəyərlərini dəyişin.
 
-### 4. Admin olun
+### 4. Discord loqları (istəyə bağlı)
+
+Discord loqlarını aktivləşdirmək üçün `resources/[196rp]/196rp_discord/config.lua` faylını açın və 3 webhook URL-i yapışdırın:
+
+- **server** — oyunçu qoşulma/çıxma
+- **admin** — admin əməlləri (`/setjob`, `/giveitem`, `/ban` və s.)
+- **report** — oyunçuların `/report` müraciətləri
+
+Webhook yaratmaq: Discord server → Parametrlər → İnteqrasiyalar → Webhook → Yeni webhook. Boş qalsa, loqlar işləmir (server normal davam edir).
+
+### 5. Admin olun
 
 `196rp.sql` faylının ən sonunda şərhə salınmış sətir var:
 ```sql
@@ -89,7 +103,7 @@ Skript ən son **tövsiyə olunan** rəsmi build-i `https://runtime.fivem.net` �
 ```
 Öz lisenziyanızı yazıb `--` hissəsini silin və sorğunu yenidən işlədin. Lisenziyanızı öyrənmək üçün serverə girib konsolda (F8) `identifier` yazın.
 
-### 5. Serveri işə salın
+### 6. Serveri işə salın
 
 **Linux:**
 ```bash
@@ -115,6 +129,7 @@ Hamısı qaydasındadırsa, FiveM-də serveri axtarın: **"196 RP"** → daxil o
 | `/ooc <mətn>` | hamı | Oyunçudan kənar söhbət (boz) |
 | `/report <mətn>` | hamı | Adminə şikayət göndərir |
 | `/setjob [id] [iş] [rütbə]` | admin | İş dəyişir (məs: `/setjob 2 polis 2`) |
+| `/anim` və ya `U` | hamı | Animasiya menyusu (oturmaq, salam, idman və s.) |
 | `/giveitem [id] [əşya] [say]` | admin | Əşya verir (məs: `/giveitem 2 kola 5`) |
 | `/givecar [id] [model]` | admin | Avtomobil verir |
 | `/kick [id] [səbəb]` | admin | Oyunçunu atır |
@@ -151,6 +166,10 @@ akaiiii/
 | `196rp_spawn` | İlk qoşulmada doğum yerini seçmə ekranı |
 | `196rp_business` | 120+ məkan (blip + marker + məlumat) |
 | `196rp_jobs` | 30+ iş (balıqçılıq, mədənçilik, çörəkçilik, kuryer, taksi və s.) |
+| `196rp_jobcenter` | İş elanları lövhəsi (Bələdiyyə — özün işə düzəl) |
+| `196rp_status` | Həyat statusu (aclıq/susuzluq/enerji) + HUD paneli |
+| `196rp_animations` | `/anim` animasiya menyusu |
+| `196rp_discord` | Discord webhook loqları (qoşulma, admin, report) |
 | `196rp_shops` | 49 mağaza kateqoriyası (market, yemək, geyim və s.) |
 | `196rp_clotheshop` | Geyim dəyişmə məntəqələri (esx_skin ilə) |
 | `196rp_bank` | Bank əməliyyatları (pul qoyma/çıxarma/balans) |

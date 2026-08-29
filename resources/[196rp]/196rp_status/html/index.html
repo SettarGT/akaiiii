@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>196 RP | HUD</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Sol tərəf: can / zireh -->
+    <div class="hud-left">
+        <div class="bar health">
+            <div class="bar-label">CAN</div>
+            <div class="bar-track"><div class="bar-fill" id="healthFill"></div></div>
+        </div>
+        <div class="bar armor">
+            <div class="bar-label">ZİREH</div>
+            <div class="bar-track"><div class="bar-fill" id="armorFill"></div></div>
+        </div>
+    </div>
+
+    <!-- Sağ tərəf: statuslar -->
+    <div class="hud-right">
+        <div class="status-item">
+            <span class="status-icon">🍞</span>
+            <div class="status-track"><div class="status-fill food" id="foodFill"></div></div>
+        </div>
+        <div class="status-item">
+            <span class="status-icon">💧</span>
+            <div class="status-track"><div class="status-fill water" id="waterFill"></div></div>
+        </div>
+        <div class="status-item">
+            <span class="status-icon">⚡</span>
+            <div class="status-track"><div class="status-fill energy" id="energyFill"></div></div>
+        </div>
+    </div>
+
+    <!-- Alt mərkəz: vaxt / pul -->
+    <div class="hud-bottom">
+        <div class="hud-bottom-item" id="timeDisplay">00:00</div>
+        <div class="hud-bottom-item money" id="cashDisplay">$0</div>
+        <div class="hud-bottom-item money bank" id="bankDisplay">$0</div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
