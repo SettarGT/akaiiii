@@ -147,3 +147,33 @@ set sv_licenseKey "KEYMASTER-DƏN-ACAR"   # https://keymaster.fivem.net (pulsuz)
 - Lisenziya açarı düzgün olanda server FiveM siyahısında görünür → hamı qoşulur.
 - Yoxlamaq: FiveM → `connect localhost:30120`.
 - Əvvəl: `bash tools/ci/run_ci.sh`
+
+
+---
+
+## F. WINDOWS + XAMPP (sualın cavabı)
+
+**Hə, XAMPP quraşdır** — MySQL (və phpMyAdmin) üçün ən asan yol.
+
+1. **XAMPP** yüklə: https://www.apachefriends.org → quraşdır.
+2. **XAMPP Control Panel** → yalnız **MySQL** → `Start`.
+3. Brauzerdə `http://localhost/phpmyadmin` aç.
+   - Sol tərəfdə **New** → adı `196rp` → **Create**.
+   - `196rp` bazasını seç → **Import** → `196rp.sql` faylını seç → **Go**.
+4. `server.cfg`-də baza sətrini XAMPP-ə uyğunlaşdır.
+   XAMPP-də root-un **parolu boşdur**, ona görə:
+   ```
+   set mysql_connection_string "mysql://root@localhost/196rp?waitForConnections=true&charset=utf8mb4"
+   ```
+   (Əgər XAMPP-də parol qoymusunuzsa: `mysql://root:PAROL@localhost/196rp`)
+5. `server.cfg`-də `sv_licenseKey` doldur (keymaster.fivem.net).
+6. **Faylları yerləşdir** (şəkildəki `server/` qovluğuna):
+   - `resources/` qovluğu yarat → içində `[core]`, `[196rp]`, `[oxmysql]`
+   - `server.cfg` (bizimki) → `FXServer.exe` ilə eyni qovluğa
+   - `assets/196-icon.png` → eyni qovluqda `assets/` içində
+   - `run.bat` (bizimki) → eyni qovluğa
+7. **İşə sal:** `run.bat`-a iki dəfə kliklə. Konsol açılar, resurslar yüklənər.
+8. FiveM → `connect localhost:30120`.
+
+Qeyd: `FXServer.exe` + `citizen/` + `.dll` faylları FXServer-in özündəndir — onlara toxunma.
+Bizim əlavə etdiklərimiz yalnız: `resources/`, `server.cfg`, `assets/`, `run.bat`.
