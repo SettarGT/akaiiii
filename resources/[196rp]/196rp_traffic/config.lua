@@ -1,20 +1,82 @@
 -- 196 RP | Şəhər canlılığı konfiqurasiyası
--- Şəhər heç vaxt boş qalmır: piyadalar və maşınlar həmişə hərəkətdədir.
--- Xüsusi/adlı NPC-lər yoxdur — yalnız adi şəhər əhalisi.
+--
+-- ⚠️ QAYDA: NPC nəqliyyatı YALNIZ xidmət və iş maşınlarıdır —
+-- taksi, avtobus, tikinti maşınları və bənzəri (zibil, evakuator, yük).
+-- Adi mülki avtomobillər trafikte YOXDUR. Piyadalar isə qalır (şəhər boş görünmür).
 
 Config = {}
 
--- Trafik sıxlığı (0.0 - 1.0)
-Config.VehicleDensity = 0.9        -- hərəkətdə olan maşınlar
-Config.ParkedDensity = 0.7         -- park olunmuş maşınlar
-Config.RandomVehicleDensity = 0.9  -- təsadüfi maşınlar
-Config.PedDensity = 0.85           -- piyadalar
-Config.ScenarioPedDensity = 0.8    -- stansiya/məşğul piyadalar
-
--- Büdcə (3 = maksimum keyfiyyət)
+-- Piyadalar (şəhər boş qalmasın deyə aktiv qalır)
+Config.PedDensity = 0.85
+Config.ScenarioPedDensity = 0.8
 Config.PedBudget = 3
-Config.VehicleBudget = 3
 
--- Şəhərdən çox uzaqda (kənd) trafiki azalt
+-- Mülki (adi) avtomobil trafiki — SÖNDÜRÜLÜB
+Config.AmbientVehicles = false
+
+-- NPC xidmət maşınları
+Config.ServiceVehicles = {
+    enabled = true,
+    maxVehicles = 14,        -- eyni anda neçə NPC maşını olsun
+    spawnRadius = 220.0,     -- oyunçudan bu qədər uzaqda yaranır
+    despawnRadius = 420.0,   -- bu qədər uzaqlaşsa silinir
+    spawnInterval = 4000,    -- yeni maşın yoxlama tezliyi (ms)
+    minSpeed = 8.0,          -- m/s
+    maxSpeed = 16.0,
+}
+
+-- =====================================================================
+-- İCAZƏ VERİLƏN NPC NƏQLİYYATI
+-- =====================================================================
+
+Config.VehiclePools = {
+    {
+        id = 'taxi',
+        label = 'Taksi',
+        weight = 35,                       -- nə qədər tez-tez yaransın
+        models = { 'taxi' },
+        ped = 'a_m_m_business_01',
+        speed = 14.0,
+        color = { 252, 212, 40 },
+    },
+    {
+        id = 'bus',
+        label = 'Avtobus',
+        weight = 20,
+        models = { 'bus', 'coach' },
+        ped = 's_m_m_lathandy_01',
+        speed = 10.0,
+        color = { 60, 90, 160 },
+    },
+    {
+        id = 'construction',
+        label = 'Tikinti',
+        weight = 25,
+        models = { 'dump', 'mixer2', 'flatbed', 'bulldozer', 'handler' },
+        ped = 's_m_m_construction_01',
+        speed = 8.0,
+        color = { 220, 160, 30 },
+    },
+    {
+        id = 'utility',
+        label = 'Kommunal',
+        weight = 12,
+        models = { 'trash', 'towtruck', 'mule', 'benson' },
+        ped = 's_m_m_garbage',
+        speed = 9.0,
+        color = { 120, 130, 120 },
+    },
+    {
+        id = 'delivery',
+        label = 'Çatdırılma',
+        weight = 8,
+        models = { 'boxville2', 'pony2' },
+        ped = 'a_m_m_delivery_01',
+        speed = 12.0,
+        color = { 200, 200, 200 },
+    },
+}
+
+-- Şəhərdən çox uzaqda (kənd) daha az maşın
 Config.RemoteMultiplier = 0.5
-Config.RemoteDistance = 2500.0     -- mərkəzdən bu qədər uzaqda
+Config.RemoteDistance = 2500.0

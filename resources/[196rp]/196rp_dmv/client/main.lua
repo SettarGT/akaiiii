@@ -1,5 +1,8 @@
 -- 196 RP | Sürücülük məktəbi — müştəri tərəfi
 
+-- Əvvəlcədən elan (qarşılıqlı çağırışlar üçün)
+local StartTheoryExam, FinishTheoryExam, FinishDrivingTest
+
 local hasLicense = false
 local licenseChecked = false
 local drivingTest = false
@@ -136,7 +139,7 @@ local function AskQuestion()
     end)
 end
 
-local function StartTheoryExam()
+StartTheoryExam = function()
     theoryStep = 0
     theoryAnswers = {}
     theoryCorrect = 0
@@ -144,7 +147,7 @@ local function StartTheoryExam()
     AskQuestion()
 end
 
-local function FinishTheoryExam()
+FinishTheoryExam = function()
     ESX.TriggerServerCallback('196rp_dmv:submitExam', function(passed, correct)
         theoryCorrect = correct
         if passed then
@@ -214,7 +217,7 @@ CreateThread(function()
     end
 end)
 
-local function FinishDrivingTest()
+FinishDrivingTest = function()
     if not drivingTest then return end
     drivingTest = false
 

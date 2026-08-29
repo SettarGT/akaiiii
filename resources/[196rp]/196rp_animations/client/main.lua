@@ -2,6 +2,9 @@
 -- /anim əmri ilə açılır: kateqoriya → animasiya seç → oynanır.
 -- ESC / hərəkət animasiyanı dayandırır.
 
+-- Əvvəlcədən elan (qarşılıqlı çağırışlar üçün)
+local OpenAnimMenu
+
 local playing = false
 local currentDict = nil
 
@@ -95,7 +98,7 @@ local function OpenCategoryMenu()
 end
 
 -- Kateqoriyanın animasiyalarını göstər
-local function OpenAnimMenu(catIndex)
+OpenAnimMenu = function(catIndex)
     local cat = Config.Categories[catIndex]
     local menu = {}
     for j = 1, #cat.items do

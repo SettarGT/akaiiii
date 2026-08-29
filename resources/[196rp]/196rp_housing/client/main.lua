@@ -136,6 +136,30 @@ local function OpenOwnedHouseMenu(house)
     end)
 end
 
+local function OpenGuestHouseMenu(house)
+    local data = houseCache[house.id]
+
+    ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'house_guest_menu', {
+        title = ('%s (giriş icazəniz var)'):format(house.name),
+        align = 'top-left',
+        elements = {
+            { label = 'Evə daxil olun', value = 'enter' },
+        }
+    }, function(menuData, menu)
+        menu.close()
+
+        if menuData.current.value == 'enter' then
+            if data and data.locked then
+                ESX.ShowNotification('~r~Ev qıfıllıdır!~s~', 'error')
+                return
+            end
+            EnterHouse(house)
+        end
+    end, function(menuData, menu)
+        menu.close()
+    end)
+end
+
 local function BuyHouse(house)
     ESX.UI.Menu.Open('dialog', GetCurrentResourceName(), 'buy_confirm', {
         title = ('~y~%s~s~\n%s\nQiymət: ~g~%s$~s~. Almaq istəyirsiniz?\n(hə / yox)'):format(house.name, house.desc, house.price)
@@ -243,6 +267,11 @@ CreateThread(function()
                 if IsControlJustPressed(0, 38) then
                     OpenOwnedHouseMenu(nearHouse)
                 end
+            elseif data and data.access then
+                ESX.TextUI(('[E] — ~y~%s~s~ (giriş icazəniz var)'):format(nearHouse.name), 'info')
+                if IsControlJustPressed(0, 38) then
+                    OpenGuestHouseMenu(nearHouse)
+                end
             else
                 ESX.TextUI(('[E] — ~y~%s~s~ — SATIŞDA (~g~%s$~s~)'):format(nearHouse.name, nearHouse.price), 'info')
                 if IsControlJustPressed(0, 38) then
@@ -260,7 +289,7 @@ CreateThread(function()
                     for i = 1, #Config.Houses do
                         local house = Config.Houses[i]
                         local data = houseCache[house.id]
-                        if data and data.owned then
+                        if data and (data.owned or data.access) then
                             ExitHouse(house)
                             break
                         end

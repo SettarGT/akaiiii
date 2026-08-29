@@ -1,5 +1,8 @@
 -- 196 RP | Kazino və Lotereya — müştəri tərəfi
 
+-- Əvvəlcədən elan (qarşılıqlı çağırışlar üçün)
+local OpenBlackjackMenu, StartBlackjack, BlackjackActionMenu, OpenRouletteMenu, AskRouletteBet, OpenLotteryMenu
+
 local blips = {}
 
 CreateThread(function()
@@ -57,7 +60,7 @@ end)
 
 -- ==================== BLACKJACK ====================
 
-local function OpenBlackjackMenu()
+OpenBlackjackMenu = function()
     local menu = {
         { icon = 'fas fa-dice', title = '🃏 Blackjack', unselectable = true },
         { icon = 'fas fa-info-circle', title = 'Məqsəd: 21-ə yaxın olmaq. Dileri keçin!', unselectable = true },
@@ -77,7 +80,7 @@ local function OpenBlackjackMenu()
     end)
 end
 
-local function StartBlackjack(bet)
+StartBlackjack = function(bet)
     ESX.TriggerServerCallback('196rp_casino:blackjackStart', function(result, playerValue, dealerValue)
         if result == 'blackjack' then
             ESX.ShowNotification('~g~BLACKJACK! ~y~$' .. math.floor(bet * 2.5) .. '~s~ uddunuz!', 'success', 6000)
@@ -92,7 +95,7 @@ local function StartBlackjack(bet)
     end, bet)
 end
 
-local function BlackjackActionMenu(bet)
+BlackjackActionMenu = function(bet)
     local menu = {
         { icon = 'fas fa-hand-paper', title = 'Daha kart (Hit)', name = 'hit' },
         { icon = 'fas fa-hand-peace', title = 'Dayan (Stand)', name = 'stand' },
@@ -127,7 +130,7 @@ end
 
 -- ==================== RULET ====================
 
-local function OpenRouletteMenu()
+OpenRouletteMenu = function()
     local menu = {
         { icon = 'fas fa-circle-notch', title = '🎡 Rulet — Rəngə mərc', unselectable = true },
         { icon = 'fas fa-circle', title = '🔴 Qırmızı (x2)', name = 'red' },
@@ -141,7 +144,7 @@ local function OpenRouletteMenu()
     end)
 end
 
-local function AskRouletteBet(color)
+AskRouletteBet = function(color)
     local menu = {
         { icon = 'fas fa-coins', title = 'Mərc məbləği:', unselectable = true },
         { icon = '', title = '$ məbləğ', input = true, inputType = 'number', inputPlaceholder = '100', inputValue = 100, inputMin = Config.RouletteMinBet, inputMax = Config.RouletteMaxBet, name = 'amount' },
@@ -168,7 +171,7 @@ end
 
 -- ==================== LOTEREYA ====================
 
-local function OpenLotteryMenu()
+OpenLotteryMenu = function()
     ESX.TriggerServerCallback('196rp_casino:lotteryStatus', function(status)
         local menu = {
             { icon = 'fas fa-ticket-alt', title = '🎟 Lotereya', unselectable = true },

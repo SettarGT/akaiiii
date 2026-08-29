@@ -1295,3 +1295,301 @@ SET @q2 := IF(@auto = 0,
   'ALTER TABLE `user_licenses` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT',
   'DO 0');
 PREPARE st2 FROM @q2; EXECUTE st2; DEALLOCATE PREPARE st2;
+
+-- ====================================================================
+-- 196 RP ƏLAVƏ PAKET 2: HƏYAT TƏRZİ VƏ NƏQLİYYAT
+-- (196rp_lifestyle, 196rp_vehicle resursları üçün)
+-- ====================================================================
+
+-- ---------- Həyat tərzi: yeni əşyalar (bənd 5, 11) ----------
+INSERT IGNORE INTO `items` (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES
+('derman', 'Dərman', 1, 0, 1),
+('bismis_et', 'Bişmiş ət', 2, 0, 1),
+('bismis_baliq', 'Bişmiş balıq', 2, 0, 1),
+('salat', 'Meyvə salatı', 1, 0, 1);
+
+-- ---------- Şəxsi qeydlər dəftəri (bənd 12) ----------
+CREATE TABLE IF NOT EXISTS `196rp_notes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `identifier` varchar(60) NOT NULL,
+  `note` varchar(200) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `identifier` (`identifier`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------- Maşın açarları (bənd 45) ----------
+CREATE TABLE IF NOT EXISTS `196rp_vehicle_keys` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `plate` varchar(12) NOT NULL,
+  `identifier` varchar(60) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `plate_identifier` (`plate`, `identifier`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------- Maşın kilidləri (bənd 45) ----------
+CREATE TABLE IF NOT EXISTS `196rp_vehicle_locks` (
+  `plate` varchar(12) NOT NULL,
+  `locked` tinyint(1) NOT NULL DEFAULT 0,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`plate`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------- İcarə müqavilələri (bənd 47, 48, 49, 52) ----------
+CREATE TABLE IF NOT EXISTS `196rp_rentals` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `identifier` varchar(60) NOT NULL,
+  `kind` varchar(20) NOT NULL DEFAULT 'car',
+  `model` varchar(60) NOT NULL,
+  `plate` varchar(12) NOT NULL,
+  `price_per_day` int(11) NOT NULL DEFAULT 0,
+  `deposit` int(11) NOT NULL DEFAULT 0,
+  `started_at` int(11) NOT NULL DEFAULT 0,
+  `returned` tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `identifier` (`identifier`),
+  KEY `plate` (`plate`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------- Motodeliver işi (bənd 50) ----------
+INSERT IGNORE INTO `jobs` (`name`, `label`, `type`, `whitelisted`) VALUES ('motodeliver', 'Motodeliver', 'civ', 0);
+DELETE FROM `job_grades` WHERE `job_name` = 'motodeliver';
+INSERT INTO `job_grades` (`job_name`, `grade`, `name`, `label`, `salary`, `skin_male`, `skin_female`) VALUES
+('motodeliver', 0, 'kuryer', 'Kuryer', 70, '{}', '{}'),
+('motodeliver', 1, 'bas_kuryer', 'Baş kuryer', 110, '{}', '{}'),
+('motodeliver', 2, 'novbetci', 'Növbə rəisi', 160, '{}', '{}');
+
+-- ====================================================================
+-- 196 RP ƏLAVƏ PAKET 3: ŞƏHƏR İŞLƏRİ (196rp_civicjobs)
+-- Bəndlər 16, 17, 20, 22-27, 29-39
+-- ====================================================================
+
+-- ---------- Yeni əşyalar ----------
+INSERT IGNORE INTO `items` (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES
+('pizza', 'Pizza', 1, 0, 1),
+('paket', 'Bağlama', 2, 0, 1),
+('yuk', 'Yük', 5, 0, 1),
+('qezete', 'Qəzet', 1, 0, 1),
+('bal', 'Bal', 1, 0, 1),
+('sud', 'Süd', 1, 0, 1),
+('yumurta', 'Yumurta', 1, 0, 1),
+('gul', 'Gül', 1, 0, 1);
+
+-- ---------- Yeni işlər ----------
+INSERT IGNORE INTO `jobs` (`name`, `label`, `type`, `whitelisted`) VALUES
+('pizzaboy',    'Pizza çatdırma',    'civ', 0),
+('courier',     'Kuryer',            'civ', 0),
+('trucker',     'Yük daşıma',        'civ', 0),
+('electrician', 'Elektrikçi',        'civ', 0),
+('plumber',     'Santexnik',         'civ', 0),
+('gardener',    'Bağban',            'civ', 0),
+('dancer',      'Rəqqasə / Rəqqas',  'civ', 0),
+('beekeeper',   'Arıçı',             'civ', 0),
+('farmer',      'Heyvandar',         'civ', 0),
+('pharmacist',  'Əczaçı',            'civ', 0),
+('doctor',      'Həkim',             'civ', 0),
+('dentist',     'Stomatoloq',        'civ', 0),
+('vet',         'Veterinar',         'civ', 0),
+('beautician',  'Gözəllik salonu',   'civ', 0),
+('masseur',     'Masaj ustası',      'civ', 0),
+('detailer',    'Detallinq',         'civ', 0),
+('realestate',  'Əmlak agenti',      'civ', 0),
+('ticketeer',   'Bilet satıcısı',    'civ', 0);
+
+-- ---------- Rütbələr ----------
+DELETE FROM `job_grades` WHERE `job_name` IN
+('pizzaboy','courier','trucker','electrician','plumber','gardener','dancer','beekeeper',
+ 'farmer','pharmacist','doctor','dentist','vet','beautician','masseur','detailer','realestate','ticketeer');
+
+INSERT INTO `job_grades` (`job_name`, `grade`, `name`, `label`, `salary`, `skin_male`, `skin_female`) VALUES
+('pizzaboy', 0, 'catdirici', 'Çatdırıcı', 60, '{}', '{}'),
+('pizzaboy', 1, 'novbetci', 'Növbə rəisi', 100, '{}', '{}'),
+('courier', 0, 'kuryer', 'Kuryer', 70, '{}', '{}'),
+('courier', 1, 'bas_kuryer', 'Baş kuryer', 110, '{}', '{}'),
+('trucker', 0, 'surucu', 'Yük sürücüsü', 120, '{}', '{}'),
+('trucker', 1, 'usta', 'Uzaq məsafə sürücüsü', 180, '{}', '{}'),
+('trucker', 2, 'dispetcer', 'Dispetçer', 240, '{}', '{}'),
+('electrician', 0, 'usta', 'Elektrik ustası', 110, '{}', '{}'),
+('electrician', 1, 'bas_usta', 'Baş usta', 160, '{}', '{}'),
+('plumber', 0, 'usta', 'Santexnik ustası', 100, '{}', '{}'),
+('plumber', 1, 'bas_usta', 'Baş usta', 150, '{}', '{}'),
+('gardener', 0, 'bagban', 'Bağban', 80, '{}', '{}'),
+('gardener', 1, 'sahib', 'Yaşıllıq sahəsi rəisi', 120, '{}', '{}'),
+('dancer', 0, 'reqqas', 'Rəqqas', 90, '{}', '{}'),
+('dancer', 1, 'ulduz', 'Səhnə ulduzu', 140, '{}', '{}'),
+('beekeeper', 0, 'arici', 'Arıçı', 80, '{}', '{}'),
+('beekeeper', 1, 'sahib', 'Təsərrüfat sahibi', 130, '{}', '{}'),
+('farmer', 0, 'fermer', 'Ferma işçisi', 85, '{}', '{}'),
+('farmer', 1, 'sahib', 'Ferma sahibi', 135, '{}', '{}'),
+('pharmacist', 0, 'kotekci', 'Əczaçı köməkçisi', 110, '{}', '{}'),
+('pharmacist', 1, 'eczaci', 'Əczaçı', 170, '{}', '{}'),
+('doctor', 0, 'intern', 'İntern', 140, '{}', '{}'),
+('doctor', 1, 'hekim', 'Həkim', 220, '{}', '{}'),
+('doctor', 2, 'bas_hekim', 'Baş həkim', 300, '{}', '{}'),
+('dentist', 0, 'hek', 'Diş həkimi', 180, '{}', '{}'),
+('dentist', 1, 'bas_hek', 'Baş diş həkimi', 250, '{}', '{}'),
+('vet', 0, 'vet', 'Veterinar', 150, '{}', '{}'),
+('vet', 1, 'bas_vet', 'Baş veterinar', 210, '{}', '{}'),
+('beautician', 0, 'usta', 'Gözəllik ustası', 95, '{}', '{}'),
+('beautician', 1, 'sahib', 'Salon sahibi', 145, '{}', '{}'),
+('masseur', 0, 'masajci', 'Masaj ustası', 100, '{}', '{}'),
+('masseur', 1, 'sahib', 'Salon sahibi', 150, '{}', '{}'),
+('detailer', 0, 'cilalayici', 'Cilalayıcı', 100, '{}', '{}'),
+('detailer', 1, 'usta', 'Detallinq ustası', 160, '{}', '{}'),
+('realestate', 0, 'agent', 'Agent', 130, '{}', '{}'),
+('realestate', 1, 'bas_agent', 'Baş agent', 200, '{}', '{}'),
+('ticketeer', 0, 'satici', 'Bilet satıcısı', 70, '{}', '{}'),
+('ticketeer', 1, 'administrator', 'Administrator', 110, '{}', '{}');
+
+-- ====================================================================
+-- 196 RP ƏLAVƏ PAKET 4: QANUNSUZ FƏALİYYƏTLƏR (196rp_illegal)
+-- Bəndlər 65-70
+-- ====================================================================
+
+-- ---------- Alətlər və qanunsuz əşyalar ----------
+INSERT IGNORE INTO `items` (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES
+('qifil_acari', 'Qıfıl açarı', 1, 0, 1),
+('som', 'Şom', 3, 0, 1),
+('saxta_pul', 'Saxta pul', 0, 1, 1),
+('saxta_vesiqe', 'Saxta vəsiqə', 1, 1, 1),
+('qirinti', 'Metal qırıntı', 2, 0, 1);
+
+-- ---------- Gizli yeraltı anbar (bənd 69) ----------
+CREATE TABLE IF NOT EXISTS `196rp_hideout_stash` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `identifier` varchar(60) NOT NULL,
+  `item` varchar(50) NOT NULL,
+  `count` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `identifier_item` (`identifier`, `item`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------- Oğurlanmış maşınlar (bənd 68, 82 — polis radarı) ----------
+CREATE TABLE IF NOT EXISTS `196rp_stolen_vehicles` (
+  `plate` varchar(12) NOT NULL,
+  `model` varchar(60) NOT NULL DEFAULT 'unknown',
+  `stolen_at` int(11) NOT NULL DEFAULT 0,
+  `recovered` tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`plate`),
+  KEY `recovered` (`recovered`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ====================================================================
+-- 196 RP ƏLAVƏ PAKET 5: EV DAXİLİ İMKANLAR (196rp_home)
+-- Bəndlər 71, 73, 74, 75, 76, 78, 79, 80
+-- ====================================================================
+
+-- ---------- Ev açarları (bənd 71) ----------
+CREATE TABLE IF NOT EXISTS `196rp_house_keys` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `house_id` varchar(50) NOT NULL,
+  `identifier` varchar(60) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `house_identifier` (`house_id`, `identifier`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------- Ev qonaqları (bənd 79) ----------
+CREATE TABLE IF NOT EXISTS `196rp_house_guests` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `house_id` varchar(50) NOT NULL,
+  `identifier` varchar(60) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `house_identifier` (`house_id`, `identifier`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------- Ev seyfləri (bənd 73) ----------
+CREATE TABLE IF NOT EXISTS `196rp_house_safes` (
+  `house_id` varchar(50) NOT NULL,
+  `money` int(11) NOT NULL DEFAULT 0,
+  `items` longtext DEFAULT NULL,
+  PRIMARY KEY (`house_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------- Ev parametrləri: divar rəngi və spawn (bəndlər 74, 80) ----------
+CREATE TABLE IF NOT EXISTS `196rp_house_settings` (
+  `house_id` varchar(50) NOT NULL,
+  `wall_color` int(11) DEFAULT NULL,
+  `spawn_x` float DEFAULT NULL,
+  `spawn_y` float DEFAULT NULL,
+  `spawn_z` float DEFAULT NULL,
+  `spawn_h` float DEFAULT 0,
+  `spawn_house` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`house_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------- Ev icarəsi (bənd 75) ----------
+CREATE TABLE IF NOT EXISTS `196rp_house_rentals` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `house_id` varchar(50) NOT NULL,
+  `owner` varchar(60) NOT NULL,
+  `renter` varchar(60) DEFAULT NULL,
+  `price` int(11) NOT NULL DEFAULT 0,
+  `active` tinyint(1) NOT NULL DEFAULT 1,
+  `paid_out` tinyint(1) NOT NULL DEFAULT 0,
+  `started_at` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `house_id` (`house_id`),
+  KEY `renter` (`renter`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ====================================================================
+-- 196 RP ƏLAVƏ PAKET 6: ƏLAVƏ VƏSİQƏLƏR (196rp_licenses, bənd 1)
+-- ====================================================================
+
+-- Təyyarə vəsiqəsi növü (digərləri artıq mövcuddur: drive_bike, drive_truck, boat)
+INSERT IGNORE INTO `licenses` (`type`, `label`) VALUES
+('pilot', 'Təyyarə vəsiqəsi');
+
+-- Mövcud vəsiqə növlərinin Azərbaycanca adları
+UPDATE `licenses` SET `label` = 'Sürücülük vəsiqəsi' WHERE `type` = 'dmv';
+UPDATE `licenses` SET `label` = 'Avtomobil vəsiqəsi' WHERE `type` = 'drive';
+UPDATE `licenses` SET `label` = 'Motosiklet vəsiqəsi' WHERE `type` = 'drive_bike';
+UPDATE `licenses` SET `label` = 'Yük maşını vəsiqəsi' WHERE `type` = 'drive_truck';
+UPDATE `licenses` SET `label` = 'Qayıq vəsiqəsi' WHERE `type` = 'boat';
+
+-- ====================================================================
+-- 196 RP ƏLAVƏ PAKET 7: DÖVLƏT QÜVVƏLƏRİ (196rp_policeadv)
+-- Bəndlər 81-89
+-- ====================================================================
+
+-- ---------- Xidmət stajı (bənd 86) ----------
+CREATE TABLE IF NOT EXISTS `196rp_service` (
+  `identifier` varchar(60) NOT NULL,
+  `job` varchar(50) NOT NULL,
+  `started_at` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`identifier`),
+  KEY `job` (`job`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ====================================================================
+-- 196 RP ƏLAVƏ PAKET 8: SOSİAL SİSTEMLƏR (196rp_social)
+-- Bəndlər 97, 98, 99, 100
+-- ====================================================================
+
+-- ---------- Əşyalar ----------
+INSERT IGNORE INTO `items` (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES
+('uzuk', 'Nişan üzüyü', 1, 1, 1),
+('hediyye', 'Hədiyyə paketi', 2, 0, 1);
+
+-- ---------- Evlilik / nişan (bənd 98) ----------
+CREATE TABLE IF NOT EXISTS `196rp_marriages` (
+  `identifier` varchar(60) NOT NULL,
+  `partner` varchar(60) NOT NULL,
+  `married_at` int(11) NOT NULL DEFAULT 0,
+  `status` varchar(20) NOT NULL DEFAULT 'engaged',
+  PRIMARY KEY (`identifier`),
+  KEY `partner` (`partner`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------- Dostluq (bənd 99) ----------
+CREATE TABLE IF NOT EXISTS `196rp_friends` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `identifier` varchar(60) NOT NULL,
+  `friend` varchar(60) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `identifier_friend` (`identifier`, `friend`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

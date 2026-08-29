@@ -66,6 +66,30 @@ Config.Categories = {
         }
     },
     {
+        name = 'reqs',
+        label = '💃 Rəqs',
+        items = {
+            { label = 'Klub rəqsi (yavaş)', dict = 'anim@mp_nightclub@mini@dance@dance_solo@female@var_a@', lib = 'med_center' },
+            { label = 'Klub rəqsi (sürətli)', dict = 'anim@mp_nightclub@mini@dance@dance_solo@female@var_b@', lib = 'high_center' },
+            { label = 'Solo rəqs (kişi)', dict = 'anim@mp_nightclub@mini@dance@dance_solo@male@var_a@', lib = 'med_center' },
+            { label = 'Cütlük rəqsi', dict = 'anim@mp_nightclub@mini@dance@dance_paired@dance_a@', lib = 'med_center' },
+            { label = 'Gecə klubu (əyləşmə)', scenario = 'WORLD_HUMAN_PARTYING' },
+            { label = 'DJ kimi', dict = 'anim@mp_nightclub@dj@idle@', lib = 'idle_a' },
+            { label = 'Musiqi ilə yellənmə', dict = 'anim@mp_nightclub@lazlow@ig1_v2@', lib = 'low_idle' },
+        }
+    },
+    {
+        name = 'selfi',
+        label = '📸 Selfi və foto',
+        items = {
+            { label = 'Selfi çək', dict = 'cellphone@self@trevor@', lib = 'chest_bump' },
+            { label = 'Selfi (gülümsə)', dict = 'cellphone@self@franklin@', lib = 'peace' },
+            { label = 'Foto çək', dict = 'cellphone@in_car@ps', lib = 'cellphone_text_read_base' },
+            { label = 'Kamera tut', scenario = 'WORLD_HUMAN_PAPARAZZI' },
+            { label = 'Qrup fotosu', dict = 'cellphone@self@michael@', lib = 'finger_point' },
+        }
+    },
+    {
         name = 'diger',
         label = '🎭 Digər',
         items = {

@@ -15,11 +15,32 @@ ESX.RegisterServerCallback('196rp_housing:getHouses', function(source, cb)
         'SELECT `house_id`, `owner`, `locked` FROM `196rp_houses` WHERE `owner` IS NOT NULL'
     ) or {}
 
+    -- Giriş icazəsi: açar sahibləri, qonaqlar və kirayəçilər (196rp_home)
+    local keyRows = MySQL.query.await(
+        'SELECT `house_id` FROM `196rp_house_keys` WHERE `identifier` = ?', { xPlayer.identifier }) or {}
+    local guestRows = MySQL.query.await(
+        'SELECT `house_id` FROM `196rp_house_guests` WHERE `identifier` = ?', { xPlayer.identifier }) or {}
+    local rentRows = MySQL.query.await(
+        'SELECT `house_id` FROM `196rp_house_rentals` WHERE `renter` = ? AND `active` = 1', { xPlayer.identifier }) or {}
+
+    local accessSet = {}
+    for i = 1, #keyRows do
+        accessSet[keyRows[i].house_id] = true
+    end
+    for i = 1, #guestRows do
+        accessSet[guestRows[i].house_id] = true
+    end
+    for i = 1, #rentRows do
+        accessSet[rentRows[i].house_id] = true
+    end
+
     local result = {}
     for i = 1, #rows do
+        local isOwner = rows[i].owner == xPlayer.identifier
         result[rows[i].house_id] = {
-            owned = rows[i].owner == xPlayer.identifier,
-            locked = (rows[i].locked or 0) == 1
+            owned = isOwner,
+            locked = (rows[i].locked or 0) == 1,
+            access = isOwner or accessSet[rows[i].house_id] == true
         }
     end
 
@@ -109,6 +130,9 @@ ESX.RegisterServerCallback('196rp_housing:sellHouse', function(source, cb, house
     xPlayer.addAccountMoney('bank', refund)
 
     MySQL.update.await('UPDATE `196rp_houses` SET `owner` = NULL, `locked` = 0 WHERE `house_id` = ?', { houseId })
+
+    -- Açar / qonaq / icarə qeydlərinin təmizlənməsi üçün (196rp_home dinləyir)
+    TriggerEvent('196rp_housing:sold', houseId)
 
     cb(true, ('~g~%s satıldı!~s~ Bankınıza ~y~%s$~s~ köçürüldü.'):format(house.name, refund))
 end)

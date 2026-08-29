@@ -39,7 +39,17 @@
 | 🚸 **Yol nişanları** | 8 sürət həddi zonası — zonaya girəndə limit bildirilir |
 | 🐾 **Ev heyvanları** | Mağazada 7 it + pişik növləri; gəzdirmə, əmrlər, yemləmə, aclıq/sevinc sistemi (`/heyvan`) |
 | 🚔 **Dövlət formaları** | Polis (4 rütbə), TİB (3), Yanğınsöndürən (2) — **196 loqosu yalnız bu formalardadır**, mülki geyimlərdə yoxdur |
-| 🏙️ **Canlı şəhər** | Piyada və avtomobil trafiki həmişə aktiv — şəhər heç vaxt boş qalmır |
+| 🏙️ **Canlı şəhər** | NPC trafiki **yalnız taksi, avtobus və tikinti/kommunal maşınlarından** ibarətdir (mülki NPC avtomobili yoxdur), piyadalar həmişə aktivdir |
+| 🧍 **Həyat tərzi** | Gigiyena (5 duş nöqtəsi), siqaret, alkoqol/sərxoşluq, stress, üzgüçülük, hava/qış soyuğu, xəstəlik və həkim qəbulu, yemək bişirmə, şəxsi qeydlər (`/qeyd`), doğum günü hədiyyəsi, mövsümlər |
+| 🎓 **Əlavə vəsiqələr** | Motosiklet, yük maşını, təyyarə və qayıq üçün ayrı imtahan (hədəfə çatma + vaxt limiti), `/vesiqeler` |
+| 🔑 **Maşın açarları + signal** | `/kilidle`, `/acarlar`, `/acarver` — açarsız mühərrik işə düşmür; ← → ilə dönmə işıqları, X ilə havari |
+| 🚙 **İcarə sistemi** | Avtomobil, velosiped (2 stansiya), elektrik skuter və qayıq icarəsi — gündəlik qiymət + depozit, qaytarma |
+| 🛵 **Motodeliver** | Motosikletlə yemək çatdırma işi (km-ə görə ödəniş + məsləhət) |
+| 💼 **Şəhər işləri paketi** | Pizza, kuryer, yük logistikası, jurnalist, elektrikçi, santexnik, bağban, yanacaqçı, rəqqasə, arıçı, heyvandar, əczaçı, həkim, stomatoloq, veterinar, gözəllik, masaj, detallinq, əmlak agenti, bilet satıcısı |
+| 🕵️ **Qanunsuz tərəf** | Qıfıl açarı və şom, rehin alma (`/rehin`), saxta pul çapı, müsadirə anbarına basqın, gizli yeraltı otaq + anbar, zibil ərazisində maşın doğrama |
+| 🏡 **Ev imkanları** | Ev açarları və qonaqlar, seyf (pul + əşya), 10 divar rəngi, icarəyə vermə, ev telefonu, balkon, yataq/spawn nöqtəsi (`/ev`) |
+| 🚔 **Dövlət qüvvələri (əlavə)** | Polis qərargahı (kompüter axtarışı, cəbhəxana), `/radar` oğurluq aşkarlaması, `/yolyoxla`, K9 iti (`/it`, `/axtar`), `/swat`, staj əlavəsi, TİB helikopteri, yanğın dərəcələri, `/fovqelade` |
+| 💍 **Sosial sistemlər** | Hədiyyə (`/hediyye`), evlilik (üzük + toy mərasimi + `/bosan`), dostluq (`/dost`, `/dostlar`), 7 şəhər missiyası (`/missiya`) |
 
 ---
 
@@ -180,6 +190,24 @@ Hamısı qaydasındadırsa, FiveM-də serveri axtarın: **"196 RP"** → daxil o
 | `/heyvan` | hamı | Ev heyvanları menyusu (çağır, gəzdir, yemlə, sat) |
 | `/coords` | admin | Hazırkı koordinatları göstərir |
 | `/heal [id]`, `/revive [id]` | admin | Oyunçunu müalicə edir / canlandırır |
+| `/vaziyyet` | hamı | Gigiyena, stress, sərxoşluq, xəstəlik və mövsüm vəziyyəti |
+| `/qeyd <mətn>`, `/qeydler` | hamı | Şəxsi qeyd yazır / qeydlər dəftərini açır |
+| `/kilidle` | hamı | Ən yaxın maşını kilidləyir/açır (açar lazımdır) |
+| `/acarlar`, `/acarver [id]` | hamı | Açar siyahısı / açarı başqasına vermə |
+| `/vesiqeler` | hamı | Hansı vəsiqələrin olduğunu göstərir |
+| `/ev` | ev sahibi/kirayəçi | Ev menyusu: yataq, seyf, divar rəngi, icarə, açarlar, qonaqlar, balkon, telefon |
+| `/rehin`, `/rehiniburax` | hamı | Yaxınlıqdakı oyunçunu rehin alır / buraxır (polis xəbərdar olur) |
+| `/legvet` | işçi | Aktiv çatdırılma/tapşırığı ləğv edir |
+| `/radar`, `/yolyoxla` | polis | Yaxın maşını yoxlayır (oğurluq + sürət) / sürücünün vəsiqələrini yoxlayır |
+| `/it`, `/axtar` | polis (K9) | Polis itini çağırır / yaxındakı şəxsi axtarır |
+| `/swat` | polis (rütbə 3+) | SWAT təchizatı: qalxan, jilet, silahlar |
+| `/helikopter` | TİB (rütbə 2+) | Xəstəxana helikopteri çağırır |
+| `/ruhbeler` | yanğınsöndürən | Dərəcə səlahiyyətlərini göstərir |
+| `/fovqelade <mətn>` | polis/TİB/yanğın rəisi | Bütün şəhərə mülki müdafiə xəbərdarlığı |
+| `/hediyye` | hamı | Yaxınlıqdakı oyunçuya pul və ya əşya hədiyyə edir |
+| `/evlilikteklifi`, `/toy`, `/bosan` | hamı | Evlilik təklifi, toy mərasimi, boşanma |
+| `/dost`, `/dostlar` | hamı | Dost əlavə edir / dost siyahısı (xəritədə göstərmə, pul göndərmə) |
+| `/missiya`, `/missiyadayandır` | hamı | Missiya lövhəsindən tapşırıq götürür / ləğv edir |
 
 ---
 
@@ -196,7 +224,7 @@ akaiiii/
 └── resources/
     ├── [core]/             ← ESX framework (16 əsas resurs, AZ lokalları ilə)
     ├── [oxmysql]/          ← MySQL bağlantı resursu
-    └── [196rp]/            ← 18 xüsusi resurs (iş, məkan, giriş ekranı və s.)
+    └── [196rp]/            ← 39 xüsusi resurs (iş, məkan, həyat tərzi, dövlət qüvvələri və s.)
 ```
 
 ### 196 RP xüsusi resursları
@@ -228,6 +256,20 @@ akaiiii/
 | `196rp_ems` | TİB növbəsi, müalicə, respawn |
 | `196rp_rpcommands` | `/me /do /try /ooc /report` |
 | `196rp_admin` | Admin əmrləri + ban sistemi |
+| `196rp_bus` | Nömrəli NPC avtobuslar, avtovağzal, taksi çağırışı |
+| `196rp_municipal` | Bələdiyyə işləri (saata görə yol təmiri / təmizlik / işıq dirəyi) |
+| `196rp_speedcam` | Sürət kameraları (xəbərdarlıq + cərimə) və yol nişanları |
+| `196rp_traffic` | NPC trafiki — yalnız taksi, avtobus, tikinti və kommunal maşınları |
+| `196rp_pets` | Ev heyvanları (it/pişik, gəzdirmə, yemləmə) |
+| `196rp_dutyuniform` | Dövlət formaları (196 loqosu yalnız burada) |
+| `196rp_lifestyle` | Gigiyena, siqaret, alkoqol, stress, üzgüçülük, hava, bişirmə, qeydlər, ad günü, mövsümlər |
+| `196rp_licenses` | Əlavə vəsiqələr: motosiklet, yük maşını, təyyarə, qayıq |
+| `196rp_vehicle` | Maşın açarları, dönmə işıqları, icarə (avtomobil/velosiped/skuter/qayıq), motodeliver |
+| `196rp_civicjobs` | 19 şəhər işi (çatdırılma, sahə və sabit nöqtə işləri) |
+| `196rp_illegal` | Qıfıl açarı, şom, rehin alma, dələduzluq, anbar basqını, gizli yer, zibil ərazisi |
+| `196rp_home` | Ev imkanları: açarlar, seyf, divar rəngi, icarə, telefon, balkon, qonaqlar, yataq |
+| `196rp_policeadv` | Qərargah, polis radarı, yol polisi, K9, SWAT, staj əlavəsi, helikopter, fövqəladə elan |
+| `196rp_social` | Hədiyyə, evlilik, dostluq, missiya sistemi |
 
 ---
 
