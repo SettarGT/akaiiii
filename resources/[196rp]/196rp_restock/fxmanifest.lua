@@ -11,6 +11,10 @@ shared_scripts {
     '@qb-core/shared/locale.lua',
 }
 
+client_scripts {
+    'client/main.lua',
+}
+
 server_scripts {
     '@oxmysql/lib/MySQL.lua',
     'server/main.lua',
@@ -19,5 +23,7 @@ server_scripts {
 dependencies {
     'qb-core',
     'qb-shops',
+    'qb-menu',
+    'qb-target',
     'oxmysql',
 }

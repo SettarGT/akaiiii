@@ -197,6 +197,33 @@ RegisterNetEvent('196rp_jobs:client:boostVehicle', function(plate)
     end
 end)
 
+
+-- ── Self-Repair stansiyası ──
+local function OpenSelfStation()
+    local veh = GetClosestVehicle()
+    if not veh then
+        QBCore.Functions.Notify('Yaxınlıqda maşın tapılmadı.', 'error')
+        return
+    end
+    local plate = GetVehicleNumberPlateText(veh)
+    local body = GetVehicleBodyHealth(veh)
+    local broken = math.max(100 - math.floor(body / 10), 0)
+    if broken <= 0 then
+        QBCore.Functions.Notify('Maşın zədəli deyil.', 'primary')
+        return
+    end
+    local price = math.ceil(Config.Mechanic.RepairPrice * (broken / 100) * Config.Mechanic.SelfRepairMultiplier)
+    local menu = {
+        { header = '🔧 Self-Repair Stansiyası', isMenuHeader = true, icon = 'fas fa-wrench' },
+        { header = ('🚗 Maşın: %s | Zədə: %d%%'):format(plate, broken), isMenuHeader = true },
+        { header = ('🛠 Təmir (2.5x) — ₣%d'):format(price), icon = 'fas fa-screwdriver', params = { plate = plate, damage = broken } },
+    }
+    exports['qb-menu']:openMenu(menu, function(selected)
+        if not selected or not selected.params then return end
+        TriggerServerEvent('196rp_jobs:server:selfRepair', selected.params.plate, selected.params.damage)
+    end)
+end
+
 -- ── Avtosalon ──
 local function OpenDealerMenu()
     local pData = QBCore.Functions.GetPlayerData()
@@ -291,6 +318,20 @@ CreateThread(function()
         }, {
             options = {
                 { label = ('[E] ' .. sp.label), icon = 'fas fa-coins', action = function() OpenSellPoint(sp) end },
+            },
+            distance = 2.5,
+        })
+    end
+
+    -- Self-repair stansiyası
+    if Config.Mechanic.Station then
+        local st = Config.Mechanic.Station
+        exports['qb-target']:AddBoxZone('196selfrepair', st.coords, st.radius, st.radius, {
+            name = '196selfrepair', heading = 0, debugPoly = false,
+            minZ = st.coords.z - 1, maxZ = st.coords.z + 3,
+        }, {
+            options = {
+                { label = '[E] ' .. st.label, icon = 'fas fa-screwdriver', action = OpenSelfStation },
             },
             distance = 2.5,
         })

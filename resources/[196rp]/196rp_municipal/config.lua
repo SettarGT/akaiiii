@@ -26,6 +26,16 @@ Config.Actions = {
         price = 5000,            -- ₣
         desc = 'Silah gəzdirmək üçün rəsmi icazə',
     },
+    press = {
+        label = '📷 Mətbuat Lisenziyası',
+        price = 2000,            -- ₣
+        desc = 'Reporter işi üçün rəsmi icazə',
+    },
+    lawyer = {
+        label = '⚖️ Vəkillik Lisenziyası',
+        price = 10000,           -- ₣
+        desc = 'Məhkəmədə vəkilə icazə',
+    },
 }
 
 -- İmtahan (nəzəri) — 10 sual, 60% keçid

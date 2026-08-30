@@ -183,6 +183,55 @@ RegisterNetEvent('196rp_municipal:server:getWeaponLicense', function()
     TriggerClientEvent('QBCore:Notify', src, '🔫 Silah lisenziyası verildi! (Silah mağazaları üçün tələb olunur)', 'success')
 end)
 
+
+-- ═══════════════════════════════════════════════════════════════
+-- Mətbuat və Vəkillik lisenziyaları
+-- ═══════════════════════════════════════════════════════════════
+
+RegisterNetEvent('196rp_municipal:server:getPressLicense', function()
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if not Player then return end
+    if GetMeta(src, 'presslicense') then
+        TriggerClientEvent('QBCore:Notify', src, 'Artıq mətbuat lisenziyanız var.', 'success')
+        return
+    end
+    if Player.PlayerData.money.cash < Config.Actions.press.price then
+        TriggerClientEvent('QBCore:Notify', src, ('Kifayət qədər pul yoxdur! (₣%s)'):format(Config.Actions.press.price), 'error')
+        return
+    end
+    Player.Functions.RemoveMoney('cash', Config.Actions.press.price, 'bələdiyyə-mətbuat')
+    SetMeta(src, 'presslicense', true)
+    GiveCardItem(src, 'presspass', {
+        firstname = Player.PlayerData.charinfo.firstname,
+        lastname = Player.PlayerData.charinfo.lastname,
+        type = 'Mətbuat lisenziyası (196 RP)',
+    })
+    TriggerClientEvent('QBCore:Notify', src, '📷 Mətbuat lisenziyası verildi!', 'success')
+end)
+
+RegisterNetEvent('196rp_municipal:server:getLawyerLicense', function()
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if not Player then return end
+    if GetMeta(src, 'lawyerlicense') then
+        TriggerClientEvent('QBCore:Notify', src, 'Artıq vəkillik lisenziyanız var.', 'success')
+        return
+    end
+    if Player.PlayerData.money.cash < Config.Actions.lawyer.price then
+        TriggerClientEvent('QBCore:Notify', src, ('Kifayət qədər pul yoxdur! (₣%s)'):format(Config.Actions.lawyer.price), 'error')
+        return
+    end
+    Player.Functions.RemoveMoney('cash', Config.Actions.lawyer.price, 'bələdiyyə-vəkillik')
+    SetMeta(src, 'lawyerlicense', true)
+    GiveCardItem(src, 'lawyerpass', {
+        firstname = Player.PlayerData.charinfo.firstname,
+        lastname = Player.PlayerData.charinfo.lastname,
+        type = 'Vəkillik lisenziyası (196 RP)',
+    })
+    TriggerClientEvent('QBCore:Notify', src, '⚖️ Vəkillik lisenziyası verildi!', 'success')
+end)
+
 -- ═══════════════════════════════════════════════════════════════
 -- /pasport — NUI kart göstər
 -- ═══════════════════════════════════════════════════════════════

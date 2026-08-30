@@ -12,3 +12,17 @@ Config.Kiosks = {
 Config.Fee = 500  -- ₣
 Config.Cooldown = 300 -- saniyə
 Config.PerItemAdd = 10 -- hər məhsula əlavə ediləcək minimum (qb-shops 10-50 verir)
+
+-- ═══════ Kuryer zənciri (v2) ═══════
+Config.Warehouse = {
+    label = '196 Logistika Anbarı',
+    coords = vector3(1100.5, -3095.5, 5.9),
+    radius = 3.0,
+}
+Config.Courier = {
+    OrderFee = 400,     -- sifariş verənin ödənişi (₣)
+    PayOut = 700,       -- kuryerin qazancı (₣)
+    Expire = 900,       -- sifarişin etibarlılığı (san)
+    MaxOrders = 6,      -- eyni anda maksimum aktiv sifariş
+    Jobs = { 'trucker' }, -- kuryer işləri
+}

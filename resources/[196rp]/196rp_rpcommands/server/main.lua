@@ -113,3 +113,25 @@ QBCore.Commands.Add('pm', 'Oyunçuya şəxsi mesaj göndər', {
         args = { ('[PM -> %s] %s'):format(target, fullText) }
     })
 end, false)
+
+-- ── /license: bütün lisenziyalar ──
+QBCore.Commands.Add('license', 'Lisenziyalarınızı göstər', {}, false, function(source)
+    local Player = QBCore.Functions.GetPlayer(source)
+    if not Player then return end
+    local meta = Player.PlayerData.metadata
+    local lines = {
+        '🪪 LİSENZİYALARINIZ',
+        ('📄 Pasport: %s | FİN: %s | Qan: %s'):format(
+            Player.PlayerData.charinfo.firstname .. ' ' .. Player.PlayerData.charinfo.lastname,
+            meta.fin or '—', meta.bloodtype or '—'),
+        ('🚗 Sürücülük: %s'):format(meta.drivinglicense and '✅ var' or '❌ yox'),
+        ('🔫 Silah: %s'):format(meta.weaponlicense and '✅ var' or '❌ yox'),
+        ('📷 Mətbuat: %s'):format(meta.presslicense and '✅ var' or '❌ yox'),
+        ('⚖️ Vəkillik: %s'):format(meta.lawyerlicense and '✅ var' or '❌ yox'),
+    }
+    TriggerClientEvent('chat:addMessage', source, {
+        color = { 247, 183, 51 },
+        multiline = true,
+        args = { table.concat(lines, '\n') },
+    })
+end)

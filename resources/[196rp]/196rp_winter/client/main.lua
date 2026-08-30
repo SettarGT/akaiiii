@@ -42,14 +42,30 @@ CreateThread(function()
     end
 end)
 
--- Avtomobil effekti
+-- Avtomobil effekti (qış + yağış)
+local RAIN_HASH = GetHashKey('RAIN')
+local THUNDER_HASH = GetHashKey('THUNDER')
+local BLIZZARD_HASH = GetHashKey('BLIZZARD')
+
+local function IsWetWeather()
+    local _, nextHash = GetNextWeatherTypeHashName()
+    if nextHash == RAIN_HASH or nextHash == THUNDER_HASH or nextHash == BLIZZARD_HASH then return true end
+    local _, prevHash = GetPrevWeatherTypeHashName()
+    if prevHash == RAIN_HASH or prevHash == THUNDER_HASH then return true end
+    return false
+end
+
 CreateThread(function()
     while true do
         Wait(5000)
-        if winter then
-            local ped = PlayerPedId()
-            if IsPedInAnyVehicle(ped, false) then
-                ApplyVehicleEffect(GetVehiclePedIsIn(ped, false))
+        local ped = PlayerPedId()
+        if IsPedInAnyVehicle(ped, false) then
+            local veh = GetVehiclePedIsIn(ped, false)
+            if winter then
+                ApplyVehicleEffect(veh)
+            elseif IsWetWeather() then
+                -- yağışda traksiya azalır: sürət həddi ~110 km/s
+                SetVehicleMaxSpeed(veh, 110 / 3.6)
             end
         end
     end

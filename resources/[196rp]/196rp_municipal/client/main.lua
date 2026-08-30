@@ -73,6 +73,18 @@ function OpenMenu()
             params = { event = '196rp_municipal:server:getWeaponLicense' },
         },
         {
+            header = Config.Actions.press.label,
+            txt = Config.Actions.press.desc .. ' | Qiymət: ₣' .. Config.Actions.press.price,
+            icon = 'camera',
+            params = { event = '196rp_municipal:server:getPressLicense' },
+        },
+        {
+            header = Config.Actions.lawyer.label,
+            txt = Config.Actions.lawyer.desc .. ' | Qiymət: ₣' .. Config.Actions.lawyer.price,
+            icon = 'scale-balanced',
+            params = { event = '196rp_municipal:server:getLawyerLicense' },
+        },
+        {
             header = '✖ Bağla',
             icon = 'xmark',
             params = { event = '196rp_municipal:client:closeMenu' },

@@ -76,3 +76,63 @@ RegisterNetEvent('196rp_cyber:server:getChance', function()
     end
     TriggerClientEvent('196rp_cyber:client:chance', src, chance)
 end)
+
+-- ═══════════════════════════════════════════════════════════════
+-- DarkWeb anonim elanlar bordu
+-- ═══════════════════════════════════════════════════════════════
+
+local dwBoard = {}   -- { { alias, text, ts } }
+local dwCooldown = {}
+
+local ALIASES = { 'Shadow_', 'Ghost_', 'Neon_', 'Xan_', 'Rus_', 'Void_', 'Cypher_', 'Null_' }
+
+local function RandAlias()
+    return ALIASES[math.random(#ALIASES)] .. math.random(1000, 9999)
+end
+
+-- /dw <mətn> — anonim elan
+QBCore.Commands.Add('dw', 'DarkWeb-də anonim elan yerləşdir (₣250)', { { name = 'mətn', help = 'Elan mətni' } }, false, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(source)
+    if not Player then return end
+    local text = table.concat(args, ' ')
+    if #text < 3 or #text > 500 then
+        TriggerClientEvent('QBCore:Notify', source, 'Elan 3–500 simvol olmalıdır.', 'error')
+        return
+    end
+    if dwCooldown[source] and dwCooldown[source] > os.time() then
+        TriggerClientEvent('QBCore:Notify', source, ('⏳ Soyutma: %d san'):format(dwCooldown[source] - os.time()), 'error')
+        return
+    end
+    if (Player.PlayerData.money.cash or 0) < 250 then
+        TriggerClientEvent('QBCore:Notify', source, 'Elan haqqı: ₣250', 'error')
+        return
+    end
+    Player.Functions.RemoveMoney('cash', 250, 'darkweb-ad')
+    dwBoard[#dwBoard + 1] = { alias = RandAlias(), text = text, ts = os.time() }
+    if #dwBoard > 50 then table.remove(dwBoard, 1) end
+    dwCooldown[source] = os.time() + 30
+    TriggerClientEvent('QBCore:Notify', source, '🕶 Elan DarkWeb-ə yerləşdirildi (anonim).', 'success')
+
+    -- polis qeydi
+    if GetResourceState('196rp_logs') == 'started' then
+        exports['196rp_logs']:Send('anticheat', '🌐 DarkWeb', 'Anonim elan yerləşdirildi (İz: əlçatmaz).', 0x8A2BE2)
+    end
+end)
+
+-- /dwbax — son 10 elan (çatda)
+QBCore.Commands.Add('dwbax', 'DarkWeb elanlarına bax (son 10)', {}, false, function(source)
+    if #dwBoard == 0 then
+        TriggerClientEvent('QBCore:Notify', source, 'DarkWeb boşdur.', 'primary')
+        return
+    end
+    local lines = { '🌐 DARKWEB — ANONİM ELANLAR' }
+    for i = math.max(1, #dwBoard - 9), #dwBoard do
+        local e = dwBoard[i]
+        lines[#lines + 1] = ('%s: %s'):format(e.alias, e.text)
+    end
+    TriggerClientEvent('chat:addMessage', source, {
+        color = { 138, 43, 226 },
+        multiline = true,
+        args = { table.concat(lines, '\n') },
+    })
+end)

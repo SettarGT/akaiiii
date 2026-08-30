@@ -249,3 +249,16 @@ say / sv_...          → Konfiquraşdırmalar
 /avtomobil, /sat, /avtosalon — Avtosalon: model seç + müştəri ID
 /rentqaytar — rentcarı qaytar (aeroport)
 Sim Kart: aeroport terminalında kiosk — yeni 196-XXX nömrə (₣500)
+
+── V1.10 ƏLAVƏLƏR ─────────────────────────────
+
+/license — Bütün lisenziyaların statusu (pasport, sürücülük, silah, mətbuat, vəkillik)
+/dw <mətn> — DarkWeb anonim elan (₣250, 30 san CD) — yalnız 196rp_cyber kiosku yanında deyil, hər yerdən
+/dwbax — DarkWeb son 10 elan (anonim)
+/iş mərkəzi [E] — iş seçimi + Alət Mağazası (qarmaq, pikak, balta, çəkic)
+/temir — mexanik yaxın maşını təmir edir
+/avtomobil, /sat, /avtosalon — Avtosalon model seçimi + müştəri ID (server-side)
+/evicarə — (baxılır)
+Backup: scripts/mysql-backup.sh (Linux cron 6 saat) / mysql-backup.bat (Windows Task Scheduler)
+Kuryer zənciri: mağazada [E] → "Kuryer sifarişi" (₣400) → Logistika Anbarından qutunu götür (trucker) → mağazaya çatdır (+₣700)
+Self-repair stansiyası: Avtosalon yanı — mexanik yoxdursa 2.5x qiymət

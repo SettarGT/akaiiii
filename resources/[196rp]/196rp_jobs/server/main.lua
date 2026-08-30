@@ -160,6 +160,27 @@ RegisterNetEvent('196rp_jobs:server:sell', function(sellId, item, amount)
     Notify(src, ('💰 %d × %s satıldı: +₣%d'):format(amount, item, price), 'success')
 end)
 
+
+-- ✦ Self-Repair stansiyası (mexanik duty yoxdursa — 2.5x)
+RegisterNetEvent('196rp_jobs:server:selfRepair', function(plate, damage)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if not Player then return end
+    damage = tonumber(damage) or 0
+    if damage <= 0 then
+        Notify(src, 'Maşın zədəli deyil.', 'primary')
+        return
+    end
+    local price = math.ceil(Config.Mechanic.RepairPrice * (damage / 100) * Config.Mechanic.SelfRepairMultiplier)
+    if (Player.PlayerData.money.cash or 0) < price then
+        Notify(src, ('Self-repair qiyməti: ₣%d — kifayət qədər pul yoxdur.'):format(price), 'error')
+        return
+    end
+    Player.Functions.RemoveMoney('cash', price, 'self-repair')
+    TriggerClientEvent('196rp_jobs:client:fixVehicle', src, plate)
+    Notify(src, ('🔧 Self-repair tamamlandı (-₣%d)'):format(price), 'success')
+end)
+
 -- ✦ Mexanik: təmir
 RegisterNetEvent('196rp_jobs:server:mechRepair', function(plate, damage)
     local src = source

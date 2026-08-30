@@ -50,7 +50,12 @@ Config.Mechanic = {
     RepairPrice = 400,          -- ₣ (duty varsa 1x)
     BoostPrice = 300,           -- ₣ (təkər + yanacaq)
     MaxDistance = 6.0,
-    SelfRepairMultiplier = 2.5, -- duty yoxdursa
+    SelfRepairMultiplier = 2.5, -- duty yoxdursa (self-repair stansiyası)
+    Station = {
+        label = 'Self-Repair Stansiyası (2.5x)',
+        coords = vector3(-48.27, -1105.42, 26.42), -- Avtosalon yanı
+        radius = 4.0,
+    },
 }
 
 -- ═══════════ Avtosalon ═══════════
