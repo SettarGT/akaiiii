@@ -405,6 +405,87 @@ RegisterNetEvent('qb-houses:server:SetInsideMeta', function(insideId, bool)
     end
 end)
 
+
+-- ═══════════════════════════════════════════════════════════════
+-- 196 RP | EV İCARƏSİ
+-- ═══════════════════════════════════════════════════════════════
+
+local function RentPrice(house)
+    local base = Config.Houses[house] and Config.Houses[house].price or 10000
+    local p = math.floor(base * Config.Rent.Percent)
+    return math.max(Config.Rent.Min, math.min(Config.Rent.Max, p))
+end
+
+local function IsRenting(house, cid, cb)
+    MySQL.single('SELECT citizenid FROM 196_house_rent WHERE house = ? AND citizenid = ? AND until > ?', { house, cid, os.time() }, function(row)
+        cb(row ~= nil)
+    end)
+end
+
+-- İcarə (həftəlik)
+RegisterNetEvent('qb-houses:server:rentHouse', function(house)
+    local src = source
+    local Player = exports['qb-core']:GetPlayer(src)
+    if not Player or not Config.Rent.Enabled then return end
+    if not Config.Houses[house] then return end
+    if houseowneridentifier[house] and houseownercid[house] then
+        TriggerClientEvent('QBCore:Notify', src, Lang:t('error.house_rented'), 'error')
+        return
+    end
+    IsRenting(house, Player.PlayerData.citizenid, function(rented)
+        if rented then
+            TriggerClientEvent('QBCore:Notify', src, Lang:t('error.already_rented'), 'error')
+            return
+        end
+        local price = RentPrice(house)
+        MySQL.single('SELECT citizenid FROM 196_house_rent WHERE house = ? AND until > ?', { house, os.time() }, function(other)
+            if other then
+                TriggerClientEvent('QBCore:Notify', src, Lang:t('error.house_rented'), 'error')
+                return
+            end
+            if (Player.PlayerData.money.cash or 0) < price then
+                TriggerClientEvent('QBCore:Notify', src, Lang:t('error.not_enough_money_rent', { price = price }), 'error')
+                return
+            end
+            Player.Functions.RemoveMoney('cash', price, 'house-rent')
+            MySQL.insert('INSERT INTO 196_house_rent (house, citizenid, until) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE citizenid = VALUES(citizenid), until = VALUES(until)', {
+                house, Player.PlayerData.citizenid, os.time() + 7 * 24 * 3600,
+            })
+            TriggerClientEvent('QBCore:Notify', src, Lang:t('success.house_rented', { price = price, address = Config.Houses[house].adress }), 'success')
+            TriggerClientEvent('qb-houses:client:refreshHouse', src)
+        end)
+    end)
+end)
+
+-- İcarəni bitir
+RegisterNetEvent('qb-houses:server:cancelRent', function(house)
+    local src = source
+    local Player = exports['qb-core']:GetPlayer(src)
+    if not Player then return end
+    MySQL.update('DELETE FROM 196_house_rent WHERE house = ? AND citizenid = ?', { house, Player.PlayerData.citizenid })
+    TriggerClientEvent('QBCore:Notify', src, '📭 İcarə ləğv edildi.', 'primary')
+    TriggerClientEvent('qb-houses:client:refreshHouse', src)
+end)
+
+-- İcarə bitməsi yoxlanışı
+CreateThread(function()
+    while true do
+        Wait(60000)
+        MySQL.query('SELECT house, citizenid FROM 196_house_rent WHERE until < ?', { os.time() }, function(rows)
+            for _, r in ipairs(rows or {}) do
+                MySQL.update('DELETE FROM 196_house_rent WHERE house = ?', { r.house })
+                for _, src in ipairs(exports['qb-core']:GetCoreObject().Functions.GetPlayers()) do
+                    local P = exports['qb-core']:GetPlayer(src)
+                    if P and P.PlayerData.citizenid == r.citizenid then
+                        TriggerClientEvent('QBCore:Notify', src, Lang:t('error.rent_expired'), 'error')
+                        TriggerClientEvent('qb-houses:client:refreshHouse', src)
+                    end
+                end
+            end
+        end)
+    end
+end)
+
 -- Callbacks
 
 QBCore.Functions.CreateCallback('qb-houses:server:buyFurniture', function(source, cb, price)
@@ -425,7 +506,7 @@ QBCore.Functions.CreateCallback('qb-houses:server:ProximityKO', function(source,
     local src = source
     local Player = exports['qb-core']:GetPlayer(src)
     local retvalK = false
-    local retvalO
+    local retvalO = houseowneridentifier[house] and houseownercid[house] or false
 
     if Player then
         local identifier = Player.PlayerData.license
@@ -434,15 +515,16 @@ QBCore.Functions.CreateCallback('qb-houses:server:ProximityKO', function(source,
             retvalK = true
         elseif Player.PlayerData.job.name == 'realestate' then
             retvalK = true
-        else
-            retvalK = false
         end
-    end
-
-    if houseowneridentifier[house] and houseownercid[house] then
-        retvalO = true
-    else
-        retvalO = false
+        if not retvalO then
+            IsRenting(house, CharId, function(rented)
+                if rented then
+                    retvalK, retvalO = true, true
+                end
+                cb(retvalK, retvalO)
+            end)
+            return
+        end
     end
 
     cb(retvalK, retvalO)
@@ -472,11 +554,19 @@ QBCore.Functions.CreateCallback('qb-houses:server:isOwned', function(source, cb,
     local Player = exports['qb-core']:GetPlayer(src)
     if Player and Player.PlayerData and Player.PlayerData.job and Player.PlayerData.job.name == 'realestate' then
         cb(true)
-    elseif houseowneridentifier[house] and houseownercid[house] then
-        cb(true)
-    else
-        cb(false)
+        return
     end
+    if houseowneridentifier[house] and houseownercid[house] then
+        cb(true)
+        return
+    end
+    if Player and Player.PlayerData.citizenid then
+        IsRenting(house, Player.PlayerData.citizenid, function(rented)
+            cb(rented)
+        end)
+        return
+    end
+    cb(false)
 end)
 
 QBCore.Functions.CreateCallback('qb-houses:server:getHouseOwner', function(_, cb, house)

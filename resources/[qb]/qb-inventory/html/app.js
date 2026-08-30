@@ -207,6 +207,9 @@ const InventoryContainer = Vue.createApp({
             if (data.errorSlot)
                 this.inventoryError(data.errorSlot, data.errorInventory); // pass from inventory for from errors
         },
+        openOutfit() {
+            axios.post("https://qb-inventory/Clothing", {}).catch(() => {});
+        },
         async closeInventory() {
             this.clearDragData();
             let inventoryName = this.otherInventoryName;

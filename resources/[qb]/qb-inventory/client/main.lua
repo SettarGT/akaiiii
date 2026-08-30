@@ -199,6 +199,15 @@ RegisterNUICallback('AttemptPurchase', function(data, cb)
     end, data)
 end)
 
+
+-- 👕 Geyim (qarderob) — inventardan qısayol
+RegisterNUICallback('Clothing', function(_, cb)
+    SetNuiFocus(false, false)
+    TriggerEvent('qb-clothing:client:openMenu')
+    cb({})
+    return true
+end)
+
 RegisterNUICallback('CloseInventory', function(data, cb)
     SetNuiFocus(false, false)
     if data.name then

@@ -22,6 +22,7 @@
                         <div class="labels-container">
                             <div class="inventory-label">
                                 <p>{{ inventoryLabel }}</p>
+                                <button class="outfit-btn" @click="openOutfit" title="Qarderob (geyim hissələri)">👕 Geyim</button>
                             </div>
                             <div class="current-weight">
                                 <p>{{ (playerWeight / 1000).toFixed(1) }} / {{ (maxWeight / 1000).toFixed(1) }}</p>

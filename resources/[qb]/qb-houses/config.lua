@@ -13,6 +13,13 @@ Config.StashWeights = { -- Please follow by tiers!
 	}
 }
 
+Config.Rent = {
+    Enabled = true,
+    Percent = 0.1,   -- həftəlik icarə = alış qiymətinin 10%-i
+    Min = 500,
+    Max = 15000,
+}
+
 Config.Furniture = {
 	sofas = {
 		label = 'Sofas',

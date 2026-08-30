@@ -264,3 +264,10 @@ Kuryer zənciri: mağazada [E] → "Kuryer sifarişi" (₣400) → Logistika Anb
 Self-repair stansiyası: Avtosalon yanı — mexanik yoxdursa 2.5x qiymət
 
 /uniforma — İş geyimi (mexanik/avtosalon/mədən/meşə/inşaat/balıqçı) — aç/bağla
+
+── V1.10 ƏLAVƏLƏR ─────────────────────────────
+
+Ev icarəsi: satılmayan evin qapısına yaxınlaş → [E] menyu → "İcarə et" (₣500–15000/həftə, alışın 10%-i)
+/icarəqaytar — icarəni ləğv et (ev yaxınlığında)
+/vergibax — növbəti həftəlik vergi tarixi (avtomobil ₣250, ev ₣500/həftə)
+👕 Geyim düyməsi — inventar başlığında qarderob (qb-clothing) qısayolu

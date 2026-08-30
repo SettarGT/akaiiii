@@ -10,5 +10,14 @@ Config.ApplyTo = {
     Billing = true,       -- faktura ödənişləri
 }
 
+-- Həftəlik vergilər
+Config.Weekly = {
+    Enabled = true,
+    VehicleTax = 250,     -- ₣ / avtomobil / həftə
+    HouseTax = 500,       -- ₣ / ev / həftə
+    CheckInterval = 600,  -- 10 dəqiqəlik yoxlama
+    WeekSeconds = 604800, -- 7 gün
+}
+
 -- Admin əmri üçün ace
 Config.AdminAce = 'command'

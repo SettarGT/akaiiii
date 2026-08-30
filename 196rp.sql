@@ -524,3 +524,19 @@ INSERT IGNORE INTO `196_jobs` (`name`, `label`, `type`) VALUES
 ('construction', 'İnşaatçı', 'job'),
 ('mechanic', 'Mexanik', 'job'),
 ('cardealer', 'Avtosalon', 'job');
+
+-- ═══════ 196 RP | Ev icarəsi ═══════
+CREATE TABLE IF NOT EXISTS 196_house_rent (
+  `house` VARCHAR(50) NOT NULL,
+  `citizenid` VARCHAR(50) NOT NULL,
+  `until` INT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`house`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ═══════ 196 RP | Həftəlik vergilər ═══════
+CREATE TABLE IF NOT EXISTS 196_tax_bills (
+  `citizenid` VARCHAR(50) NOT NULL,
+  `veh_last` INT NOT NULL DEFAULT 0,
+  `house_last` INT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`citizenid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

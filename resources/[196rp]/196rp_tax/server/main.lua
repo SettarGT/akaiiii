@@ -80,3 +80,83 @@ RegisterCommand('vergi', function(source, args)
     end
     print(('[196RP] Vergi dərəcəsi dəyişdirildi: %s%%'):format(rate))
 end, false)
+
+
+-- ═══════════════════════════════════════════════════════════════
+-- Həftəlik vergilər (avtomobil ₣250, ev ₣500)
+-- ═══════════════════════════════════════════════════════════════
+
+local function ChargeWeekly(cid, name, vehicles, houses)
+    if vehicles <= 0 and houses <= 0 then return end
+    local amount = vehicles * Config.Weekly.VehicleTax + houses * Config.Weekly.HouseTax
+    local Player = QBCore.Functions.GetPlayerByCitizenId(cid)
+    if not Player then return end
+    local src = Player.PlayerData.source
+
+    local balance = (Player.PlayerData.money.bank or 0) + (Player.PlayerData.money.cash or 0)
+    if amount <= 0 or balance <= 0 then
+        TriggerClientEvent('QBCore:Notify', src, ('⚠️ Həftəlik vergi ödənilmədi (₣%d) — hesabınızda pul yoxdur.'):format(amount), 'error')
+        return
+    end
+    local fromBank = math.min(amount, (Player.PlayerData.money.bank or 0))
+    if fromBank > 0 then
+        Player.Functions.RemoveMoney('bank', fromBank, 'weekly-tax')
+    end
+    local rest = amount - fromBank
+    if rest > 0 then
+        Player.Functions.RemoveMoney('cash', rest, 'weekly-tax')
+    end
+    LogTax(src, 'weekly:vehicle+' .. vehicles .. ':house+' .. houses, amount)
+    TriggerClientEvent('QBCore:Notify', src, ('🏛 Həftəlik vergi: -₣%d (maşın %d × ₣250, ev %d × ₣500)'):format(amount, vehicles, houses), 'primary')
+end
+
+CreateThread(function()
+    while true do
+        Wait(Config.Weekly.CheckInterval * 1000)
+        if not Config.Weekly.Enabled then return end
+        local now = os.time()
+
+        -- avtomobillər
+        MySQL.query('SELECT citizenid, COUNT(*) AS c FROM player_vehicles GROUP BY citizenid', {}, function(vehRows)
+            for _, v in ipairs(vehRows or {}) do
+                MySQL.single('SELECT veh_last FROM 196_tax_bills WHERE citizenid = ?', { v.citizenid }, function(row)
+                    local last = row and row.veh_last or now - Config.Weekly.WeekSeconds
+                    if now - last >= Config.Weekly.WeekSeconds then
+                        MySQL.insert('INSERT INTO 196_tax_bills (citizenid, veh_last, house_last) VALUES (?, ?, 0) ON DUPLICATE KEY UPDATE veh_last = ?', {
+                            v.citizenid, now, now,
+                        })
+                        ChargeWeekly(v.citizenid, 'vehicle', v.c, 0)
+                    end
+                end)
+            end
+        end)
+
+        -- evlər
+        MySQL.query('SELECT citizenid, COUNT(*) AS c FROM player_houses GROUP BY citizenid', {}, function(houseRows)
+            for _, h in ipairs(houseRows or {}) do
+                MySQL.single('SELECT house_last FROM 196_tax_bills WHERE citizenid = ?', { h.citizenid }, function(row)
+                    local last = row and row.house_last or now - Config.Weekly.WeekSeconds
+                    if now - last >= Config.Weekly.WeekSeconds then
+                        MySQL.insert('INSERT INTO 196_tax_bills (citizenid, veh_last, house_last) VALUES (?, 0, ?) ON DUPLICATE KEY UPDATE house_last = ?', {
+                            h.citizenid, now, now,
+                        })
+                        ChargeWeekly(h.citizenid, 'house', 0, h.c)
+                    end
+                end)
+            end
+        end)
+    end
+end)
+
+-- /vergibax — növbəti ödəniş məlumatı
+RegisterCommand('vergibax', function(source)
+    local Player = QBCore.Functions.GetPlayer(source)
+    if not Player then return end
+    local cid = Player.PlayerData.citizenid
+    MySQL.single('SELECT veh_last, house_last FROM 196_tax_bills WHERE citizenid = ?', { cid }, function(row)
+        local nextV = (row and row.veh_last or 0) + Config.Weekly.WeekSeconds
+        local nextH = (row and row.house_last or 0) + Config.Weekly.WeekSeconds
+        TriggerClientEvent('QBCore:Notify', source,
+            ('🏛 Növbəti vergi: avtomobil %s, ev %s'):format(nextV > os.time() and os.date('%d.%m', nextV) or 'bu gün', nextH > os.time() and os.date('%d.%m', nextH) or 'bu gün'), 'primary')
+    end)
+end, false)

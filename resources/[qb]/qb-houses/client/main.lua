@@ -52,7 +52,18 @@ local function showEntranceHeaderMenu()
                 event = 'qb-houses:client:ViewHouse',
                 args = {}
             }
-        }
+        end
+        if Config.Houses[ClosestHouse] and Config.Rent and Config.Rent.Enabled then
+            local rp = Config.Houses[ClosestHouse].price or 10000
+            local rentPrice = math.max(Config.Rent.Min, math.min(Config.Rent.Max, math.floor(rp * Config.Rent.Percent)))
+            headerMenu[#headerMenu + 1] = {
+                header = Lang:t('menu.rent_house', { price = rentPrice }),
+                params = {
+                    event = 'qb-houses:server:rentHouse',
+                    args = { ClosestHouse }
+                }
+            }
+        end
     else
         if isOwned and HasHouseKey then
             headerMenu[#headerMenu + 1] = {
@@ -1584,3 +1595,12 @@ RegisterCommand('getoffset', function()
         print('Z: ' .. zdist)
     end
 end)
+
+-- ── /icarəqaytar: icarəni ləğv et ──
+RegisterCommand('icarəqaytar', function()
+    if ClosestHouse then
+        TriggerServerEvent('qb-houses:server:cancelRent', ClosestHouse)
+    else
+        QBCore.Functions.Notify('Yaxınlıqda ev tapılmadı.', 'primary')
+    end
+end, false)
