@@ -39,6 +39,15 @@
 6. SQL: `196_tutorial` + `196_rentals` cədvəlləri (196rp.sql + resurs daxilində).
 7. CI ✅ (manifest, kontrakt, native, SQL, NUI, Lua).
 
+## ✅ V1.4 TƏHVİL EDİLDİ (bu gün)
+- `196rp_metro` — 6 stansiya, bilet ₣100, NUI gediş animasiyası, teleport (anti-abuse).
+- `196rp_aviation` — hangar, 3 təyyarə icarəsi (lisenziya tələbi), `/planqaytar`.
+- `196rp_media` — boombox/TV, GTA radio stansiyaları.
+- `196rp_logs` — Discord webhooks (#conn #money #kills #admin #veh #anticheat) + yüngül anticheat (teleport/sürət → 3 flag → kick).
+- `196rp_restock` — 4 kiosk (24/7 ×2, LTD ×2), ₣500 + 5 dəq CD, qb-shops useStock ilə.
+- `196rp_jobs` təkmilləşdirmə — 12 iş, balıqçılıq/mədən/meşə/inşaat zonaları + satış məntəqələri, mexanik `/temir`, avtosalon `/avtomobil`+`/sat` (player_vehicles qeydiyyatı).
+- qb: `pilot` işi, 24/7 + LTD mağazalarına `useStock`.
+
 ## ⏳ NÖVBƏTİ MƏRHƏLƏLƏR (v1 davamı)
 
 - **v1.1:** Bələdiyyə paketi (pasport/FİN 11 rəqəm/qan qrupu + sürücülük imtahanı 10 sual), xüsusi MDT + dispatch, faktura NUI, ATM dizaynı, iş geyimləri (uniforma), cərimə bildiriş pəncərəsi.
