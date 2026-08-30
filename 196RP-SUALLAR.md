@@ -15,6 +15,21 @@
 
 ---
 
+## ✅ TƏSDİQLƏNMİŞ QƏRARLAR (30.08.2026)
+
+| # | Sual | Qərar |
+|---|---|---|
+| 1 | Framework | **QBCore** qalır |
+| 39 | Envanter | **qb-inventory** + müasir dizayn (geyim tab ilə) |
+| 5 | Valyuta | **"196 Fanteyn"** (HUD/bank/cüzdan hamısında) |
+| 3 | Slot sayı | **30** (az populyasiya startı — TT "Start-Up Adaptasiya"ya uyğun) |
+| 44 | Telefon | **lb-phone** (ox_lib əlavəsi ilə, qb-phone çıxarılır) |
+| 6/19/28.. | V1 əhatəsi | **Core + İşlər + Dövlət Xidmətləri** (PD/EMS/Bələdiyyə/MDT/faktura) — qalanı v1.1–v2 |
+
+> server.cfg artıq: 30 slot, OneSync Infinity, "196 RP" hostname adı.
+
+---
+
 ## A) BAZA VƏ TEXNOLOGİYA (1–9)
 
 **1.** Framework: **QBCore** (hazırda tam qurulub, işləyir) / QBX / ESX?
@@ -266,14 +281,16 @@
 
 ---
 
-## ⚡ YEKUN: 6 KRİTİK QƏRAR (dərhal cavab ver)
+## ⚡ YEKUN: 6 KRİTİK QƏRAR — ✅ CAVABLANDI
 
-1. **Framework:** QBCore qalır? (D: bəli)
-2. **Envanter:** qb-inventory (yenidən dizayn) yoxsa ox_inventory? (D: qb-inventory)
-3. **Valyuta:** "196 ₼"? (D: bəli)
-4. **Slot sayı:** 64 yoxsa 128? (D: 64)
-5. **Telefon:** qb-phone (yenidən dizayn) yoxsa lb-phone? (D: qb-phone)
-6. **İlk buraxılış (v1):** yalnız "Core + İşlər + Dövlət Xidmətləri" yoxsa TT-dəki hər şey eyni vaxtda? (D: Core + işlər + dövlət xidmətləri v1, qalanı v1.1–v2 mərhələli)
+1. **Framework:** ✅ QBCore qalır
+2. **Envanter:** ✅ qb-inventory + müasir dizayn
+3. **Valyuta:** ✅ **196 Fanteyn**
+4. **Slot sayı:** ✅ **30** (sonra 64/128-a artırıla bilər)
+5. **Telefon:** ✅ **lb-phone** (ox_lib əlavəsi tələb edir — növbəti addımda qurulacaq)
+6. **İlk buraxılış (v1):** ✅ Core + İşlər + Dövlət Xidmətləri (mərhələli)
+
+> ⏳ **Gözləyən suallar:** 2, 4, 7–18, 20–38, 40–43, 45–66 — chat-da `N: cavab` formatında yaz, ya da hamısı üçün sadəcə `hamısı D` demə kifayətdir (mənim tövsiyələrimlə davam edirəm).
 
 ---
 
