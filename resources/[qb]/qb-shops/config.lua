@@ -197,7 +197,8 @@ Config.Locations = {
         ['blipsprite'] = 52,
         ['blipscale'] = 0.6,
         ['blipcolor'] = 0,
-        ['delivery'] = vector4(-3047.95, 590.71, 7.62, 19.53)
+        ['delivery'] = vector4(-3047.95, 590.71, 7.62, 19.53),
+        ['useStock'] = true
     },
 
     ['247supermarket3'] = {
@@ -326,7 +327,8 @@ Config.Locations = {
         ['blipsprite'] = 52,
         ['blipscale'] = 0.6,
         ['blipcolor'] = 0,
-        ['delivery'] = vector4(-40.51, -1747.45, 29.29, 326.39)
+        ['delivery'] = vector4(-40.51, -1747.45, 29.29, 326.39),
+        ['useStock'] = true
     },
 
     ['ltdgasoline2'] = {
@@ -342,7 +344,8 @@ Config.Locations = {
         ['blipsprite'] = 52,
         ['blipscale'] = 0.6,
         ['blipcolor'] = 0,
-        ['delivery'] = vector4(-702.89, -917.44, 19.21, 181.96)
+        ['delivery'] = vector4(-702.89, -917.44, 19.21, 181.96),
+        ['useStock'] = true
     },
 
     ['ltdgasoline3'] = {

@@ -1,0 +1,49 @@
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+body { background: transparent; overflow: hidden; }
+.hidden { display: none !important; }
+
+#metro {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(4, 6, 12, 0.75); backdrop-filter: blur(8px);
+}
+
+.mt-shell {
+  width: 620px; border-radius: 22px; overflow: hidden;
+  background: linear-gradient(165deg, rgba(10, 16, 28, 0.97), rgba(14, 24, 44, 0.97));
+  border: 1px solid rgba(247, 183, 51, 0.3);
+  box-shadow: 0 40px 120px rgba(0,0,0,.85);
+  animation: pop .3s ease;
+  padding: 26px;
+}
+
+.mt-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 24px; }
+.mt-logo { color: #ffd97a; font-weight: 900; letter-spacing: 2px; font-size: 18px; }
+.mt-logo span { font-size: 26px; }
+.mt-route { color: #8fa0b8; font-size: 12px; letter-spacing: 2px; }
+.mt-route b { color: #7dd3fc; }
+
+.mt-track { position: relative; height: 70px; margin-bottom: 20px; }
+.mt-line {
+  position: absolute; top: 48%; left: 4%; right: 4%; height: 4px;
+  background: linear-gradient(90deg, rgba(247,183,51,.5), rgba(125,211,252,.5));
+  border-radius: 4px;
+}
+.mt-dots { position: absolute; top: 44%; left: 4%; right: 4%; display: flex; justify-content: space-between; }
+.mt-dots span { width: 12px; height: 12px; border-radius: 50%; background: #2b3a52; border: 2px solid rgba(247,183,51,.5); }
+.mt-dots span.pass { background: #f7b733; }
+.mt-train {
+  position: absolute; top: 20%; font-size: 46px;
+  transition: left 0.6s linear;
+  filter: drop-shadow(0 0 14px rgba(125,211,252,.6));
+}
+
+.mt-progress { background: rgba(8,13,24,.9); border-radius: 10px; height: 14px; overflow: hidden; border: 1px solid rgba(247,183,51,.25); }
+.mt-bar {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, #7dd3fc, #f7b733);
+  transition: width 0.4s linear;
+}
+.mt-tip { text-align: center; color: #55637a; font-size: 12px; margin-top: 14px; letter-spacing: 1px; }
+
+@keyframes pop { from { transform: scale(.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }

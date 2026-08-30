@@ -210,3 +210,11 @@ say / sv_...          → Konfiquraşdırmalar
  /nobvet      → Növbət paneli (kim işləyir?)
  Söküm sexi  → [E] 196 Söküm Sexi (maşın sök)
  DarkWeb     → [E] kiber kit al (₣5000)
+
+
+=== 196 RP SİSTEM ƏMRLƏRİ ===
+/temir — Mexanik: yaxın avtomobili təmir edir (öz pulundan)
+/avtomobil — Avtosalon: satış maşını çağırır
+/sat — Avtosalon: yaxın alıcıya satır (faktura yox, birbaşa nağd)
+/is — İş Mərkəzi menyusu (və ya [E] stansiya)
+/nobvet — PD/Xəstəxana/İş növbəti paneli

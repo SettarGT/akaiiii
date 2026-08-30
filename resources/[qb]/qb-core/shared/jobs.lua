@@ -2,6 +2,7 @@ QBCore.Shared.ForceJobDefaultDutyAtLogin = true -- true: Force duty state to job
 QBCore.Shared.Jobs = {
 	unemployed = { label = 'Mülki şəxs', defaultDuty = true, offDutyPay = false, grades = { ['0'] = { name = 'Sərbəst', payment = 10 } } },
 
+	pilot = { label = 'Aviasiya', defaultDuty = true, offDutyPay = false, grades = { ['0'] = { name = 'Pilot', payment = 60 }, ['1'] = { name = 'Baş Pilot', payment = 90 } } },
 	fisher = { label = 'Balıqçılıq', defaultDuty = true, offDutyPay = false, grades = { ['0'] = { name = 'Balıqçı', payment = 40 }, ['1'] = { name = 'Baş Balıqçı', payment = 60 } } },
 	miner = { label = 'Mədənçilik', defaultDuty = true, offDutyPay = false, grades = { ['0'] = { name = 'Mədənçi', payment = 45 }, ['1'] = { name = 'Usta Mədənçi', payment = 70 } } },
 	lumberjack = { label = 'Meşə Təsərrüfatı', defaultDuty = true, offDutyPay = false, grades = { ['0'] = { name = 'Odunçu', payment = 45 }, ['1'] = { name = 'Meşə Ustası', payment = 70 } } },

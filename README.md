@@ -39,6 +39,10 @@ qb-houses, qb-apartments, qb-interior, qb-loading, qb-adminmenu, qb-weapons.
 | `196rp_jobs` | İş Mərkəzi — 10 mülki işə düzəlmə |
 | `196rp_animations` | `U` düyməsi / `/anim` — animasiya menyusu |
 | `196rp_tuning` | Tuninq emalatxanası (mühərrik, əyləc, turbo, ksenon, rəng) |
+| `196rp_mdt` | Polis MDT — axtarış, cərimə, nəqliyyat, qeydlər (NUI) |
+| `196rp_hospital` | Xəstəxana — 2x qayıdış, müalicə, EMS duty (0 NPC) |
+| `196rp_dealer` | Avtosalon — premium NUI ilə avtomobil alışı |
+| `196rp_atm` | ATM — NUI maliyyə paneli (nağd ↔ bank) |
 
 ---
 
@@ -136,8 +140,10 @@ qb-houses, qb-apartments, qb-interior, qb-loading, qb-adminmenu, qb-weapons.
 | `/report <mətn>` | Adminlərə report (webhook + çat) |
 | `/pm <id> <mətn>` | Şəxsi mesaj |
 | `/muraciet` | Whitelist müraciəti |
-| `/is` (İş Mərkəzi) | Mülki işə düzəl |
+| `/is` / İş Mərkəzi `[E]` | Mülki işə düzəl (balıqçılıq, mədən, meşə, inşaat, mexanik, avtosalon, ...) |
 | `/anim` | Animasiya menyusu |
+| `/temir` | Mexanik — yaxın avtomobili təmir et |
+| `/avtomobil` `/sat` | Avtosalon — satış maşını çağır / alıcıya sat |
 
 ### Admin
 `/wluygula`, `/wlqebul <id>`, `/wlred <id> <səbəb>`, `/wlrem <id>`, `/wlkesifle` —

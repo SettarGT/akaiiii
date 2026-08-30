@@ -1,248 +1,244 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 local busy = false
-local currentJob = 'unemployed'
+local dealerVehicle = nil
 
-local JobZones = {}
-local SellZones = {}
-
--- ── Kiçik 3D yazı ──
-function DrawText3D(x, y, z, text)
+local function DrawText3D(coords, text)
     SetTextScale(0.35, 0.35)
     SetTextFont(4)
     SetTextProportional(1)
-    SetTextCentre(true)
-    SetTextColour(255, 217, 122, 215)
+    SetTextColour(255, 217, 122, 255)
     SetTextDropshadow(0, 0, 0, 0, 255)
     SetTextEdge(1, 0, 0, 0, 255)
+    SetTextDropShadow()
     SetTextOutline()
-    BeginTextCommandDisplayText("STRING")
+    BeginTextCommandDisplayText('STRING')
     AddTextComponentSubstringPlayerName(text)
-    EndTextCommandDisplayText(x, y, z + 0.3)
+    EndTextCommandDisplayText(coords.x, coords.y, coords.z)
 end
 
--- ── İş animasiyası ──
-local Anims = {
-    fishing      = { dict = 'amb@world_human_stand_fishing@idle_a', name = 'idle_a' },
-    mining       = { dict = 'amb@world_human_const_drill@male@drill@base', name = 'base' },
-    lumberjack   = { dict = 'amb@world_human_const_bush_trim@male@trim@base', name = 'base' },
-    construction = { dict = 'amb@world_human_const_drill@male@drill@base', name = 'base' },
-}
-
-local function PlayJobAnim(job, duration)
-    local a = Anims[job]
-    if not a then return end
-    local ped = PlayerPedId()
-    RequestAnimDict(a.dict)
-    local t = 0
-    while not HasAnimDictLoaded(a.dict) and t < 100 do Wait(20) t = t + 1 end
-    if HasAnimDictLoaded(a.dict) then
-        TaskPlayAnim(ped, a.dict, a.name, 3.0, 3.0, -1, 49, 0, false, false, false)
-    end
-    SetTimeout(duration * 1000, function()
-        if HasAnimDictLoaded(a.dict) then
-            ClearPedTasksImmediately(ped)
-            RemoveAnimDict(a.dict)
-        end
-    end)
-end
-
--- ── İş Mərkəzi menyusu ──
+-- ── İş mərkəzi menyusu ──
 local function OpenJobMenu()
     local pData = QBCore.Functions.GetPlayerData()
-    local menu = {
-        { header = Config.Text.header, isMenuHeader = true, icon = 'fas fa-briefcase' },
-        { header = Config.Text.current_job:gsub('%%{job}', pData.job.label or 'Mülki şəxs'), isMenuHeader = false, icon = 'fas fa-user-tie' },
+    local menu = { { header = '🏢 İş Mərkəzi', isMenuHeader = true, icon = 'fas fa-briefcase' } }
+
+    menu[#menu + 1] = {
+        header = 'Hazırkı iş: ' .. (pData.job.label or pData.job.name),
+        txt = 'Aşağıdan yeni iş seçə bilərsiniz',
+        isDisabled = true,
+        icon = 'fas fa-id-badge',
     }
-    for jobName, desc in pairs(Config.Jobs) do
+
+    for jobId, job in pairs(Config.Jobs) do
+        local marker = pData.job.name == jobId and '✅ ' or '👔 '
         menu[#menu + 1] = {
-            header = (QBCore.Shared.Jobs[jobName] and QBCore.Shared.Jobs[jobName].label) or jobName,
-            txt = desc,
-            icon = 'fas fa-arrow-right',
-            params = { job = jobName },
+            header = marker .. job.label,
+            txt = job.desc or '',
+            icon = job.icon or 'fas fa-briefcase',
+            params = { job = jobId },
         }
     end
+
     menu[#menu + 1] = {
-        header = Config.Text.quit_job,
-        txt = Config.Text.quit_desc,
-        icon = 'fas fa-door-open',
+        header = '📤 İşdən çıx',
+        txt = 'Mülki vətəndaş ol',
+        icon = 'fas fa-sign-out-alt',
         params = { quit = true },
     }
+
     exports['qb-menu']:openMenu(menu, function(selected)
-        if not selected then return end
-        if selected.params and selected.params.quit then
+        if not selected or not selected.params then return end
+        if selected.params.quit then
             TriggerServerEvent('196rp_jobs:quit')
-        elseif selected.params and selected.params.job then
+        elseif selected.params.job then
             TriggerServerEvent('196rp_jobs:apply', selected.params.job)
         end
     end)
 end
 
--- ── Qonşu maşını tap (mexanik) ──
-local function GetClosestVehicle()
-    local ped = PlayerPedId()
-    local coords = GetEntityCoords(ped)
-    local veh
-    for _, v in ipairs(GetAllVehicles()) do
-        local d = #(GetEntityCoords(v) - coords)
-        if d < 6.0 and (not veh or d < #(GetEntityCoords(veh) - coords)) then
-            veh = v
-        end
-    end
-    return veh
-end
-
-RegisterCommand('temir', function()
-    if currentJob ~= 'mechanic' then
-        QBCore.Functions.Notify('Mexanik işində olmalısınız (İş Mərkəzinə gedin)!', 'error')
-        return
-    end
-    local veh = GetClosestVehicle()
-    if not veh then
-        QBCore.Functions.Notify('Yaxınlıqda maşın yoxdur!', 'error')
-        return
-    end
-    local plate = GetVehicleNumberPlateText(veh)
-    local health = GetVehicleBodyHealth(veh)
-    local engine = GetVehicleEngineHealth(veh)
-    local damage = math.floor((1000 - health) / 10 + (1000 - engine) / 20)
-    if damage < 5 then
-        QBCore.Functions.Notify('Maşın artıq sağlamdır!', 'success')
-        return
-    end
-    QBCore.Functions.Notify(('Təmir başladı: %d%% zədə...'):format(damage), 'primary')
-    TriggerServerEvent('196rp_jobs:server:repairVehicle', plate, damage)
-end, false)
-
-RegisterNetEvent('196rp_jobs:client:fixVehicle', function(plate)
-    local ped = PlayerPedId()
-    local coords = GetEntityCoords(ped)
-    for _, v in ipairs(GetAllVehicles()) do
-        if GetVehicleNumberPlateText(v) == plate and #(GetEntityCoords(v) - coords) < 8.0 then
-            SetVehicleBodyHealth(v, 1000.0)
-            SetVehicleEngineHealth(v, 1000.0)
-            SetVehicleFixed(v)
-        end
-    end
-end)
-
--- ── İş əməliyyatı ──
-local function StartWork(job, zoneLabel, isBuild)
-    if busy then
-        QBCore.Functions.Notify(Config.Text.cooldown, 'primary')
-        return
-    end
-    if currentJob ~= job then
-        QBCore.Functions.Notify(Config.Text.wrong_job, 'error')
-        return
-    end
-    busy = true
-    exports['progressbar']:Progress({
-        name = '196job_' .. job,
-        duration = (Config.WorkTime[job == 'construction' and 'build' or job] or 4) * 1000,
-        label = Config.Text.working,
-        useWhileDead = false,
-        canCancel = false,
-        controlDisables = { disableMovement = true, disableCarMovement = true, disableMouse = false, disableCombat = true },
-    })
-    PlayJobAnim(job, Config.WorkTime[job == 'construction' and 'build' or job] or 4)
-    TriggerServerEvent('196rp_jobs:server:collect', job, zoneLabel)
-    SetTimeout((Config.WorkTime[job == 'construction' and 'build' or job] or 4) * 1000 + 250, function()
-        busy = false
-    end)
-end
-
--- ── Satış menyusu ──
-local function OpenSellMenu(job)
-    exports['qb-menu']:openMenu({
-        {
-            header = 'Satış nöqtəsi',
-            isMenuHeader = true,
-            icon = 'fas fa-coins',
-        },
-        {
-            header = 'Məhsulları sat',
-            txt = 'Çantadakı bütün materialları pul edəcək',
-            icon = 'fas fa-hand-holding-usd',
-            params = { sell = true },
-        },
-    }, function(selected)
-        if selected and selected.params and selected.params.sell then
-            TriggerServerEvent('196rp_jobs:server:sell', job)
-        end
-    end)
-end
-
--- ── Zonalar ──
+-- İş mərkəzləri
 CreateThread(function()
-    currentJob = QBCore.Functions.GetPlayerData().job.name
-    RegisterNetEvent('QBCore:Client:OnJobUpdate', function(jobInfo)
-        currentJob = jobInfo.name
-    end)
+    for _, center in ipairs(Config.Locations) do
+        exports['qb-target']:AddBoxZone('196jobs_' .. center.label, center.coords, 3.0, 3.0, {
+            name = '196jobs_' .. center.label,
+            heading = center.heading or 0.0,
+            debugPoly = false,
+            minZ = center.coords.z - 1,
+            maxZ = center.coords.z + 4,
+        }, {
+            options = {
+                { label = '[E] ' .. center.label, icon = 'fas fa-city', action = OpenJobMenu },
+            },
+            distance = 3.0,
+        })
 
-    -- İş mərkəzləri
-    for i, loc in ipairs(Config.Locations) do
-        exports['qb-target']:AddBoxZone('196jobs_' .. i, loc.coords, 2.0, 2.0, {
-            name = '196jobs_' .. i, heading = loc.heading, debugPoly = false,
-            minZ = loc.coords.z - 1, maxZ = loc.coords.z + 3,
-        }, { options = { { label = '[E] ' .. loc.label, icon = 'fa-solid fa-briefcase', action = OpenJobMenu } } })
-    end
-
-    -- İş sahələri
-    local defs = {
-        fishing = Config.Zones.fishing,
-        mining = Config.Zones.mining,
-        lumberjack = Config.Zones.lumberjack,
-        construction = Config.Zones.construction,
-    }
-    for jobName, zones in pairs(defs) do
-        for i, z in ipairs(zones) do
-            local zoneName = ('196work_%s_%d'):format(jobName, i)
-            exports['qb-target']:AddBoxZone(zoneName, z.coords, z.radius * 2, z.radius * 2, {
-                name = zoneName, heading = 0.0, debugPoly = false,
-                minZ = z.coords.z - 2, maxZ = z.coords.z + 3,
-            }, { options = { {
-                label = ('[E] %s — %s'):format(z.label, Config.Text.collect_label),
-                icon = 'fas fa-hammer',
-                action = function() StartWork(jobName, z.label) end,
-            } } })
-        end
-    end
-
-    -- Satış nöqtələri
-    for i, s in ipairs(Config.SellPoints) do
-        local zoneName = '196sell_' .. i
-        exports['qb-target']:AddBoxZone(zoneName, s.coords, 2.5, 2.5, {
-            name = zoneName, heading = 0.0, debugPoly = false,
-            minZ = s.coords.z - 2, maxZ = s.coords.z + 3,
-        }, { options = { { label = '[E] ' .. s.label .. ' — ' .. Config.Text.sell_label, icon = 'fas fa-hand-holding-usd', action = function() OpenSellMenu(s.jobs[1]) end } } })
-    end
-
-    -- Blips (satış nöqtələri)
-    for _, s in ipairs(Config.SellPoints) do
-        local blip = AddBlipForCoord(s.coords)
-        SetBlipSprite(blip, 566)
-        SetBlipColour(blip, 47)
+        local blip = AddBlipForCoord(center.coords)
+        SetBlipSprite(blip, 351)
+        SetBlipColour(blip, 5)
         SetBlipScale(blip, 0.8)
         SetBlipAsShortRange(blip, true)
         BeginTextCommandSetBlipName('STRING')
-        AddTextComponentSubstringPlayerName(s.label)
+        AddTextComponentSubstringPlayerName(center.label)
         EndTextCommandSetBlipName(blip)
     end
 end)
 
--- Modullar (məkanda markerlər)
+-- ── İş əməliyyatı (animasiya + server vaxt yoxlaması) ──
+local function RunCollect(job, zoneLabel, coords)
+    if busy then return end
+    busy = true
+    local ped = PlayerPedId()
+    FreezeEntityPosition(ped, true)
+    TaskTurnPedToFaceCoord(ped, coords.x, coords.y, coords.z)
+
+    local anim = Config.Animations[job] or Config.Animations.default
+    RequestAnimDict(anim.dict)
+    local t = 0
+    while not HasAnimDictLoaded(anim.dict) and t < 50 do
+        Wait(20)
+        t = t + 1
+    end
+    if HasAnimDictLoaded(anim.dict) then
+        TaskPlayAnim(ped, anim.dict, anim.name, 3.0, 3.0, -1, 1, 0, false, false, false)
+    end
+
+    local duration = (Config.WorkTime[job] or 5) * 1000
+    QBCore.Functions.Progressbar('196jobs_' .. job, Config.Text.working, duration, false, true, {
+        disableMovement = true, disableCarMovement = true, disableMouse = false, disableCombat = true,
+    }, {}, {}, {}, function()
+        ClearPedTasksImmediately(ped)
+        FreezeEntityPosition(ped, false)
+        busy = false
+    end, function()
+        ClearPedTasksImmediately(ped)
+        FreezeEntityPosition(ped, false)
+        busy = false
+    end)
+
+    -- Server eyni vaxtı server tərəfdə ölçür (client sürətləndirə bilməz)
+    TriggerServerEvent('196rp_jobs:server:collect', job, zoneLabel)
+end
+
+-- ── İş zonaları + satış nöqtələri ──
 CreateThread(function()
     while true do
-        Wait(1000)
-        local ped = PlayerPedId()
-        local coords = GetEntityCoords(ped)
-        for jobName, zones in pairs(Config.Zones) do
-            for _, z in ipairs(zones) do
-                local d = #(coords - z.coords)
-                if d < 20.0 then
-                    DrawMarker(1, z.coords.x, z.coords.y, z.coords.z - 1.0, 0, 0, 0, 0, 0, 0, 1.8, 1.8, 1.0, 60, 180, 110, 160, false, true, 2, false, nil, nil, false)
+        Wait(500)
+        if not busy then
+            local pData = QBCore.Functions.GetPlayerData()
+            local ped = PlayerPedId()
+            local pos = GetEntityCoords(ped)
+
+            -- İş zonaları
+            local zones = Config.Zones[pData.job.name]
+            if zones then
+                for _, zone in ipairs(zones) do
+                    if #(pos - zone.coords) < zone.radius then
+                        DrawText3D(zone.coords + vector3(0, 0, 1.3), zone.label .. '\n[E] ' .. (Config.Text.collect_label or 'İşlə'))
+                        if IsControlJustReleased(0, 38) then
+                            local tool = Config.Tools[pData.job.name]
+                            if tool and not QBCore.Functions.HasItem(tool) then
+                                QBCore.Functions.Notify(Config.Text.need_tool, 'error')
+                            else
+                                RunCollect(pData.job.name, zone.label, zone.coords)
+                            end
+                            break
+                        end
+                    end
+                end
+            end
+
+            -- Satış nöqtəsi
+            local sell = Config.SellPoints[pData.job.name]
+            if sell and #(pos - sell.coords) < 3.0 then
+                DrawText3D(sell.coords + vector3(0, 0, 1.2), '💰 ' .. sell.label .. '\n[E] Şat')
+                if IsControlJustReleased(0, 38) then
+                    TriggerServerEvent('196rp_jobs:server:sell', pData.job.name)
                 end
             end
         end
     end
+end)
+
+-- ── Mexanik ──
+RegisterNetEvent('196rp_jobs:client:fixVehicle', function(plate)
+    for _, veh in ipairs(GetGamePool('CVehicle')) do
+        if GetVehicleNumberPlateText(veh) == plate then
+            SetVehicleFixed(veh)
+            SetVehicleDirtLevel(veh, 0.0)
+            SetVehicleFuelLevel(veh, 100.0)
+            return
+        end
+    end
+end)
+
+RegisterCommand('temir', function()
+    local pData = QBCore.Functions.GetPlayerData()
+    if pData.job.name ~= 'mechanic' then
+        QBCore.Functions.Notify('Bu əmr yalnız mexanik üçündür.', 'error')
+        return
+    end
+    local pos = GetEntityCoords(PlayerPedId())
+    local closest, dist = nil, 6.0
+    for _, veh in ipairs(GetGamePool('CVehicle')) do
+        local d = #(pos - GetEntityCoords(veh))
+        if d < dist then closest, dist = veh, d end
+    end
+    if closest then
+        local damage = 100 - GetVehicleBodyHealth(closest)
+        TriggerServerEvent('196rp_jobs:server:repairVehicle', GetVehicleNumberPlateText(closest), math.max(0, damage))
+    else
+        QBCore.Functions.Notify('Yaxınlıqda avtomobil yoxdur.', 'primary')
+    end
+end, false)
+
+-- ── Avtosalon ──
+RegisterNetEvent('196rp_jobs:client:dealerSpawn', function(model, coords, heading, plate, price)
+    if dealerVehicle and DoesEntityExist(dealerVehicle) then
+        DeleteEntity(dealerVehicle)
+    end
+    RequestModel(model)
+    local t = 0
+    while not HasModelLoaded(model) and t < 100 do
+        Wait(20)
+        t = t + 1
+    end
+    if not HasModelLoaded(model) then return end
+    dealerVehicle = CreateVehicle(model, coords.x, coords.y, coords.z, heading, true, false)
+    SetVehicleNumberPlateText(dealerVehicle, plate)
+    SetVehicleFuelLevel(dealerVehicle, 100.0)
+    QBCore.Functions.Notify(('🚗 Satış maşını hazır — qiymət ₣%d. Alıcıya /sat deyin!'):format(price), 'success')
+end)
+
+RegisterCommand('avtomobil', function()
+    local pData = QBCore.Functions.GetPlayerData()
+    if pData.job.name ~= 'cardealer' then
+        QBCore.Functions.Notify('Bu əmr yalnız avtosalon işçisi üçündür.', 'error')
+        return
+    end
+    TriggerServerEvent('196rp_jobs:server:dealerCar')
+end, false)
+
+RegisterCommand('sat', function()
+    local pData = QBCore.Functions.GetPlayerData()
+    if pData.job.name ~= 'cardealer' then
+        QBCore.Functions.Notify('Bu əmr yalnız avtosalon işçisi üçündür.', 'error')
+        return
+    end
+    if not dealerVehicle or not DoesEntityExist(dealerVehicle) then
+        QBCore.Functions.Notify('Əvvəlcə /avtomobil ilə satış maşını çağırın.', 'primary')
+        return
+    end
+    local model = GetEntityModel(dealerVehicle)
+    local vehName
+    for k, v in pairs(QBCore.Shared.Vehicles) do
+        if model == joaat(k) then vehName = k break end
+    end
+    local price = math.floor((QBCore.Shared.Vehicles[vehName] and QBCore.Shared.Vehicles[vehName].price or 15000) * Config.Dealer.PriceMultiplier)
+    TriggerServerEvent('196rp_jobs:server:sellCar', price, GetVehicleNumberPlateText(dealerVehicle), vehName)
+end, false)
+
+RegisterNetEvent('196rp_jobs:client:dealerSell', function(buyerCid)
+    if dealerVehicle and DoesEntityExist(dealerVehicle) then
+        DeleteEntity(dealerVehicle)
+    end
+    dealerVehicle = nil
 end)
