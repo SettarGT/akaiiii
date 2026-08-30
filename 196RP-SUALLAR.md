@@ -71,6 +71,18 @@
 - **Gəlir vergisi**: iş satışlarından 5% (TT-14) — `196rp_jobs` Config.IncomeTax.
 - **Benzin**: ₣1.75/litr (TT-17).
 
+## ✅ V1.12 TƏHVİL EDİLDİ (bu gün)
+- **Bütün qb-* NUI-ları Azərbaycanca**: bank, qaraj, ev alqı-satqısı, geyim (127 etiket), telefon app-ları (meyl/Whatsapp/Tvitter/Kripto/MEOS/hüquq...), skorboard, avtosalon, taksi sayğacı, polis ANPR + `₣` simvolu.
+- **Cərimə cədvəli** TT-13: mərhələli sürət (30/60/120+), qırmızı işıq ₣1000, park ₣250, aqressiv ₣750, təhlükəli ₣1500.
+- **Kazino günlük limit**: 25 000 ₣ (anti-broke).
+- **Gəlir vergisi 5%** mərkəzləşdirildi — bütün iş ödənişləri (qb-core `AddMoney` + `196rp_tax:ApplyIncome` export).
+- **0 NPC tamamlandı**: recycle/garbage/diving/cityhall/prison/shops-courier ped-ləri → kiosk obyektləri.
+- **196rp_fishing**: qayıq + 3 növ balıq (sazan/qılınc/köpək) + qarmaq mini-game + Baharat restoran tədarükü (premium qiymət).
+- **Animasiyalar 152+** prop dəstəyi ilə (gitara, qəhvə, çətir, boombox...).
+- **Boombox URL yayımı** (`/boomboxurl` + `/boomboxstop`).
+- **Rentcar TT-27**: 4 model, zəmanət ₣1000, gecə endirimi 50%.
+- **Mexanik hissələri**: 🔩 Şam / 🛢 Motor yağı — iş mərkəzində satılır, /temir üçün məcburi.
+
 ## ⏳ NÖVBƏTİ MƏRHƏLƏLƏR (v1 davamı)
 
 - **v1.1:** Bələdiyyə paketi (pasport/FİN 11 rəqəm/qan qrupu + sürücülük imtahanı 10 sual), xüsusi MDT + dispatch, faktura NUI, ATM dizaynı, iş geyimləri (uniforma), cərimə bildiriş pəncərəsi.

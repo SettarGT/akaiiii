@@ -8,7 +8,7 @@ Config.Limits = {
     MinBet = 100,        -- minimum mərc (₣)
     MaxBet = 100000,     -- maksimum mərc (₣)
     MaxProfit = 500000,  -- bir oyunda maksimum uduş (₣)
-    DailyLoss = 250000,  -- günlük maksimum itki (₣) → limit çatanda sabaha qədər oyun dayanır
+    DailyLoss = 25000   -- TT-55: günlük maksimum itki 25 000 ₣,  -- günlük maksimum itki (₣) → limit çatanda sabaha qədər oyun dayanır
 }
 
 -- Fiş dəyişmə

@@ -34,6 +34,26 @@ RegisterCommand('boombox', function()
     end
 end, false)
 
+-- ── Boombox URL yayımı (birbaşa mp3/ogg axın) ──
+RegisterCommand('boomboxurl', function(_, args)
+    if not boomBox or not DoesEntityExist(boomBox) then
+        QBCore.Functions.Notify('Əvvəlcə /boombox ilə boombox qoyun.', 'error')
+        return
+    end
+    local url = table.concat(args, ' ')
+    if url == '' then
+        QBCore.Functions.Notify('İstifadə: /boomboxurl https://.../musiqi.mp3', 'error')
+        return
+    end
+    local ok = pcall(PlayStreamFromObject, boomBox, '', url)
+    QBCore.Functions.Notify(ok and '▶️ Yayım başladı (URL).' or '⚠️ URL yayımı bu build-də dəstəklənmir.', ok and 'success' or 'error')
+end, false)
+
+RegisterCommand('boomboxstop', function()
+    pcall(StopStreamedObject)
+    QBCore.Functions.Notify('⏹ Yayım dayandırıldı.', 'primary')
+end, false)
+
 RegisterCommand('boomboxendir', function()
     if boomBox and DoesEntityExist(boomBox) then
         DeleteEntity(boomBox)

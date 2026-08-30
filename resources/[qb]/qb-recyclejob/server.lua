@@ -121,7 +121,7 @@ local function sellMaterials(src, item, amount)
         price = Sales[item] * amount
     end
     if Player.RemoveItem(item, amount) then
-        Player.AddMoney('cash', price)
+        Player.AddMoney('cash', price, 'recycle-sell')
         TriggerClientEvent('QBCore:Notify', src, Lang:t('success.sold', { amount = amount, item = sharedItems[item].label, price = price }), 'success')
         adjustStock(item, 'add', amount)
     else

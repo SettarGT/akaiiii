@@ -42,7 +42,8 @@ Config.Zones = {
 
 -- ═══════════ Satış məntəqələri ═══════════
 Config.SellPoints = {
-    { id = 'sell_fish',   label = '🐟 Balıq Bazarı',     coords = vector3(-1036.88, -1383.29, 4.01),  job = 'fisher',       buys = { fish = 90 } },
+    { id = 'sell_fish',   label = '🐟 Balıq Bazarı',     coords = vector3(-1036.88, -1383.29, 4.01),  job = 'fisher',       buys = { fish = 90, carp = 120, swordfish = 200, shark = 350 } },
+    { id = 'sell_rest',   label = '🍽 Baharat Restoran (tədarük)', coords = vector3(-580.09, -529.7, 40.25), job = 'fisher', buys = { carp = 150, swordfish = 260, shark = 450 } },
     { id = 'sell_stone',  label = '⛏ Daş Emalı',         coords = vector3(1096.69, -1907.91, 30.70), job = 'miner',        buys = { stone = 110, coal = 200 } },
     { id = 'sell_wood',   label = '🪵 Mişar Dəyirmanı',   coords = vector3(-1090.03, 3160.10, 36.27), job = 'lumberjack',   buys = { wood = 100, plank = 180 } },
     { id = 'sell_con',    label = '🏗 Tikinti Anbarı',    coords = vector3(967.70, -1189.40, 27.20),  job = 'construction', buys = { cement = 100, brick = 120 } },

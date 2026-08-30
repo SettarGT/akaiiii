@@ -202,11 +202,10 @@ local function spawnPeds()
         while not HasModelLoaded(current.model) do
             Wait(0)
         end
-        local ped = CreatePed(0, current.model, current.coords.x, current.coords.y, current.coords.z, current.coords.w, false, false)
+        local ped = CreateObject('prop_toolbox_03', current.coords.x, current.coords.y, current.coords.z, false, true, true)
         FreezeEntityPosition(ped, true)
-        SetEntityInvincible(ped, true)
         SetBlockingOfNonTemporaryEvents(ped, true)
-        TaskStartScenarioInPlace(ped, current.scenario, true, true)
+        SetEntityHeading(ped, current.coords.w)
         current.pedHandle = ped
         if Config.UseTarget then
             local opts = nil

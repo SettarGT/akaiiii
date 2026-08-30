@@ -64,6 +64,7 @@ CORE_EXPORTS = {
     ('qb-menu', 'closeMenu'),
     ('progressbar', 'Progress'),
     ('qb-target', 'AddBoxZone'),
+    ('qb-minigames', 'Skillbar'),
     ('qb-inventory', 'AddHook'),
     ('qb-inventory', 'RemoveHook'),
     ('qb-inventory', 'AddListener'),

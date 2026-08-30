@@ -85,18 +85,15 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
 
 	if DoesEntityExist(canteen_ped) or DoesEntityExist(freedom_ped) then return end
 
-	local pedModel = `s_m_m_armoured_01`
-
-	RequestModel(pedModel)
-	while not HasModelLoaded(pedModel) do
+	RequestModel('prop_toolbox_03')
+	while not HasModelLoaded('prop_toolbox_03') do
 		Wait(0)
 	end
 
-	freedom_ped = CreatePed(0, pedModel, Config.Locations['freedom'].x, Config.Locations['freedom'].y, Config.Locations['freedom'].z, Config.Locations['freedom'].w, false, true)
+	freedom_ped = CreateObject('prop_toolbox_03', Config.Locations['freedom'].x, Config.Locations['freedom'].y, Config.Locations['freedom'].z, false, true, true)
 	FreezeEntityPosition(freedom_ped, true)
-	SetEntityInvincible(freedom_ped, true)
 	SetBlockingOfNonTemporaryEvents(freedom_ped, true)
-	TaskStartScenarioInPlace(freedom_ped, 'WORLD_HUMAN_CLIPBOARD', 0, true)
+	SetEntityHeading(freedom_ped, Config.Locations['freedom'].w)
 
 	if not Config.UseTarget then return end
 
@@ -134,18 +131,15 @@ AddEventHandler('onResourceStart', function(resource)
 
 	if DoesEntityExist(canteen_ped) or DoesEntityExist(freedom_ped) then return end
 
-	local pedModel = `s_m_m_armoured_01`
-
-	RequestModel(pedModel)
-	while not HasModelLoaded(pedModel) do
+	RequestModel('prop_toolbox_03')
+	while not HasModelLoaded('prop_toolbox_03') do
 		Wait(0)
 	end
 
-	freedom_ped = CreatePed(0, pedModel, Config.Locations['freedom'].x, Config.Locations['freedom'].y, Config.Locations['freedom'].z, Config.Locations['freedom'].w, false, true)
+	freedom_ped = CreateObject('prop_toolbox_03', Config.Locations['freedom'].x, Config.Locations['freedom'].y, Config.Locations['freedom'].z, false, true, true)
 	FreezeEntityPosition(freedom_ped, true)
-	SetEntityInvincible(freedom_ped, true)
 	SetBlockingOfNonTemporaryEvents(freedom_ped, true)
-	TaskStartScenarioInPlace(freedom_ped, 'WORLD_HUMAN_CLIPBOARD', 0, true)
+	SetEntityHeading(freedom_ped, Config.Locations['freedom'].w)
 
 	if not Config.UseTarget then return end
 

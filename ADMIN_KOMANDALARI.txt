@@ -279,3 +279,16 @@ Baqaj: bütün avtomobillərdə 15 slot (D default), əlcək 5 slot
 Benzin: ₣1.75/litr
 Qaraj: maksimum 15 maşın (TT-42)
 Gəlir vergisi: iş satışlarından avtomatik 5% (TT-14)
+
+── V1.12 ƏLAVƏLƏR ─────────────────────────────
+
+UI: qb-banking/qb-garages/qb-houses/qb-clothing/qb-phone app-ları/qb-scoreboard/qb-vehiclesales/qb-taxijob/qb-policejob — tam Azərbaycanca + ₣
+Cərimə cədvəli: sürət 500/1000/2500 (30/60/120+), qırmızı işıq 1000, park 250, aqressiv 750, təhlükəli 1500 (MDT)
+Kazino: günlük maksimum itki 25 000 ₣ (TT-55)
+Gəlir vergisi: bütün iş ödənişlərindən 5% (qb-core AddMoney + 196rp_tax ApplyIncome)
+0 NPC: qb-recyclejob/qb-garbagejob/qb-diving/qb-cityhall/qb-prison/qb-shops çatdırılma — satıcı ped-ləri kioskla əvəzləndi
+ /qayıq /qayıqqaytar — balıqçı qayığı (196rp_fishing: 3 növ balıq, qarmaq mini-game, restoran tədarükü)
+ /anim (U) — 152 animasiya + prop dəstəyi (gitara/qəhvə/çətir/boombox...)
+ /boomboxurl <mp3> /boomboxstop — boombox yayımı
+ Rentcar: 4 model (Blista/Panto/Prairie/Kanjo), zəmanət ₣1000, gecə 00:00-06:00 -50%
+ Mexanik: 🔩 Şam + 🛢 Motor yağı hissələri (iş mərkəzi) — təmir üçün tələb olunur

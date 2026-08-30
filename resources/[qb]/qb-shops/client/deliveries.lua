@@ -50,17 +50,17 @@ local function setupZones(type, number)
     end
 
     if Config.UseTarget and type == 'main' then
-        RequestModel('s_m_m_postal_01')
-        while not HasModelLoaded('s_m_m_postal_01') do Wait(0) end
-        deliveryPed = CreatePed(0, 's_m_m_postal_01', coords.x, coords.y, coords.z - 1, heading, false, false)
+        RequestModel('prop_toolbox_03')
+        while not HasModelLoaded('prop_toolbox_03') do Wait(0) end
+        deliveryPed = CreateObject('prop_toolbox_03', coords.x, coords.y, coords.z, false, true, true)
         FreezeEntityPosition(deliveryPed, true)
-        SetEntityInvincible(deliveryPed, true)
         SetBlockingOfNonTemporaryEvents(deliveryPed, true)
+        SetEntityHeading(deliveryPed, heading)
         exports['qb-target']:AddTargetEntity(deliveryPed, {
             options = {
                 {
                     icon = 'fas fa-box',
-                    label = 'Start Delivering',
+                    label = 'Çatdırılmağa başla',
                     action = function()
                         TriggerServerEvent('qb-shops:server:DoBail', true)
                     end

@@ -48,9 +48,24 @@ end)
 -- Rentcar: kirayə / qaytarma / doldurma
 -- ═══════════════════════════════════════════════════════════════
 
-local rentals = {} -- plate → { citizenid, expires, free }
+local rentals = {} -- plate → { citizenid, expires, free, startedAt, rate, firstPaid, depositPaid }
 
-RegisterNetEvent('196rp_onboarding:server:rentcar', function()
+local function NightFactor()
+    local hour = tonumber(os.date('%H')) or 0
+    if hour >= Config.RentCar.nightStart and hour < Config.RentCar.nightEnd then
+        return Config.RentCar.nightFactor or 0.5
+    end
+    return 1.0
+end
+
+local function FindModel(model)
+    for _, m in ipairs(Config.RentCar.models) do
+        if m.model == model then return m end
+    end
+    return Config.RentCar.models[1]
+end
+
+RegisterNetEvent('196rp_onboarding:server:rentcar', function(model)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if not Player then return end
@@ -65,28 +80,42 @@ RegisterNetEvent('196rp_onboarding:server:rentcar', function()
 
     -- İlk icarə pulsuzdur (onboarding bitməyənlər üçün)
     local free = not IsOnboardingDone(Player.PlayerData.citizenid)
-    local price = Config.RentCar.pricePerHour
+    local modelDef = FindModel(model)
+    local rate = math.floor(Config.RentCar.pricePerHour * NightFactor() + 0.5)
+    local depositPaid = false
+    local firstPaid = 0
+
     if not free then
-        if Player.PlayerData.money.cash < price then
-            TriggerClientEvent('QBCore:Notify', src, 'Kifayət qədər pulunuz yoxdur! (Tələb: ₣' .. price .. ')', 'error')
+        local need = rate + Config.RentCar.deposit
+        if Player.PlayerData.money.cash < need then
+            TriggerClientEvent('QBCore:Notify', src, ('Kifayət qədər pulunuz yoxdur! (Tələb: ₣%d — icarə + zəmanət)'):format(need), 'error')
             return
         end
-        Player.Functions.RemoveMoney('cash', price, 'rentcar-kiraye')
+        Player.Functions.RemoveMoney('cash', rate, 'rentcar-kiraye')
+        Player.Functions.RemoveMoney('cash', Config.RentCar.deposit, 'rentcar-deposit')
+        depositPaid = true
+        firstPaid = rate
     end
 
     -- Maşını dünyaya çıxar (klient icarə edir)
-    TriggerClientEvent('196rp_onboarding:client:spawnRent', src, Config.RentCar.model, Config.RentCar.returnCoords)
+    local pd = { citizenid = Player.PlayerData.citizenid, rate = rate, free = free, depositPaid = depositPaid, firstPaid = firstPaid }
+    TriggerClientEvent('196rp_onboarding:client:spawnRent', src, modelDef.model, Config.RentCar.returnCoords, pd)
 end)
 
 -- Klientdən qeydiyyat (maşın spawn edildikdə)
-RegisterNetEvent('196rp_onboarding:server:registerRent', function(plate)
+RegisterNetEvent('196rp_onboarding:server:registerRent', function(plate, pd)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if not Player or not plate then return end
+    local extra = (type(pd) == 'table' and pd.citizenid == Player.PlayerData.citizenid) and pd or nil
     rentals[plate] = {
         citizenid = Player.PlayerData.citizenid,
         expires = os.time() + Config.RentCar.maxRentalMinutes * 60,
-        free = false,
+        free = extra and extra.free or false,
+        startedAt = os.time(),
+        rate = extra and extra.rate or math.floor(Config.RentCar.pricePerHour + 0.5),
+        firstPaid = extra and extra.firstPaid or 0,
+        depositPaid = extra and extra.depositPaid or false,
     }
     MySQL.insert('INSERT INTO `196_rentals` (citizenid, plate, started_at, expires_at, status) VALUES (?, ?, NOW(), DATE_ADD(NOW(), INTERVAL ? MINUTE), ?)',
         { Player.PlayerData.citizenid, plate, Config.RentCar.maxRentalMinutes, 'active' })
@@ -102,6 +131,23 @@ RegisterNetEvent('196rp_onboarding:server:returnRent', function()
         if r.citizenid == Player.PlayerData.citizenid then
             -- Maşını sil (klient)
             TriggerClientEvent('196rp_onboarding:client:despawnRent', src, plate)
+
+            -- Hesabat: istifadə olunan saatlar × gecə dərəcəsi, zəmanət qaytarılır
+            local hours = math.max(1, math.ceil((os.time() - (r.startedAt or os.time())) / 3600))
+            local total = hours * (r.rate or Config.RentCar.pricePerHour)
+            local extraCost = math.max(0, total - (r.firstPaid or 0))
+            if not r.free and extraCost > 0 and Player.PlayerData.money.cash >= extraCost then
+                Player.Functions.RemoveMoney('cash', extraCost, 'rentcar-hesabat')
+            end
+            local refund = r.depositPaid and Config.RentCar.deposit or 0
+            if refund > 0 then
+                Player.Functions.AddMoney('cash', refund, 'rentcar-deposit-qaytar')
+            end
+            local nf = r.rate / Config.RentCar.pricePerHour
+            TriggerClientEvent('QBCore:Notify', src,
+                ('🎫 Rentcar: %d saat × ₣%d (gecə %d%%) = ₣%d | Zəmanət: +₣%d'):format(hours, r.rate or 250, math.floor(nf * 100), total, refund),
+                'success')
+
             MySQL.update('UPDATE `196_rentals` SET status = ?, returned_at = NOW() WHERE plate = ? AND status = ?', { 'returned', plate, 'active' })
             rentals[plate] = nil
             found = true

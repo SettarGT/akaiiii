@@ -62,6 +62,8 @@ end)
 Config.Tools = Config.Tools or {
     { item = 'fishing_rod', label = '🐟 Qarmaq', price = 500 },
     { item = 'pickaxe',     label = '⛏ Pikak',  price = 400 },
+    { item = 'sparkplug',   label = '🔩 Şam',    price = 250 },
+    { item = 'motoroil',    label = '🛢 Motor yağı', price = 350 },
     { item = 'axe',         label = '🪓 Balta',  price = 350 },
     { item = 'hammer',      label = '🔨 Çəkic',  price = 300 },
 }
@@ -155,15 +157,9 @@ RegisterNetEvent('196rp_jobs:server:sell', function(sellId, item, amount)
     end
 
     local price = sp.buys[item] * amount
-    local tax = math.floor(price * Config.IncomeTax / 100)
-    local net = price - tax
     Player.Functions.RemoveItem(item, amount, false, false, 'job-sell')
-    Player.Functions.AddMoney('cash', net, 'job-sell')
-    if tax > 0 then
-        Notify(src, ('💰 %d × %s satıldı: +₣%d (gəlir vergisi 5%% = -₣%d)'):format(amount, item, net, tax), 'success')
-    else
-        Notify(src, ('💰 %d × %s satıldı: +₣%d'):format(amount, item, net), 'success')
-    end
+    Player.Functions.AddMoney('cash', price, 'job-sell')
+    Notify(src, ('💰 %d × %s satıldı: +₣%d (gəlir vergisi avtomatik)'):format(amount, item, price), 'success')
 end)
 
 
@@ -201,6 +197,12 @@ RegisterNetEvent('196rp_jobs:server:mechRepair', function(plate, damage)
         Notify(src, 'Maşın zədəli deyil.', 'primary')
         return
     end
+    if not Player.Functions.GetItemByName('sparkplug') or not Player.Functions.GetItemByName('motoroil') then
+        Notify(src, 'Təmir üçün 1 × 🔩 Şam və 1 × 🛢 Motor yağı lazımdır (iş mərkəzi).', 'error')
+        return
+    end
+    Player.Functions.RemoveItem('sparkplug', 1, false, false, 'mech-repair')
+    Player.Functions.RemoveItem('motoroil', 1, false, false, 'mech-repair')
     local price = math.ceil(Config.Mechanic.RepairPrice * (damage / 100))
     TriggerClientEvent('196rp_jobs:client:fixVehicle', src, plate)
     Notify(src, ('🔧 Təmir edildi — ödəniş: ₣%d'):format(price), 'success')

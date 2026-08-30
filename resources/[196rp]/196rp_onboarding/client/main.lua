@@ -97,7 +97,22 @@ CreateThread(function()
                 label = ColorText(Config.Kiosk.label),
                 icon = 'car',
                 action = function()
-                    TriggerServerEvent('196rp_onboarding:server:rentcar')
+                    local menu = {
+                        { header = '🚗 Rent-A-Car', isMenuHeader = true, icon = 'fas fa-car' },
+                    }
+                    for _, m in ipairs(Config.RentCar.models) do
+                        menu[#menu + 1] = {
+                            header = m.label,
+                            txt = ('₣%d/saat · zəmanət ₣%d'):format(Config.RentCar.pricePerHour, Config.RentCar.deposit),
+                            icon = 'fas fa-car-side',
+                            params = { model = m.model },
+                        }
+                    end
+                    exports['qb-menu']:openMenu(menu, function(selected)
+                        if selected and selected.params and selected.params.model then
+                            TriggerServerEvent('196rp_onboarding:server:rentcar', selected.params.model)
+                        end
+                    end)
                 end,
             },
         },
@@ -145,7 +160,7 @@ CreateThread(function()
 end)
 
 -- Spawn maşın
-RegisterNetEvent('196rp_onboarding:client:spawnRent', function(model, returnCoords)
+RegisterNetEvent('196rp_onboarding:client:spawnRent', function(model, returnCoords, pd)
     if myRent then
         TriggerServerEvent('196rp_onboarding:server:returnRent')
         Wait(500)
@@ -168,7 +183,7 @@ RegisterNetEvent('196rp_onboarding:client:spawnRent', function(model, returnCoor
     TriggerServerEvent('qb-vehiclekeys:server:AcquireVehicleKeys', plate)
     TaskWarpPedIntoVehicle(PlayerPedId(), vehicle, -1)
 
-    TriggerServerEvent('196rp_onboarding:server:registerRent', plate)
+    TriggerServerEvent('196rp_onboarding:server:registerRent', plate, pd or nil)
     QBCore.Functions.Notify('🚗 Rentcar hazırdır! Açarlar sizə verildi. Qaytarma: /' .. Config.ReturnCommand, 'success')
 
     -- Müddət bitmə yoxlaması

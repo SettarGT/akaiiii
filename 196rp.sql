@@ -386,7 +386,12 @@ INSERT INTO `items` (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES
 ('plank', 'Taxta lövhə', 2500, 0, 1),
 ('ghost_frame', 'Ghost Çərçivə', 2500, 0, 1),
 ('ghost_slide', 'Ghost Sürüşmə', 1200, 0, 1),
-('ghost_trigger', 'Ghost Tetik', 400, 0, 1);
+('ghost_trigger', 'Ghost Tetik', 400, 0, 1),
+('carp', 'Sazan', 600, 0, 1),
+('swordfish', 'Qılınc balığı', 900, 0, 1),
+('shark', 'Köpək balığı', 1400, 0, 1),
+('sparkplug', 'Şam', 200, 0, 1),
+('motoroil', 'Motor yağı', 500, 0, 1);
 
 CREATE TABLE IF NOT EXISTS `196_businesses` (
   `id` VARCHAR(50) NOT NULL,

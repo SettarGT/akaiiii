@@ -170,10 +170,10 @@ local function createSeller()
             Wait(0)
         end
         local currentCoords = vector4(current.coords.x, current.coords.y, current.coords.z - 1, current.coords.w)
-        local ped = CreatePed(0, current.model, currentCoords, false, false)
+        local ped = CreateObject('prop_toolbox_03', currentCoords.x, currentCoords.y, currentCoords.z, false, true, true)
         FreezeEntityPosition(ped, true)
-        SetEntityInvincible(ped, true)
         SetBlockingOfNonTemporaryEvents(ped, true)
+        SetEntityHeading(ped, currentCoords.w)
         if Config.UseTarget then
             exports['qb-target']:AddTargetEntity(ped, {
                 options = {

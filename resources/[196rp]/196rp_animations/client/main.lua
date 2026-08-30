@@ -2,21 +2,20 @@ local QBCore = exports['qb-core']:GetCoreObject()
 
 local currentScenario = nil
 local currentAnim = nil
+local currentProp = nil
+
+local function CleanProp()
+    if currentProp and DoesEntityExist(currentProp) then
+        DeleteObject(currentProp)
+    end
+    currentProp = nil
+end
 
 local function StopCurrent()
-    if currentScenario then
-        for _, scenario in ipairs(Config.CancelAnims) do
-            if scenario == currentScenario then
-                ClearPedTasksImmediately(PlayerPedId())
-                break
-            end
-        end
-        currentScenario = nil
-    end
-    if currentAnim then
-        ClearPedTasksImmediately(PlayerPedId())
-        currentAnim = nil
-    end
+    ClearPedTasksImmediately(PlayerPedId())
+    currentScenario = nil
+    currentAnim = nil
+    CleanProp()
 end
 
 local function PlayAnimation(anim)
@@ -25,19 +24,43 @@ local function PlayAnimation(anim)
     if anim.type == 'scenario' then
         currentScenario = anim.scenario
         TaskStartScenarioInPlace(ped, anim.scenario, 0, true)
-    else
-        currentAnim = anim
-        RequestAnimDict(anim.dict)
-        while not HasAnimDictLoaded(anim.dict) do
-            Wait(10)
-        end
-        TaskPlayAnim(ped, anim.dict, anim.anim, 8.0, 8.0, -1, 1, 0, false, false, false)
+        return
     end
+
+    RequestAnimDict(anim.dict)
+    local t = 0
+    while not HasAnimDictLoaded(anim.dict) and t < 50 do
+        Wait(20)
+        t = t + 1
+    end
+    if not HasAnimDictLoaded(anim.dict) then
+        QBCore.Functions.Notify('⚠️ Bu animasiya mövcud deyil.', 'error')
+        return
+    end
+
+    if anim.type == 'prop' and anim.prop then
+        RequestModel(anim.prop)
+        t = 0
+        while not HasModelLoaded(anim.prop) and t < 50 do
+            Wait(20)
+            t = t + 1
+        end
+        if HasModelLoaded(anim.prop) then
+            local coords = GetEntityCoords(ped)
+            currentProp = CreateObject(GetHashKey(anim.prop), coords.x, coords.y, coords.z, true, true, true)
+            local off = anim.offset or vector3(0.11, 0.05, -0.02)
+            local rot = anim.rot or vector3(0.0, 0.0, 0.0)
+            AttachEntityToEntity(currentProp, ped, anim.bone or 28422, off.x, off.y, off.z, rot.x, rot.y, rot.z, false, false, true, false, 2, true)
+        end
+    end
+
+    currentAnim = anim
+    TaskPlayAnim(ped, anim.dict, anim.anim, 8.0, 8.0, -1, 1, 0, false, false, false)
 end
 
 local function OpenMenu()
     local menu = {
-        { header = 'Animasiya', isMenuHeader = true, icon = 'fas fa-person-running' },
+        { header = 'Animasiya (152+)', isMenuHeader = true, icon = 'fas fa-person-running' },
         { header = 'Animasiyanı dayandır', icon = 'fas fa-ban', txt = 'Cari animasiyanı ləğv et', params = { stop = true } },
     }
     for i, anim in ipairs(Config.Animations) do

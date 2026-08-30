@@ -42,6 +42,24 @@ exports('ChargeTax', function(src, amount, reason)
 end)
 
 -- ── Vergi statistikası (panel) ──
+-- Gəlir vergisi: net məbləği qaytarır (səbəb vergiyə daxildirsə)
+function ApplyIncome(src, amount, reason)
+    amount = tonumber(amount) or 0
+    if amount <= 0 or not Config.IncomeTax or Config.IncomeTax <= 0 then return amount end
+    if not reason or reason == 'unknown' then return amount end
+    local taxable = false
+    for _, r in ipairs(Config.IncomeReasons) do
+        if reason:lower() == r:lower() then taxable = true break end
+    end
+    if not taxable then return amount end
+    local tax = math.floor(amount * Config.IncomeTax / 100 + 0.5)
+    if tax <= 0 then return amount end
+    TriggerClientEvent('QBCore:Notify', src, ('🏛 Gəlir vergisi: -₣%d (%d%%)'):format(tax, Config.IncomeTax), 'primary')
+    return amount - tax
+end
+
+exports('ApplyIncome', ApplyIncome)
+
 RegisterNetEvent('196rp_tax:server:stats', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)

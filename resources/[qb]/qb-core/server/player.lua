@@ -188,6 +188,11 @@ function Player:AddMoney(moneytype, amount, reason)
     amount    = tonumber(amount)
     if not amount or amount < 0 then return end
     if not self.PlayerData.money[moneytype] then return false end
+    -- 196 RP: gəlir vergisi (196rp_tax export) — maaş/iş satışlarından 5% kəsmə
+    if GetResourceState('196rp_tax') == 'started' then
+        local net = exports['196rp_tax']:ApplyIncome(self.PlayerData.source, amount, reason)
+        amount = net or amount
+    end
     self.PlayerData.money[moneytype] = self.PlayerData.money[moneytype] + amount
     if not self.Offline then
         self:UpdateClient('money', self.PlayerData.money)

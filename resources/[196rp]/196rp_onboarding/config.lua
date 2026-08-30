@@ -24,12 +24,21 @@ Config.Kiosk = {
 
 -- Rentcar maşını (yeni oyunçular üçün)
 Config.RentCar = {
+    models = {
+        { model = 'blista',  label = 'Blista' },
+        { model = 'panto',   label = 'Panto' },
+        { model = 'prairie', label = 'Prairie' },
+        { model = 'kanjo',   label = 'Kanjo' },
+    },
     model = 'blista',                -- ən ucuz start maşını
     pricePerHour = 250,              -- ₣/saat
     firstRentalFree = true,          -- ilk icarə pulsuz (onboarding)
     freeRentalSeconds = 1800,        -- 30 dəqiqə pulsuz
     maxRentalMinutes = 120,          -- maksimum icarə müddəti
-    deposit = 500,                   -- zəmanət (qaytaranda geri)
+    deposit = 1000,                  -- zəmanət (qaytaranda geri) — TT-27
+    nightFactor = 0.5,               -- gecə 00:00-06:00 endirim 50%
+    nightStart = 0,
+    nightEnd = 6,
     returnCoords = vector3(-1028.0, -2722.0, 13.9), -- qaytarma nöqtəsi (aeroport)
     returnRadius = 8.0,
 }

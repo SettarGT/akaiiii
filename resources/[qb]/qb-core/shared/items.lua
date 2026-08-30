@@ -238,6 +238,10 @@ QBCore.Shared.Items = {
     scrap_metal                     = { name = 'scrap_metal', label = 'Metal hissə', weight = 400, type = 'item', image = 'scrap_metal.png', unique = false, useable = false, shouldClose = false, description = 'Sökülmüş maşın hissələri — qara bazarda sat' },
     fishing_rod                     = { name = 'fishing_rod', label = 'Balıqçı çubuğu', weight = 1200, type = 'item', image = 'fishingrod.png', unique = false, useable = true, shouldClose = true, description = 'Balıq tutmaq üçün qarmaq — sahilə gedin!' },
     fish                            = { name = 'fish', label = 'Təzə balıq', weight = 800, type = 'item', image = 'fish.png', unique = false, useable = false, shouldClose = false, description = 'Bazarda satıla bilən təzə balıq' },
+    carp                            = { name = 'carp', label = 'Sazan', weight = 600, type = 'item', image = 'fish.png', unique = false, useable = false, shouldClose = false, description = 'Şirin su balığı — liman satışı' },
+    swordfish                       = { name = 'swordfish', label = 'Qılınc balığı', weight = 900, type = 'item', image = 'fish.png', unique = false, useable = false, shouldClose = false, description = 'Dəyərli dəniz balığı' },
+    shark                           = { name = 'shark', label = 'Köpək balığı', weight = 1400, type = 'item', image = 'fish.png', unique = false, useable = false, shouldClose = false, description = 'Nadir böyük ova — restoranlar üçün' },
+
     pickaxe                         = { name = 'pickaxe', label = 'Mədənçi kürəyi', weight = 3000, type = 'item', image = 'pickaxe.png', unique = false, useable = true, shouldClose = true, description = 'Qaya yarmaq üçün ağır kürək' },
     stone                           = { name = 'stone', label = 'Daş', weight = 500, type = 'item', image = 'stone.png', unique = false, useable = false, shouldClose = false, description = 'Tikinti üçün xammal' },
     coal                            = { name = 'coal', label = 'Kömür', weight = 700, type = 'item', image = 'coal.png', unique = false, useable = false, shouldClose = false, description = 'Qara qızıl — enerji xammalı' },
@@ -375,7 +379,9 @@ QBCore.Shared.Items = {
     newsbmic                     = { name = 'newsbmic', label = 'Ştativ mikrofon', weight = 100, type = 'item', image = 'newsbmic.png', unique = true, useable = true, shouldClose = true, description = 'Jurnalistlər üçün böyük mikrofon' },
 
     -- Crafting table's
-    item_bench = {name = "item_bench", label = "Workbench", weight = 15000, type = "item", image = "workbench.png", unique = true, useable = true, shouldClose = false, combinable = nil, description = "A workbench to craft items."},
-    attachment_bench = {name = "attachment_bench", label = "Attachment Workbench", weight = 15000, type = "item", image = "attworkbench.png", unique = true, useable = true, shouldClose = false, combinable = nil, description = "A workbench for crafting attachments."},
+    item_bench = {name = "item_bench", label = "İş masası", weight = 15000, type = "item", image = "workbench.png", unique = true, useable = true, shouldClose = false, combinable = nil, description = "Əşya hazırlamaq üçün iş masası."},
+    attachment_bench = {name = "attachment_bench", label = "Aksesuar iş masası", weight = 15000, type = "item", image = "attworkbench.png", unique = true, useable = true, shouldClose = false, combinable = nil, description = "Aksesuar hazırlamaq üçün iş masası."},
 
+    sparkplug                       = { name = 'sparkplug', label = 'Şam', weight = 200, type = 'item', image = 'sparkplug.png', unique = false, useable = false, shouldClose = false, description = 'Mühərrik şamı — mexanik təmir üçün' },
+    motoroil                        = { name = 'motoroil', label = 'Motor yağı', weight = 500, type = 'item', image = 'motoroil.png', unique = false, useable = false, shouldClose = false, description = 'Mühərrik yağı — mexanik təmir üçün' },
 }

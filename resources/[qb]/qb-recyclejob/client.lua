@@ -196,27 +196,31 @@ end
 
 local function Start()
     if Config.SellMaterials then
-        RequestModel(GetHashKey('s_m_m_dockwork_01'))
-        while not HasModelLoaded(GetHashKey('s_m_m_dockwork_01')) do
+        local loc = Config.SellPed
+        RequestModel('prop_toolbox_03')
+        while not HasModelLoaded('prop_toolbox_03') do
             Wait(0)
         end
-        local loc = Config.SellPed
-        local ped = CreatePed(4, GetHashKey('s_m_m_dockwork_01'), loc.x, loc.y, loc.z, loc.w, false, false)
-        FreezeEntityPosition(ped, true)
-        SetEntityInvincible(ped, true)
-        SetBlockingOfNonTemporaryEvents(ped, true)
+        local kiosk = CreateObject('prop_toolbox_03', loc.x, loc.y, loc.z, false, true, true)
+        FreezeEntityPosition(kiosk, true)
+        SetBlockingOfNonTemporaryEvents(kiosk, true)
+        SetEntityHeading(kiosk, loc.w)
         if Config.UseTarget then
-            exports['qb-target']:AddTargetEntity(ped, {
-                options = {
-                    {
-                        icon = 'fas fa-dollar-sign',
-                        label = Lang:t('text.sell_materials'),
-                        action = function()
-                            sellMaterials()
-                        end
-                    },
+            exports['qb-target']:AddBoxZone('recycleKiosk', vector3(loc.x, loc.y, loc.z), 2.0, 1.5, {
+                name = 'recycleKiosk',
+                heading = 180.0,
+                minZ = loc.z - 1.0,
+                maxZ = loc.z + 2.0,
+                debugPoly = false,
+            }, {
+                {
+                    icon = 'fas fa-recycle',
+                    label = Lang:t('text.sell_materials'),
+                    action = function()
+                        sellMaterials()
+                    end,
+                    distance = 2.0,
                 },
-                distance = 1.5
             })
         else
             local sellZone = BoxZone:Create(vector3(loc.x, loc.y, loc.z), 2.0, 1.5, {

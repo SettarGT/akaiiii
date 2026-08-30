@@ -10,6 +10,17 @@ Config.ApplyTo = {
     Billing = true,       -- faktura ödənişləri
 }
 
+-- Gəlir vergisi (iş ödənişlərindən kəsmə, %)
+Config.IncomeTax = 5.0
+
+-- Gəlir sayılan AddMoney səbəbləri (qb-core içində tax tətbiq edilir)
+Config.IncomeReasons = {
+    'job-sell', 'cardealer-sell', 'sold hotdog', 'Bus job', 'trucker-salary',
+    'Taxi payout', 'tow-salary', 'garbage-payslip', 'qb-vineyard:sellItems',
+    'qb-diving:server:SellCorals', 'sold vehicle used lot', 'sold vehicle back',
+    'recycle-sell', 'news-payslip', 'salary',
+}
+
 -- Həftəlik vergilər
 Config.Weekly = {
     Enabled = true,
