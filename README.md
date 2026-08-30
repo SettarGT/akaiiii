@@ -66,6 +66,11 @@ qb-houses, qb-apartments, qb-interior, qb-loading, qb-adminmenu, qb-weapons.
 
 > `setr qb_locale "az"` server.cfg-də artıq var — bütün UI Azərbaycandır.
 
+## 📖 Əmrlər
+
+- **Oyunçu əmrləri:** `/me /do /try /ooc /report /muraciet /is /anim /rentqaytar /vehicleui` (və ya F5), `/givekeys <id>`
+- **Admin əmrləri:** `ADMIN_KOMANDALARI.txt` (repo kökündə) — tam siyahı az dilində
+
 ## 🆘 Tez-tez xətalar (troubleshooting)
 
 | Ekranda görünən | Səbəb | Həll |

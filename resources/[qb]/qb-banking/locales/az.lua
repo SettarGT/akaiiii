@@ -9,8 +9,8 @@ local Translations = {
         userAdd = 'İstifadəçi əlavə edildi',
         userRemove = 'İstifadəçi silindi',
         card = 'Kart yaradıldı',
-        give = '$%s nəğd pul verildi',
-        receive = '$%s nəğd pul alındı',
+        give = '₣%s nəğd pul verildi',
+        receive = '₣%s nəğd pul alındı',
     },
     error = {
         error = 'Xəta baş verdi',

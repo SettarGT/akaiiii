@@ -63,6 +63,7 @@ CORE_EXPORTS = {
     ('qb-menu', 'openMenu'),
     ('qb-target', 'AddBoxZone'),
     ('qb-target', 'RemoveZone'),
+    ('qb-target', 'AddTargetEntity'),
     ('qb-inventory', 'OpenInventory'),
     ('qb-inventory', 'OpenInventoryById'),
     ('qb-clothing', 'reloadSkin'),
@@ -82,6 +83,12 @@ EXTERNAL_CLIENT_EVENTS = {
     'qb-radio:client:UseItem',
 }
 
+# Digər resurslarda qeydiyyatdan keçmiş server eventləri (qloballa yox — ayrıca)
+EXTERNAL_SERVER_EVENTS = {
+    'qb-vehiclekeys:server:AcquireVehicleKeys',
+    'qb-vehiclekeys:server:setVehLockState',
+}
+
 problems = 0
 
 print('== server callbacks declared: %d ==' % len(server_cb))
@@ -98,6 +105,8 @@ for name, p, i in sorted(server_trigger_client):
 
 print('== server events declared: %d ==' % len(server_events))
 for name, p, i in sorted(client_trigger_server):
+    if name in EXTERNAL_SERVER_EVENTS:
+        continue
     if name not in server_events:
         print('  NO server RegisterNetEvent for %s (triggered at %s:%d)' % (name, p, i)); problems += 1
 

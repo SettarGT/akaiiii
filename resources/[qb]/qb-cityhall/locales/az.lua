@@ -3,7 +3,7 @@ local Translations = {
         not_in_range = 'Bələdiyyədən çox uzaqsınız'
     },
     success = {
-        recived_license = '%{value} lisenziyanızı $50 qarşılığında aldınız'
+        recived_license = '%{value} lisenziyanızı ₣50 qarşılığında aldınız'
     },
     info = {
         new_job_app = 'Müraciətiniz (%{job}) rəisinə göndərildi',

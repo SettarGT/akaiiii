@@ -15,18 +15,36 @@
 
 ---
 
-## ✅ TƏSDİQLƏNMİŞ QƏRARLAR (30.08.2026)
+## ✅ TƏSDİQLƏNMİŞ QƏRARLAR (30.08.2026) — HAMISI "D"
 
 | # | Sual | Qərar |
 |---|---|---|
 | 1 | Framework | **QBCore** qalır |
 | 39 | Envanter | **qb-inventory** + müasir dizayn (geyim tab ilə) |
-| 5 | Valyuta | **"196 Fanteyn"** (HUD/bank/cüzdan hamısında) |
-| 3 | Slot sayı | **30** (az populyasiya startı — TT "Start-Up Adaptasiya"ya uyğun) |
-| 44 | Telefon | **lb-phone** (ox_lib əlavəsi ilə, qb-phone çıxarılır) |
+| 5 | Valyuta | **"196 Fanteyn"** (₣ — HUD/bank/cüzdan hamısında) |
+| 3 | Slot sayı | **30** (az pop başlanğıc; sonra 64/128) |
+| 44 | Telefon | **lb-phone** — ⚠️ AŞKARLAMA: lb-phone **pulsuz deyil** (lbscripts.com premium, ~$15+) və **ox_inventory tələb edir**. Sən qb-inventory seçdiyin üçün: **v1 = qb-phone + premium (dark-glass) yenidən dizayn**; lb-phone lisenziyası alınarsa 1 günə inteqrasiya edirəm. |
 | 6/19/28.. | V1 əhatəsi | **Core + İşlər + Dövlət Xidmətləri** (PD/EMS/Bələdiyyə/MDT/faktura) — qalanı v1.1–v2 |
+| 2–66 | Qalan bütün suallar | **HAMISI D** (mənim tövsiyələrim) |
 
-> server.cfg artıq: 30 slot, OneSync Infinity, "196 RP" hostname adı.
+> server.cfg artıq: 30 slot, OneSync Infinity, "196 RP | Azərbaycandilli Semi-RP | 0-NPC | Hibrid Sistemlər".
+
+## ✅ V1-də TƏHVİL EDİLƏN (bu gün tamamlandı)
+
+1. **196rp_onboarding** — aeroport spawn + kinematik kamera (göydən eniş), qızılı "196 RP — Yeni Era" giriş ekranı, 5 interaktiv tooltip ([N]/[F7], [I]/[TAB], [M], [G]/[L]/[B], Bələdiyyə), Bələdiyyəyə GPS ulduzu, **Rentcar kiosk** (ilk 30 dəq pulsuz, sonra ₣250/saat, /rentqaytar).
+2. **196rp_vehicleui** — F5 Radial (glassmorphism): mühərrik, kilid, qapılar, sərnişin, baqaj, kapot, pəncərə, farlar, əlavə işıqlar.
+3. **Valyuta "196 Fanteyn"** — ₣ simvolu qb-banking + az locale-lar, start pulu ₣5 000.
+4. **Kəmər avtomatik** — maşına minəndə avtomatik taxılır (B ilə dəyişdirilir), yüksək sürətdə qəzada ejection qalır.
+5. **ADMIN_KOMANDALARI.txt** — tam az dilli admin/əməl bələdçisi (repo kökündə).
+6. SQL: `196_tutorial` + `196_rentals` cədvəlləri (196rp.sql + resurs daxilində).
+7. CI ✅ (manifest, kontrakt, native, SQL, NUI, Lua).
+
+## ⏳ NÖVBƏTİ MƏRHƏLƏLƏR (v1 davamı)
+
+- **v1.1:** Bələdiyyə paketi (pasport/FİN 11 rəqəm/qan qrupu + sürücülük imtahanı 10 sual), xüsusi MDT + dispatch, faktura NUI, ATM dizaynı, iş geyimləri (uniforma), cərimə bildiriş pəncərəsi.
+- **v1.2:** Advanced EMS (6 zona zədə, xərək, rentgen), shell ev + 3D mebel (Gizmo), kiber cinayət + chop-shop, kripto/196-Coin, kazino çipləri, stress sistemi.
+- **v1.3:** Player-owned bizneslər (boss menu), hibrid stok/restock, rəqabətli yarışlar (ELO), qar mövsümü + qış təkərləri.
+- **v2:** Court/judicial (hakim paneli), metro/qatarlar, aviasiya, yaxtalar, boombox 3D musiqi, TVs YouTube/Twitch, seçkilər, evlilik/miras (CK), anbarlar + Storage Wars, donat/VIP sistemi.
 
 ---
 

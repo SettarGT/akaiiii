@@ -28,7 +28,7 @@ local Translations = {
         ['taxi_returned'] = 'Taksi dayanacağa qaytarıldı',
         ['on_duty'] = '[E] - Növbəyə çıx',
         ['off_duty'] = '[E] - Növbədən çıx',
-        ['tip_received'] = 'Təhlükəsiz sürücülük üçün $%d bahşiş aldınız',
+        ['tip_received'] = 'Təhlükəsiz sürücülük üçün ₣%[sd] bahşiş aldınız',
         ['tip_not_received'] = 'Gələcəkdə bahşiş almaq istəyirsinizsə, taksini qəzaya salmamağa çalışın',
     },
     menu = {

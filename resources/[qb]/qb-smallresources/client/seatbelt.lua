@@ -94,6 +94,13 @@ exports('HasSeatbeltOn', hasSeatbeltOn)
 
 RegisterNetEvent('QBCore:Client:EnteredVehicle', function()
     local ped = PlayerPedId()
+    -- 196 RP: sürücü maşına minən kimi kəmər avtomatik taxılır (B ilə dəyişdirilə bilər)
+    if GetPedInVehicleSeat(GetVehiclePedIsIn(ped, false), -1) == ped and not seatbeltOn then
+        seatbeltOn = true
+        SeatBeltLoop()
+        TriggerEvent('seatbelt:client:ToggleSeatbelt', seatbeltOn)
+        TriggerServerEvent('InteractSound_SV:PlayWithinDistance', 5.0, 'carbuckle', 0.25)
+    end
     while IsPedInAnyVehicle(ped, false) do
         Wait(0)
         local currVehicle = GetVehiclePedIsIn(ped, false)

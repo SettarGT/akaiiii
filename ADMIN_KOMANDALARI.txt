@@ -1,0 +1,158 @@
+═══════════════════════════════════════════════════════════════════
+ 196 RP | Azerbaijan Role Play — ADMIN VƏ ƏMR BƏLƏDÇİSİ
+ (Bütün əmrlər konsol və ya oyun içi çat `/` ilə işləyir)
+═══════════════════════════════════════════════════════════════════
+
+┌──────────────────────────────────────────────────────────────┐
+│ 1. YENİ OYUNÇU / WHITELIST                                │
+└──────────────────────────────────────────────────────────────┘
+/muraciet          → Whitelist müraciəti (oyunçu): ad, soyad, yaş,
+                     Discord, RP təcrübəsi, səbəb (qb-input form)
+/wluygula          → [ADMIN] Gözləyən müraciətlərin siyahısı (son 10)
+/wlqebul <id>      → [ADMIN] Müraciəti qəbul et (/wluygula ID-si)
+/wlred <id> <səbəb>→ [ADMIN] Müraciəti rədd et
+/wlrem <id>        → [ADMIN] Oyunçunu whitelist-dən çıxar
+/wlkesifle         → [ADMIN] Whitelist keşini sıfırla (DB dəyişikliyindən sonra!)
+
+┌──────────────────────────────────────────────────────────────┐
+│ 2. SPƏKİN İCARƏ (Onboarding — Rentcar)                     │
+└──────────────────────────────────────────────────────────────┘
+/rentqaytar        → Aeroportda icarə maşınını qaytarmaq
+                     (kioskda "E" → icarə; ilk icarə pulsuz 30 dəq)
+
+┌──────────────────────────────────────────────────────────────┐
+│ 3. RP ƏMRLƏRİ                                                │
+└──────────────────────────────────────────────────────────────┘
+/me <mətn>         → Hərəkət təsviri ("* ...")
+/do <mətn>         → Əməliyyat təsviri ("(( ... ))")
+/try <mətn>        → Şans (uğur/uğursuzluq)
+/ooc <mətn>        → Rol xaricində söhbət
+/report <mətn>     → Adminə şikayət/ticket
+/is <id>           → Oyunçu məlumatı (iş, kimlik)
+/anim              → Animasiya menyusu
+/ame <mətn>        → Yakınlıqdakılara xüsusi mesaj (alternativ)
+
+┌──────────────────────────────────────────────────────────────┐
+│ 4. NƏQLİYYAT                                                  │
+└──────────────────────────────────────────────────────────────┘
+/vehicleui (F5)    → Radial maşın menyusu: mühərrik, kilid, qapılar,
+                     baqaj, kapot, pəncərə, farlar, əlavə işıqlar
+/togglelocks (L)   → Maşın kilidini aç/bağla
+/engine (G)        → Mühərriki yandır/söndür
+/toggleseatbelt (B)→ Kəmər (maşına minəndə avtomatik taxılır)
+/givekeys <id>     → Açarı başqa oyunçuya ver
+/clip              → Fraksiya klipboard (yoldaş)
+/tow               → Tow xidməti (maşını yedəklə)
+
+┌──────────────────────────────────────────────────────────────┐
+│ 5. TƏHLÜKƏSİZLİK / ADMIN (ADMIN MENYU)                      │
+└──────────────────────────────────────────────────────────────┘
+/admin             → Əsas admin panel (NUI: oyunçu siyahısı, ban,
+                     kick, cəza tarixi, teleport)
+/noclip            → Divarlardan keçmə rejimi (spectate üçün)
+/tp, /tpm          → Teleport / xəritə teleportu
+/coords            → Hazırkı koordinatlar (copy-paste üçün)
+/revive            → Yaxın oyunçunu canlandır
+/revivep <id>      → Müəyyən oyunçunu canlandır
+/aheal             → Özünü tam sağalt
+/setjob <id> <iş> <grade> → İş dəyiş
+/setgang <id> <qrup>      → Qrup dəyiş
+/givecash <id> <məbləğ>   → Nağd pul ver (Server-side DOĞRULAMALI!)
+/givemoney <id> <məbləğ>  → Banka pul ver
+/setmoney <id> <məbləğ>   → Pul səviyyəsini təyin et
+/setmodel <model>  → Ped modelini dəyiş
+/giveitem <id> <item> <say> → Əşya ver
+/clearinv <id>     → İnventarı təmizlə
+/kickall           → Bütün oyunçuları çıxar
+/announce <mətn>   → Server elanı (bütün oyunçulara)
+/reportr <id>      → Reportunu cavablandır (admin)
+/staffchat <mətn>  → Admin çatı
+/ban <id> <müddət> <səbəb> → Ban
+/warn <id> <səbəb> → Xəbərdarlıq
+/checkwarns <id>   → Xəbərdarlıqları göstər
+/delwarn <id> <index> → Xəbərdarlığı sil
+/weather <növ>     → Hava dəyiş (clear, extra_sunny, rain, snow...)
+/freezeweather     → Havanı sabitlə
+/time <saat>       → Vaxt dəyiş
+/night /noon /morning /evening → Vaxt presets
+/blackout          → Şəhər işıqlarını söndür
+/pvp               → PVP açarı
+/setspeed <km/saat>→ Sürət limiti (admin)
+/seticon           → (planlaşdırılıb)
+/addpermission <id> <perm> → ACE icazə ver (qbcore.god/admin/mod)
+/removepermission <id> <perm> → ACE icazəni sil
+
+┌──────────────────────────────────────────────────────────────┐
+│ 6. POLİS / EMS / HAKİM (Peşə Əmrləri)                        │
+└──────────────────────────────────────────────────────────────┘
+/fine <id> <məbləğ>       → Cərimə yaz (müasir NUI bildirişi ilə)
+/bill <id> <məbləğ>       → Faktura (şirkət/fərdi — banka köçürülür)
+/jail <id> <dəq> <səbəb>  → Həbs
+/unjail <id>              → Həbsdən çıxar
+/cuff <id>                → Qandal
+/escort <id>              → Müşayiət (əlində aparmaq)
+/putintrunk <id>          → Oyunçunu baqaja qoy
+/getintrunk <id>          → Baqajdan çıxar
+/revoke <id> <lisensiya>  → Lisenziyanı geri al (driving, weapon)
+/takedrivinglicense <id>  → Sürücülük vəsiqəsini ələ al
+/impound <id>             → Maşını cərimə meydançasına göndər
+/depot <id>               → Maşını depoya qoy
+/search <id>              → Axtarış (əl, maşın)
+/seizecash <id>           → Nağd pulu müsadirə et
+/status <id>              → Sağlamlıq statusu
+/heal <id>                → Müalicə
+/setpain <id> <səviyyə>   → Ağrı səviyyəsi
+/clearblood               → Qan izlərini təmizlə (EMS)
+/clearcasings             → Kovanları təmizlə
+/takedna <id>             → DNT nümunəsi götür (lab analiz)
+/anklet <id>              → Bilərzik izləyici (GPS)
+/ankletlocation <id>      → İzləyicinin yerini göstər
+/callsign <ad>            → Çağırış işarəsi (məs. 196-ALPHA-1)
+/sc (Spikestrip)          → Tikan zolağı qoy
+/flagplate <id>           → Nömrəni siqnalizasiya et (ALPR)
+/unflagplate <id>         → Siqnalı götür
+/plateinfo <id>           → Nömrə məlumatı
+/paytow <id>              → Tow məbləği ödə
+/paylawyer <id>           → Vəkil haqqı ödə
+/grantlicense <id> <növ>  → Lisenziya ver (weapon, driving)
+
+┌──────────────────────────────────────────────────────────────┐
+│ 7. EV / QARAJ / BİZNES                                       │
+└──────────────────────────────────────────────────────────────┘
+/createhouse (admin)      → Ev yarat
+/decorate                 → İnteryer dekorasiya (IKEA rejimi, v1.2)
+/addgarage <id>           → Qaraj əlavə et
+/transfervehicle <id>     → Maşını başqa oyunçuya ver
+/dev                      → İnkişaf menyusu
+/removestand              → Yerə qoyulmuş əşyaları təmizlə
+/randomitems              → Test əşyaları
+/maxmods                  → Maşını maksimum tənzimlə (test)
+
+┌──────────────────────────────────────────────────────────────┐
+│ 8. TELEFON / SOSİAL                                          │
+└──────────────────────────────────────────────────────────────┘
+/phone (M)            → Telefonu çıxar (lb-phone [planlaşdırılıb])
+/ring <id>            → Zəng et
+/ping                 → Ping yoxla
+/editor               → Rockstar Editoru aç (media/streamer)
+/saveclip /record     → Çəkiliş / saxla (streamer mode)
+/cam                  → Kamera rejimi
+
+┌──────────────────────────────────────────────────────────────┐
+│ 9. SERVER KONSOL ƏMRLƏRİ (txAdmin / F8)                      │
+└──────────────────────────────────────────────────────────────┘
+restart <resurs>      → Resursu yenidən başlat
+restart 196rp_whitelist → Whitelist keş sıfırlama (DB dəyişikliyindən sonra!)
+stop <resurs> / start <resurs>
+ensure [196rp]        → Bütün xüsusi resursları yüklə
+status                → Server statusu (oyunçu sayı)
+say / sv_...          → Konfiquraşdırmalar
+
+═══════════════════════════════════════════════════════════════════
+ İcazə strukturu (ACE):
+   qbcore.god   → ən yüksək (sən)
+   qbcore.admin → admin panel + cəzalar
+   qbcore.mod   → moderator (report cavablamaq)
+   İlk admin: server.cfg sonunda
+   add_principal license:XXXX... group.admin  (öz license-ni yaz)
+═══════════════════════════════════════════════════════════════════
