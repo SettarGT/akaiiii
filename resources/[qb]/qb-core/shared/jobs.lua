@@ -1,6 +1,11 @@
 QBCore.Shared.ForceJobDefaultDutyAtLogin = true -- true: Force duty state to jobdefaultDuty | false: set duty state from database last saved
 QBCore.Shared.Jobs = {
 	unemployed = { label = 'Mülki şəxs', defaultDuty = true, offDutyPay = false, grades = { ['0'] = { name = 'Sərbəst', payment = 10 } } },
+
+	fisher = { label = 'Balıqçılıq', defaultDuty = true, offDutyPay = false, grades = { ['0'] = { name = 'Balıqçı', payment = 40 }, ['1'] = { name = 'Baş Balıqçı', payment = 60 } } },
+	miner = { label = 'Mədənçilik', defaultDuty = true, offDutyPay = false, grades = { ['0'] = { name = 'Mədənçi', payment = 45 }, ['1'] = { name = 'Usta Mədənçi', payment = 70 } } },
+	lumberjack = { label = 'Meşə Təsərrüfatı', defaultDuty = true, offDutyPay = false, grades = { ['0'] = { name = 'Odunçu', payment = 45 }, ['1'] = { name = 'Meşə Ustası', payment = 70 } } },
+	construction = { label = 'İnşaat', defaultDuty = true, offDutyPay = false, grades = { ['0'] = { name = 'Fəhlə', payment = 50 }, ['1'] = { name = 'Usta', payment = 80 }, ['2'] = { name = 'İnşaat Mühəndisi', payment = 100 } } },
 	bus = { label = 'Avtobus', defaultDuty = true, offDutyPay = false, grades = { ['0'] = { name = 'Sürücü', payment = 50 } } },
 	judge = { label = 'Məhkəmə', defaultDuty = true, offDutyPay = false, grades = { ['0'] = { name = 'Hakim', payment = 100 } } },
 	lawyer = { label = 'Hüquq firması', defaultDuty = true, offDutyPay = false, grades = { ['0'] = { name = 'Hüquqşünas', payment = 50 } } },

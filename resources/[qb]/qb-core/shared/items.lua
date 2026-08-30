@@ -229,6 +229,15 @@ QBCore.Shared.Items = {
     tosti                        = { name = 'tosti', label = 'Pendirli tost', weight = 200, type = 'item', image = 'tosti.png', unique = false, useable = true, shouldClose = true, description = 'İsti, dadlı sendviç — aclığı azaldır' },
     twerks_candy                 = { name = 'twerks_candy', label = 'Twerks şirniyyatı', weight = 100, type = 'item', image = 'twerks_candy.png', unique = false, useable = true, shouldClose = true, description = 'Şirin konfet' },
     snikkel_candy                = { name = 'snikkel_candy', label = 'Snikkel şirniyyatı', weight = 100, type = 'item', image = 'snikkel_candy.png', unique = false, useable = true, shouldClose = true, description = 'Şokoladlı konfet' },
+    fishing_rod                     = { name = 'fishing_rod', label = 'Balıqçı çubuğu', weight = 1200, type = 'item', image = 'fishingrod.png', unique = false, useable = true, shouldClose = true, description = 'Balıq tutmaq üçün qarmaq — sahilə gedin!' },
+    fish                            = { name = 'fish', label = 'Təzə balıq', weight = 800, type = 'item', image = 'fish.png', unique = false, useable = false, shouldClose = false, description = 'Bazarda satıla bilən təzə balıq' },
+    pickaxe                         = { name = 'pickaxe', label = 'Mədənçi kürəyi', weight = 3000, type = 'item', image = 'pickaxe.png', unique = false, useable = true, shouldClose = true, description = 'Qaya yarmaq üçün ağır kürək' },
+    stone                           = { name = 'stone', label = 'Daş', weight = 500, type = 'item', image = 'stone.png', unique = false, useable = false, shouldClose = false, description = 'Tikinti üçün xammal' },
+    coal                            = { name = 'coal', label = 'Kömür', weight = 700, type = 'item', image = 'coal.png', unique = false, useable = false, shouldClose = false, description = 'Qara qızıl — enerji xammalı' },
+    axe                             = { name = 'axe', label = 'Balta', weight = 2500, type = 'item', image = 'axe.png', unique = false, useable = true, shouldClose = true, description = 'Ağac kəsmək üçün iti balta' },
+    wood                            = { name = 'wood', label = 'Odun', weight = 900, type = 'item', image = 'wood.png', unique = false, useable = false, shouldClose = false, description = 'Taxta emalı üçün odun' },
+    brick                           = { name = 'brick', label = 'Kərpic', weight = 1200, type = 'item', image = 'brick.png', unique = false, useable = false, shouldClose = false, description = 'İnşaat materialı' },
+    cement                          = { name = 'cement', label = 'Sement', weight = 1500, type = 'item', image = 'cement.png', unique = false, useable = false, shouldClose = false, description = 'İnşaat materialı' },
     sandwich                     = { name = 'sandwich', label = 'Sendviç', weight = 200, type = 'item', image = 'sandwich.png', unique = false, useable = true, shouldClose = true, description = 'Rahat yemək — aclığı azaldır' },
 
     -- Drink ITEMS

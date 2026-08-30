@@ -156,3 +156,21 @@ say / sv_...          → Konfiquraşdırmalar
    İlk admin: server.cfg sonunda
    add_principal license:XXXX... group.admin  (öz license-ni yaz)
 ═══════════════════════════════════════════════════════════════════
+
+
+═══════════════════════════════════════════════════
+ v1.1 YENİ ƏMRLƏR: PD / XƏSTƏXANA / İŞLƏR / BANK
+═══════════════════════════════════════════════════
+ /mdt        → MDT paneli (yalnız polis/judge) — F6 düyməsi
+ /geyim      → Qarderob (geyim hissələrini çıxar)
+ /temir      → Mexanik: yaxın maşını təmir et
+ /mdtqapat   → MDT pəncərəsini bağla
+
+ OYUNÇU İŞLƏRİ (İş Mərkəzi [E] — Mərkəz/Sahil):
+  fisher       → balıqçılıq (çubuq verilir, sahil zonaları)
+  miner        → mədənçilik (kürək, karyer zonaları)
+  lumberjack   → meşə (balta, meşə zonaları)
+  construction → inşaat (kərpic/sement, tikinti zonaları)
+  mechanic     → mexanik (/temir)
+  cardealer    → avtosalon əməkdaşı
+```

@@ -72,6 +72,16 @@ qb-houses, qb-apartments, qb-interior, qb-loading, qb-adminmenu, qb-weapons.
 - Bələdiyyə (City Hall): pasport ₣500, sürücülük lisenziyası ₣1500 (nəzəri 10 sual + praktik 3 nöqtə), silah lisenziyası ₣5000
 - **/faktura <id> <məbləğ> <səbəb>** — NUI faktura (qəbul/imtina, bank/nağd ödəniş, Discord webhook)
 
+## 🚔 PD / MDT / Xəstəxana / Bank (v1.1)
+
+- **F6** və ya `/mdt` — Polis MDT (oyunçu axtarışı, cərimə yazma, nəqliyyat/plitə, qeydlər)
+- **`/faktura <id> <məbləğ> <səbəb>`** — NUI faktura (qəbul/imtina, bank/nağd, webhook)
+- Xəstəxana qəbulu `[E]`: sığorta ₣2 500 (30 gün müalicə pulsuz), müalicə ₣800, AED canlandırma ₣2 000 (EMS növbətçidə olmayanda)
+- **`/temir`** — mexanik işində maşını təmir et (zədəyə görə qiymət)
+- **`/geyim`** — qarderob (geyim hissələrini fərdi çıxar/dəyiş)
+- **196 Bank ATM-ləri** `[E]` — çıxarış/yatırma/köçürmə (₣250 000 limit)
+- **196 Avtosalon** — premium NUI salon, sınaq sürüşü, bank/nağd alış
+
 ## 📖 Əmrlər
 
 - **Oyunçu əmrləri:** `/me /do /try /ooc /report /muraciet /is /anim /rentqaytar /vehicleui` (və ya F5), `/givekeys <id>`

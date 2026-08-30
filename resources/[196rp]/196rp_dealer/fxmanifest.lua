@@ -3,8 +3,8 @@ game 'gta5'
 lua54 'yes'
 
 author '196 RP'
-description '196 RP - İş Mərkəzi + İş Oyunu (balıqçılıq, mədən, meşə, inşaat, mexanik, avtosalon)'
-version '2.0.0'
+description '196 RP - Avtosalon (premium NUI, sınaq sürüşü, alış-veriş)'
+version '1.0.0'
 
 shared_scripts {
     'config.lua',
@@ -20,10 +20,16 @@ server_scripts {
     'server/main.lua',
 }
 
+ui_page 'html/index.html'
+
+files {
+    'html/index.html',
+    'html/style.css',
+    'html/app.js',
+}
+
 dependencies {
     'qb-core',
-    'qb-menu',
     'qb-target',
-    'progressbar',
     'oxmysql',
 }

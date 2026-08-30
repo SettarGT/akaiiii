@@ -1,0 +1,53 @@
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+body { background: transparent; overflow: hidden; }
+.hidden { display: none !important; }
+
+#dealer {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(4, 6, 12, 0.5); backdrop-filter: blur(6px);
+}
+
+.deal-shell {
+  width: 900px; max-height: 84vh; display: flex; flex-direction: column;
+  border-radius: 20px; overflow: hidden;
+  background: linear-gradient(165deg, rgba(12, 18, 32, 0.97), rgba(16, 26, 46, 0.97));
+  border: 1px solid rgba(80, 200, 255, 0.25);
+  box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+  animation: pop 0.3s ease;
+}
+
+.head { display: flex; align-items: center; gap: 12px; padding: 18px 24px; background: linear-gradient(90deg, rgba(80,200,255,.12), transparent); border-bottom: 1px solid rgba(80,200,255,.2); }
+.logo { color: #7dd3fc; font-weight: 900; font-size: 18px; letter-spacing: 2px; }
+.logo span { color: #ffd97a; font-size: 24px; }
+.sub { color: #8fa0b8; font-size: 12px; letter-spacing: 3px; }
+.close { margin-left: auto; width: 38px; height: 38px; border: none; border-radius: 10px; background: rgba(190,45,45,.8); color: #fff; font-weight: 800; cursor: pointer; }
+
+.grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  padding: 22px; overflow-y: auto;
+}
+
+.card {
+  border-radius: 16px; padding: 18px;
+  background: linear-gradient(160deg, rgba(20,30,50,.9), rgba(14,22,38,.9));
+  border: 1px solid rgba(140,160,180,.15);
+  transition: all .15s;
+}
+.card:hover { border-color: rgba(247,183,51,.55); transform: translateY(-2px); }
+
+.card .name { color: #fff; font-size: 16px; font-weight: 800; }
+.card .brand { color: #8fa0b8; font-size: 12px; margin-top: 2px; }
+.card .price { color: #ffd97a; font-size: 22px; font-weight: 900; margin: 14px 0; }
+.card .price small { font-size: 12px; color: #8fa0b8; font-weight: 600; }
+.card .btns { display: flex; gap: 8px; }
+.card button {
+  flex: 1; padding: 10px; border: none; border-radius: 10px; cursor: pointer;
+  font-weight: 800; font-size: 13px;
+}
+.card .buy { background: linear-gradient(135deg, #f7b733, #e09b1a); color: #1a1205; }
+.card .test { background: rgba(80, 200, 255, 0.18); color: #7dd3fc; border: 1px solid rgba(80,200,255,.35); }
+
+@keyframes pop { from { transform: scale(.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+::-webkit-scrollbar { width: 7px; }
+::-webkit-scrollbar-thumb { background: rgba(247,183,51,.35); border-radius: 10px; }

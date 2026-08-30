@@ -42,3 +42,8 @@ end, false)
 RegisterKeyMapping('try', 'RP /try istifadə et', 'keyboard', '')
 RegisterKeyMapping('do', 'RP /do istifadə et', 'keyboard', '')
 RegisterKeyMapping('ame', 'RP /ame istifadə et', 'keyboard', '')
+
+-- /geyim — qarderob (geyim hissələrini fərdi çıxar/dəyiş)
+RegisterCommand('geyim', function()
+    TriggerEvent('qb-clothing:client:openMenu')
+end, false)

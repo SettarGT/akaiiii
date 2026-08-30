@@ -345,3 +345,38 @@ CREATE TABLE IF NOT EXISTS `196_rentals` (
 -- 196 RP Bələdiyyə qeydləri (metadata əsaslı — struktur dəyişikliyi yoxdur)
 --   players.metadata: fin (11 rəqəm), bloodtype, drivinglicense, weaponlicense
 -- ═══════════════════════════════════════════════════════════════
+
+CREATE TABLE IF NOT EXISTS `196_police_records` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `citizenid` VARCHAR(11) NOT NULL,
+  `type` VARCHAR(50) DEFAULT 'record',
+  `title` VARCHAR(120) NOT NULL,
+  `details` TEXT,
+  `officer_name` VARCHAR(120) DEFAULT NULL,
+  `fine_amount` INT(11) DEFAULT 0,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  PRIMARY KEY (`id`),
+  KEY `citizenid` (`citizenid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- 196 RP iş məhsulları (items cədvəli — qb-core Shared.Items ilə sinxron)
+CREATE TABLE IF NOT EXISTS `items` (
+  `name` VARCHAR(60) NOT NULL,
+  `label` VARCHAR(255) NOT NULL,
+  `weight` INT(11) NOT NULL DEFAULT 0,
+  `rare` TINYINT(4) NOT NULL DEFAULT 0,
+  `can_remove` TINYINT(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `items` (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES
+('fishing_rod', 'Balıqçı çubuğu', 1200, 0, 1),
+('fish', 'Təzə balıq', 800, 0, 1),
+('pickaxe', 'Mədənçi kürəyi', 3000, 0, 1),
+('stone', 'Daş', 500, 0, 1),
+('coal', 'Kömür', 700, 0, 1),
+('axe', 'Balta', 2500, 0, 1),
+('wood', 'Odun', 900, 0, 1),
+('brick', 'Kərpic', 1200, 0, 1),
+('cement', 'Sement', 1500, 0, 1);

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="utf-8">
+  <title>196 Bank | ATM</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="atm" class="hidden">
+    <div class="atm-shell">
+      <div class="atm-screen">
+        <div class="atm-head">
+          <div class="atm-logo"><span>196</span> BANK</div>
+          <div class="atm-mode">BANKOMAT</div>
+        </div>
+
+        <div class="balance">
+          <div class="b-box"><span>BANK</span><b id="bank">₣0</b></div>
+          <div class="b-box"><span>NAĞD</span><b id="cash">₣0</b></div>
+        </div>
+
+        <div class="tabs">
+          <button class="tab active" data-act="withdraw">💵 Çıxar</button>
+          <button class="tab" data-act="deposit">🏦 Yatır</button>
+          <button class="tab" data-act="transfer">📤 Köçür</button>
+        </div>
+
+        <div class="amount-row">
+          <input id="amount" type="number" placeholder="Məbləğ (₣)">
+          <button class="go" id="btn-amount">Təsdiqlə</button>
+        </div>
+        <div class="quick" id="quick"></div>
+
+        <div class="transfer-row hidden" id="transfer-row">
+          <input id="target" type="number" placeholder="Oyunçu ID">
+        </div>
+
+        <div class="atm-msg hidden" id="msg"></div>
+      </div>
+      <button class="atm-close" id="btn-close">✕ Bağla</button>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

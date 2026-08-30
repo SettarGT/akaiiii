@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="utf-8">
+  <title>196 RP | MDT</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="mdt" class="hidden">
+    <div class="mdt-shell">
+      <header class="mdt-head">
+        <div class="mdt-logo">🛡️ <span>196 RP</span> <small>POLİS MDT</small></div>
+        <nav class="mdt-tabs">
+          <button class="tab active" data-tab="search">🔍 Oyunçu Axtarış</button>
+          <button class="tab" data-tab="vehicle">🚗 Nəqliyyat</button>
+          <button class="tab" data-tab="records">📋 Qeydiyyatlar</button>
+        </nav>
+        <button class="mdt-close" id="btn-close">✕</button>
+      </header>
+
+      <!-- AXTARIŞ -->
+      <section class="page active" id="page-search">
+        <div class="search-row">
+          <input id="search-input" placeholder="Ad, FİN və ya ID yazın... (məs. Ali)" autocomplete="off">
+          <button class="gold" id="btn-search">Axtar</button>
+        </div>
+        <div class="results" id="search-results"><div class="empty">Nəticə yoxdur — axtarış edin.</div></div>
+      </section>
+
+      <!-- NƏQLİYYAT -->
+      <section class="page" id="page-vehicle">
+        <div class="search-row">
+          <input id="plate-input" placeholder="Nömrə nişanı (məs. 196AB123)" autocomplete="off">
+          <button class="gold" id="btn-plate">Nəqliyyatı axtar</button>
+        </div>
+        <div class="results" id="vehicle-results"><div class="empty">Nəticə yoxdur.</div></div>
+      </section>
+
+      <!-- QEYDLƏR -->
+      <section class="page" id="page-records">
+        <div class="records-info" id="records-info">Qeydləri görmək üçün oyunçu axtarışından "Qeydlər" düyməsinə basın.</div>
+        <div class="results" id="records-results"></div>
+      </section>
+
+      <!-- CƏRİMƏ POPUP -->
+      <div class="modal hidden" id="fine-modal">
+        <div class="modal-card">
+          <h3>⚖️ Cərimə yaz</h3>
+          <div class="modal-target" id="fine-target">—</div>
+          <label>Cərimə növü</label>
+          <select id="fine-preset"></select>
+          <label>Məbləğ (₣)</label>
+          <input id="fine-amount" type="number" min="1" max="100000" value="500">
+          <label>Səbəb</label>
+          <input id="fine-reason" placeholder="Cərimə səbəbi..." value="Qayda pozuntusu">
+          <div class="modal-btns">
+            <button class="green" id="fine-confirm">✅ Təsdiqlə</button>
+            <button class="gray" id="fine-cancel">İmtina</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

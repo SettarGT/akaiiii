@@ -590,3 +590,153 @@ div {
     opacity: 0.8;
     box-shadow: var(--elevation-2);
 }
+
+/* ═══════════════════════════════════════════════
+   196 RP | Glassmorphism Premium İnventar Teması
+   ═══════════════════════════════════════════════ */
+:root {
+    --primary: #f7b733;
+    --on-primary: #1a1205;
+    --primary-container: rgba(247, 183, 51, 0.16);
+    --on-primary-container: #ffd97a;
+    --secondary: #7dd3fc;
+    --on-secondary: #06121f;
+    --secondary-container: rgba(125, 211, 252, 0.14);
+    --on-secondary-container: #a8e4ff;
+    --tertiary: #22c55e;
+    --on-tertiary: #06180c;
+    --tertiary-container: rgba(34, 197, 94, 0.14);
+    --on-tertiary-container: #7ddfa8;
+    --surface: #0e1626;
+    --on-surface: #e8edf6;
+    --surface-container-lowest: rgba(6, 10, 20, 0.6);
+    --surface-container-low: rgba(13, 20, 36, 0.55);
+    --surface-container: rgba(16, 26, 46, 0.55);
+    --surface-container-high: rgba(22, 34, 58, 0.75);
+    --surface-container-highest: rgba(30, 46, 76, 0.85);
+    --error: #ff5f5f;
+    --on-error: #fff;
+    --error-container: rgba(190, 45, 45, 0.25);
+    --on-error-container: #ffb4b4;
+    --outline: rgba(140, 160, 180, 0.35);
+    --outline-variant: rgba(140, 160, 180, 0.18);
+    --success: #7ddfa8;
+    --on-success: #06180c;
+    --success-container: rgba(34, 197, 94, 0.2);
+    --on-success-container: #9ff0c0;
+    --warning: #ffd97a;
+    --on-warning: #2b1d00;
+    --warning-container: rgba(247, 183, 51, 0.18);
+    --on-warning-container: #ffe4a3;
+    --info: #7dd3fc;
+    --on-info: #06121f;
+    --info-container: rgba(80, 200, 255, 0.16);
+    --on-info-container: #b7e9ff;
+}
+
+body {
+    background: transparent !important;
+}
+
+.inventory-section {
+    background: linear-gradient(165deg, rgba(13, 20, 35, 0.78), rgba(16, 27, 48, 0.78));
+    border: 1px solid rgba(247, 183, 51, 0.22);
+    border-radius: 16px;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    padding: 12px;
+    overflow: hidden;
+}
+
+.inventory-header {
+    background: linear-gradient(135deg, rgba(247, 183, 51, 0.16), rgba(247, 183, 51, 0.05));
+    border: 1px solid rgba(247, 183, 51, 0.3);
+    border-radius: 12px;
+    box-shadow: none;
+    backdrop-filter: blur(10px);
+}
+
+.inventory-label {
+    color: #ffd97a !important;
+    font-weight: 800 !important;
+    letter-spacing: 1px;
+}
+
+.current-weight {
+    color: rgba(232, 237, 246, 0.85) !important;
+    font-weight: 700;
+}
+
+.weight-bar {
+    border-radius: 8px !important;
+    background: rgba(8, 13, 24, 0.9) !important;
+    border: 1px solid rgba(247, 183, 51, 0.25) !important;
+}
+
+.weight-bar-fill {
+    background: linear-gradient(90deg, #7dd3fc, #f7b733) !important;
+}
+
+.item-grid {
+    gap: 6px;
+}
+
+.item-slot {
+    background: linear-gradient(160deg, rgba(20, 30, 50, 0.5), rgba(12, 20, 36, 0.5));
+    border: 1px solid rgba(140, 160, 180, 0.16);
+    border-radius: 10px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(8px);
+    transition: all 0.15s ease;
+}
+
+.item-slot:hover {
+    border-color: rgba(247, 183, 51, 0.6);
+    background: rgba(247, 183, 51, 0.08);
+    box-shadow: 0 0 18px rgba(247, 183, 51, 0.18);
+    transform: scale(1.03);
+}
+
+.item-slot:empty {
+    background: rgba(10, 16, 30, 0.35);
+    border: 1px solid rgba(140, 160, 180, 0.1);
+}
+
+.item-slot-key {
+    background: linear-gradient(135deg, #f7b733, #e09b1a);
+    color: #1a1205 !important;
+    border-radius: 4px;
+    font-weight: 800;
+}
+
+.item-slot-amount {
+    background: rgba(8, 13, 24, 0.75);
+    border-radius: 4px;
+    color: #ffd97a !important;
+    font-weight: 800;
+    font-size: 12px;
+}
+
+.item-slot-img img {
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
+}
+
+/* Konteyner emalı (Truck/təmir menyuları) */
+.gamepad-tone {
+    background: rgba(8, 13, 24, 0.85) !important;
+    border: 1px solid rgba(247, 183, 51, 0.2) !important;
+    border-radius: 14px !important;
+    backdrop-filter: blur(12px) !important;
+}
+
+.gamepad-tone .item-slot {
+    background: rgba(20, 30, 50, 0.6) !important;
+}
+
+/* Tooltip */
+[v-popper-content] {
+    background: rgba(14, 22, 38, 0.95) !important;
+    border: 1px solid rgba(247, 183, 51, 0.3) !important;
+    color: #e8edf6 !important;
+    border-radius: 10px !important;
+}
