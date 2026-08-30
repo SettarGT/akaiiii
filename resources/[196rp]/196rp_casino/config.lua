@@ -29,3 +29,11 @@ Config.Slots = {
     -- Uduş əmsalları: [iki eyni, üç eyni]
     Payouts = { TwoSame = 1.5, ThreeSame = { ['🍒'] = 5, ['🍋'] = 8, ['🔔'] = 15, ['⭐'] = 30, ['7️⃣'] = 100 } },
 }
+
+-- Blackjack (21)
+Config.Blackjack = {
+    Decks = 2,
+    Payout = 1.0,        -- qalib: mərc x2 (mərc + uduş)
+    BlackjackPayout = 2.5, -- 2 karta 21: mərc x2.5
+    DealerMin = 17,      -- dealer bu dəyərə qədər kart çəkir
+}

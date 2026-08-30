@@ -1,7 +1,8 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 local cooldowns = {}
 
-RegisterNetEvent('196rp_prison:server:work', function(workId)
+-- ── Həbsxana işi ──
+RegisterNetEvent('196rp_prison:server:work', function(zoneId)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if not Player then return end
@@ -12,37 +13,33 @@ RegisterNetEvent('196rp_prison:server:work', function(workId)
         return
     end
 
-    -- Həbsxanada olmasını server yoxlayır
-    local coords = GetEntityCoords(GetPlayerPed(src))
-    local inPrison = #(coords - vector3(1756.0, 2595.0, 44.9)) < 120
-    if not inPrison then
+    -- qb-prison həbsdə olan oyunçunu həbsxana ərazisinə teleport edir;
+    -- server yalnız həbsxana ərazisində yoxlayır:
+    local ped = GetPlayerPed(src)
+    local coords = GetEntityCoords(ped)
+    if #(coords - vector3(1693.33, 2569.51, 44.55)) > 180 then
         TriggerClientEvent('QBCore:Notify', src, 'Bu işlər yalnız həbsxanada işləyir.', 'error')
         return
     end
 
-    local cfg = Config.Effects[workId]
-    if not cfg then return end
-
     if cooldowns[src] and cooldowns[src] > os.time() then
-        TriggerClientEvent('QBCore:Notify', src, ('⏳ Cooldown: %d san'):format(cooldowns[src] - os.time()), 'error')
+        TriggerClientEvent('QBCore:Notify', src, ('⏳ Gözləyin: %d san'):format(cooldowns[src] - os.time()), 'error')
         return
     end
 
+    local reduce = Config.Reduce[zoneId]
+    if not reduce then return end
     cooldowns[src] = os.time() + Config.Cooldown
 
-    -- Vaxt azaltma (metadata injail)
-    local newJail = jail - cfg.seconds
-    if newJail < 0 then newJail = 0 end
+    local newJail = math.max(0, jail - reduce)
     Player.Functions.SetMetaData('injail', newJail)
 
-    local label = workId
-    for _, z in ipairs(Config.WorkZones) do
-        if z.id == workId then label = z.label end
-    end
-    local remaining = math.floor(newJail / 60)
-    TriggerClientEvent('QBCore:Notify', src, ('✅ %s işləndi: -%d san həbs · Qalan: %d dəq'):format(label, cfg.seconds, remaining), 'success')
+    local label = zoneId
+    for _, z in ipairs(Config.WorkZones) do if z.id == zoneId then label = z.label end end
+
+    TriggerClientEvent('QBCore:Notify', src, ('✅ %s işləndi: -%d san həbs · Qalan: %d dəq'):format(label, reduce, math.floor(newJail / 60)), 'success')
 
     if newJail <= 0 then
-        TriggerClientEvent('QBCore:Notify', src, '🎉 Həbs müddəti bitdi — azadsınız!', 'success')
+        TriggerClientEvent('QBCore:Notify', src, '🎉 Həbs müddəti bitdi — sərbəstsiniz!', 'success')
     end
 end)

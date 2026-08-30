@@ -2,20 +2,18 @@ Config = {}
 
 -- Yanğınsöndürmə stansiyası (Vinewood FD)
 Config.Station = {
-    label = '196 Yanğınsöndürmə Stansiyası',
+    label = '196 Yanğınsöndürmə',
     coords = vector3(334.36, -1434.41, 46.17),
     heading = 0.0,
-    truckSpawn = vector3(324.5, -1446.5, 46.05),
-    truckHeading = 170.0,
+    engineSpawn = vector3(330.05, -1445.91, 46.05),
+    engineHeading = 174.0,
 }
 
--- Pay
+-- Söndürmə mükafatı
 Config.ExtinguishPay = 120
-Config.RandomFireInterval = { 240, 600 }  -- saniyə (min, max)
-Config.RandomFireChance = 70              -- % ehtimal (bir yanğınsöndürən internetdədirsə)
+Config.Range = 8.0       -- /sondur məsafəsi
+Config.ProgressTime = 6  -- saniyə
 
--- Call ömrü (saniyə)
-Config.CallLife = 180
-
--- Söndürmə məsafəsi
-Config.ExtinguishRange = 8.0
+-- Təsadüfi yanğınlar
+Config.RandomInterval = { 240, 600 }  -- saniyə aralığı
+Config.CallLife = 300                 -- zəng ömrü

@@ -1,65 +1,62 @@
 local QBCore = exports['qb-core']:GetCoreObject()
+local calls = {}
+local seq = 0
 
-local calls = {}      -- id -> { coords, expires }
-local callSeq = 0
+local function IsFF(Player)
+    return Player and Player.PlayerData.job.name == 'fire'
+end
 
 local function Notify(src, msg, type)
     TriggerClientEvent('QBCore:Notify', src, msg, type or 'primary')
 end
 
-local function IsFirefighter(Player)
-    return Player and Player.PlayerData.job.name == 'fire'
-end
-
-local function Broadcast(ev, data)
+local function BroadcastToFF(ev, data)
     for _, src in ipairs(QBCore.Functions.GetPlayers()) do
         local P = QBCore.Functions.GetPlayer(src)
-        if P and IsFirefighter(P) then
+        if IsFF(P) then
             TriggerClientEvent(ev, src, data)
         end
     end
 end
 
--- ── Zəng (istənilən oyunçu: 911 yanğın) ──
+-- ── Zəng (hər kəs) ──
 RegisterNetEvent('196rp_fire:server:call', function(x, y, z)
     local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
-    if not Player then return end
-
-    callSeq = callSeq + 1
-    local id = callSeq
-    calls[id] = { coords = vector3(x or 0, y or 0, z or 0), expires = os.time() + Config.CallLife }
-
-    Broadcast('196rp_fire:client:newCall', { id = id, coords = calls[id].coords, reporter = src })
-    Notify(src, '🚒 Yanğın briqadası xəbərdar edildi!')
+    seq = seq + 1
+    local id = seq
+    calls[id] = { coords = vector3(x or 0, y or 0, z or 0), src = src, expires = os.time() + Config.CallLife }
+    BroadcastToFF('196rp_fire:client:newCall', { id = id, coords = calls[id].coords })
+    Notify(src, '🚒 Yanğın briqadası xəbərdar edildi!', 'success')
 end)
 
 -- ── Söndür ──
 RegisterNetEvent('196rp_fire:server:extinguish', function(callId)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    if not IsFirefighter(Player) then return end
+    if not IsFF(Player) then return end
 
+    local found, closest = false, nil
     callId = tonumber(callId)
-    local foundClosest = false
     for id, c in pairs(calls) do
         if c then
             local d = #(GetEntityCoords(GetPlayerPed(src)) - c.coords)
-            if d < Config.ExtinguishRange and (not callId or id == callId) then
-                calls[id] = nil
-                foundClosest = true
-                break
+            if (not callId or id == callId) and d < Config.Range then
+                if not closest or d < closest.dist then
+                    closest = { id = id, dist = d }
+                end
             end
         end
     end
 
-    if not foundClosest then
+    if not closest then
         Notify(src, 'Yaxınlıqda aktiv yanğın zəngi yoxdur.', 'error')
         return
     end
 
+    calls[closest.id] = nil
+    BroadcastToFF('196rp_fire:client:removeCall', { id = closest.id })
     Player.Functions.AddMoney('cash', Config.ExtinguishPay, 'fire-extinguish')
-    TriggerClientEvent('196rp_fire:client:extinguishDone', src, callId)
+    TriggerClientEvent('196rp_fire:client:stopFire', src)
     Notify(src, ('🔥 Yanğın söndürüldü: +₣%d'):format(Config.ExtinguishPay), 'success')
     TriggerEvent('196rp_logs:server:vehEvent', 'YANĞIN', 'Söndürüldü', ('+₣%d'):format(Config.ExtinguishPay))
 end)
@@ -68,44 +65,42 @@ end)
 RegisterNetEvent('196rp_fire:server:engine', function()
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
-    if not IsFirefighter(Player) then return end
+    if not IsFF(Player) then return end
     TriggerClientEvent('196rp_fire:client:spawnTruck', src)
 end)
 
--- ── Təsadüfi yanğınlar (firefighter onlayn olduqda) ──
+-- ── Təsadüfi yanğın (FF online-i üçün) ──
 CreateThread(function()
     while true do
-        Wait(Config.RandomFireInterval[1] * 1000)
+        Wait(Config.RandomInterval[1] * 1000)
         local ffs = {}
         for _, src in ipairs(QBCore.Functions.GetPlayers()) do
             local P = QBCore.Functions.GetPlayer(src)
-            if P and IsFirefighter(P) then ffs[#ffs + 1] = src end
+            if IsFF(P) then ffs[#ffs + 1] = src end
         end
-        if #ffs > 0 and math.random(100) <= Config.RandomFireChance then
-            -- təsadüfi oyunçunun avtomobili yanır
-            local targets = {}
+        if #ffs > 0 then
+            -- təsadüfi mülki oyunçuya yanğın tapşır
+            local civilians = {}
             for _, src in ipairs(QBCore.Functions.GetPlayers()) do
                 local P = QBCore.Functions.GetPlayer(src)
-                if P and not IsFirefighter(P) then targets[#targets + 1] = src end
+                if P and not IsFF(P) then civilians[#civilians + 1] = src end
             end
-            if #targets > 0 then
-                local victim = targets[math.random(#targets)]
-                TriggerClientEvent('196rp_fire:client:igniteNearby', victim)
-                -- zəng client tərəfdən yanan obyektin REAL koordinatından gəlir
+            if #civilians > 0 then
+                TriggerClientEvent('196rp_fire:client:igniteRandom', civilians[math.random(#civilians)])
             end
         end
     end
 end)
 
--- ── Call ömrü ──
+-- ── Zəng ömrü ──
 CreateThread(function()
     while true do
-        Wait(10000)
+        Wait(30000)
         local now = os.time()
         for id, c in pairs(calls) do
-            if c.expires and c.expires < now then
+            if now > c.expires then
                 calls[id] = nil
-                Broadcast('196rp_fire:client:removeCall', { id = id })
+                BroadcastToFF('196rp_fire:client:removeCall', { id = id })
             end
         end
     end

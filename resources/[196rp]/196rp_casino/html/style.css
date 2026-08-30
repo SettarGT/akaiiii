@@ -90,3 +90,21 @@ body { background: transparent; overflow: hidden; }
 .cas-msg { padding: 12px 20px; text-align: center; color: #ffd97a; background: rgba(247,183,51,.1); }
 
 @keyframes pop { from { transform: scale(.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* Blackjack */
+.bj-table { display: flex; gap: 14px; margin: 14px 0; }
+.bj-side { flex: 1; background: rgba(0,0,0,.25); border-radius: 14px; padding: 12px; border: 1px solid rgba(247,183,51,.18); }
+.bj-label { color: #b9c7db; font-size: 12px; margin-bottom: 10px; letter-spacing: 1px; }
+.bj-label b { color: #ffd97a; margin-left: 6px; }
+.bj-cards { display: flex; gap: 8px; flex-wrap: wrap; min-height: 84px; }
+.card {
+    width: 58px; height: 84px; border-radius: 8px; background: #f4f1e8; color: #16181d;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-weight: 800; box-shadow: 0 6px 16px rgba(0,0,0,.5);
+}
+.card.red { color: #d92626; }
+.card .cv { font-size: 22px; line-height: 1; }
+.card .cs { font-size: 16px; }
+.card.back { background: linear-gradient(135deg,#7a1f2b,#a32638); color: transparent; }
+.bj-actions { display: flex; gap: 10px; justify-content: center; }
+.bj-actions .disabled { opacity: .35; pointer-events: none; }

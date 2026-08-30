@@ -1,84 +1,83 @@
 local QBCore = exports['qb-core']:GetCoreObject()
-local burningEntities = {}   -- handle -> expiry
+local burningVehicles = {}
 local callBlips = {}
-local isFirefighter = false
 local busy = false
 
-local function DrawText3D(coords, text)
-    SetTextScale(0.32, 0.32)
-    SetTextFont(4)
-    SetTextProportional(1)
-    SetTextColour(255, 217, 122, 255)
-    SetTextDropshadow(0, 0, 0, 0, 255)
-    SetTextEdge(1, 0, 0, 0, 255)
-    SetTextDropShadow()
-    SetTextOutline()
-    BeginTextCommandDisplayText('STRING')
-    AddTextComponentSubstringPlayerName(text)
-    EndTextCommandDisplayText(coords.x, coords.y, coords.z)
+local function IsFF()
+    return QBCore.Functions.GetPlayerData().job.name == 'fire'
 end
 
-local function UpdateFirefighter()
-    isFirefighter = QBCore.Functions.GetPlayerData().job.name == 'fire'
-end
-UpdateFirefighter()
-RegisterNetEvent('QBCore:Client:OnJobUpdate', UpdateFirefighter)
-
--- ── Yanğına zəng et (/yangin) ──
-RegisterCommand('yangin', function()
-    if busy then return end
-    local ped = PlayerPedId()
-    local pos = GetEntityCoords(ped)
-
-    -- yaxın avtomobili tap və yandır (əgər varsa)
-    local veh, dist = nil, 30.0
+local function NearestVehicle(range)
+    local pos = GetEntityCoords(PlayerPedId())
+    local best, bestD = nil, range
     for _, v in ipairs(GetGamePool('CVehicle')) do
         local d = #(pos - GetEntityCoords(v))
-        if d < dist then veh, dist = v, d end
+        if d < bestD then best, bestD = v, d end
     end
+    return best
+end
+
+-- ── /yangin — yanğın zəngi ──
+RegisterCommand('yangin', function()
+    local veh = NearestVehicle(30.0)
     if veh then
         SetEntityOnFire(veh, true)
-        burningEntities[veh] = GetGameTimer() + 180000
-        QBCore.Functions.Notify('🔥 Yaxınlıqdakı avtomobil alov aldı — 911 çağırıldı!', 'primary')
+        local vp = GetEntityCoords(veh)
+        burningVehicles[veh] = GetGameTimer() + 300000
+        TriggerServerEvent('196rp_fire:server:call', vp.x, vp.y, vp.z)
     else
-        QBCore.Functions.Notify('Yaxınlıqda yanan obyekt yoxdur.', 'primary')
+        QBCore.Functions.Notify('Yaxınlıqda yandırıla bilən avtomobil yoxdur.', 'primary')
     end
-    TriggerServerEvent('196rp_fire:server:call', pos.x, pos.y, pos.z)
 end, false)
 
--- ── Təsadüfi yanğın (server tapşırığı) ──
-RegisterNetEvent('196rp_fire:client:igniteNearby', function()
-    local ped = PlayerPedId()
-    local pos = GetEntityCoords(ped)
-    local veh, dist = nil, 60.0
-    for _, v in ipairs(GetGamePool('CVehicle')) do
-        local d = #(pos - GetEntityCoords(v))
-        if d < dist then veh, dist = v, d end
-    end
-    if veh then
-        local vp = GetEntityCoords(veh)
-        SetEntityOnFire(veh, true)
-        burningEntities[veh] = GetGameTimer() + 180000
-        TriggerServerEvent('196rp_fire:server:call', vp.x, vp.y, vp.z)
-    end
-end)
+-- ── /sondur — yanğınsöndürən ──
+RegisterCommand('sondur', function()
+    if not IsFF() then return QBCore.Functions.Notify('Bu əmr yalnız yanğınsöndürən üçündür.', 'error') end
+    if busy then return end
 
--- ── Yanğın zəngləri (blip) ──
-RegisterNetEvent('196rp_fire:client:newCall', function(data)
-    if not isFirefighter then return end
-    local id = data.id
-    if callBlips[id] then
-        RemoveBlip(callBlips[id])
+    -- yanan avtomobili tap
+    local pos = GetEntityCoords(PlayerPedId())
+    local target, targetId = nil, nil
+    local closest = { d = Config.Range, veh = nil }
+    for veh, expiry in pairs(burningVehicles) do
+        if DoesEntityExist(veh) and GetEntityOnFire(veh) and GetGameTimer() < expiry then
+            local d = #(pos - GetEntityCoords(veh))
+            if d < closest.d then closest = { d = d, veh = veh } end
+        end
     end
+
+    if not closest.veh then
+        QBCore.Functions.Notify('Yaxınlıqda yanan avtomobil yoxdur.', 'primary')
+        return
+    end
+
+    busy = true
+    FreezeEntityPosition(PlayerPedId(), true)
+    QBCore.Functions.Progressbar('196fire', '🔥 Yanğın söndürülür...', Config.ProgressTime * 1000, false, true, {
+        disableMovement = true, disableCarMovement = true, disableMouse = false, disableCombat = true,
+    }, {}, {}, {}, function()
+        FreezeEntityPosition(PlayerPedId(), false)
+        busy = false
+        TriggerServerEvent('196rp_fire:server:extinguish')
+    end, function()
+        FreezeEntityPosition(PlayerPedId(), false)
+        busy = false
+    end)
+end, false)
+
+-- ── Yanğın zəngi (blip) ──
+RegisterNetEvent('196rp_fire:client:newCall', function(data)
+    if not IsFF() then return end
+    if callBlips[data.id] then RemoveBlip(callBlips[data.id]) end
     local blip = AddBlipForCoord(data.coords)
     SetBlipSprite(blip, 436)
     SetBlipColour(blip, 46)
     SetBlipScale(blip, 1.1)
     BeginTextCommandSetBlipName('STRING')
-    AddTextComponentSubstringPlayerName('Yanğın #' .. id)
+    AddTextComponentSubstringPlayerName('Yanğın #' .. data.id)
     EndTextCommandSetBlipName(blip)
-    callBlips[id] = blip
-    QBCore.Functions.Notify(('🚨 Yeni yanğın zəngi #%d!'):format(id), 'error')
+    callBlips[data.id] = blip
+    QBCore.Functions.Notify(('🚨 Yanğın zəngi #%d!'):format(data.id), 'error')
 end)
 
 RegisterNetEvent('196rp_fire:client:removeCall', function(data)
@@ -88,49 +87,25 @@ RegisterNetEvent('196rp_fire:client:removeCall', function(data)
     end
 end)
 
--- ── Söndür (/sondur) ──
-RegisterCommand('sondur', function()
-    if isFirefighter and not busy then
-        busy = true
-        local ped = PlayerPedId()
-        local pos = GetEntityCoords(ped)
-        local target, dist = nil, Config.ExtinguishRange
-        for handle, expiry in pairs(burningEntities) do
-            if DoesEntityExist(handle) and GetGameTimer() < expiry then
-                local d = #(pos - GetEntityCoords(handle))
-                if d < dist then target, dist = handle, d end
-            end
-        end
-        if not target then
-            busy = false
-            QBCore.Functions.Notify('Yaxınlıqda yanan obyekt yoxdur.', 'primary')
-            return
-        end
-
-        FreezeEntityPosition(ped, true)
-        QBCore.Functions.Progressbar('196fire', 'Yanğın söndürülür...', 6000, false, true, {
-            disableMovement = true, disableCarMovement = true, disableMouse = false, disableCombat = true,
-        }, {}, {}, {}, function()
-            FreezeEntityPosition(ped, false)
-            busy = false
-            TriggerServerEvent('196rp_fire:server:extinguish')
-        end, function()
-            FreezeEntityPosition(ped, false)
-            busy = false
-        end)
-    else
-        QBCore.Functions.Notify('Bu əmr yalnız yanğınsöndürən üçündür.', 'error')
-    end
-end, false)
-
--- ── Söndürüldü (client təsiri) ──
-RegisterNetEvent('196rp_fire:client:extinguishDone', function()
-    for handle, expiry in pairs(burningEntities) do
-        if DoesEntityExist(handle) and GetEntityOnFire(handle) then
-            SetEntityOnFire(handle, false)
+-- ── Söndürüldü ──
+RegisterNetEvent('196rp_fire:client:stopFire', function()
+    for veh, expiry in pairs(burningVehicles) do
+        if DoesEntityExist(veh) and GetEntityOnFire(veh) then
+            SetEntityOnFire(veh, false)
         end
     end
-    burningEntities = {}
+    burningVehicles = {}
+end)
+
+-- ── Təsadüfi yanğın ──
+RegisterNetEvent('196rp_fire:client:igniteRandom', function()
+    local veh = NearestVehicle(80.0)
+    if veh then
+        SetEntityOnFire(veh, true)
+        local vp = GetEntityCoords(veh)
+        burningVehicles[veh] = GetGameTimer() + 300000
+        TriggerServerEvent('196rp_fire:server:call', vp.x, vp.y, vp.z)
+    end
 end)
 
 -- ── Yanğın maşını ──
@@ -143,11 +118,11 @@ RegisterNetEvent('196rp_fire:client:spawnTruck', function()
         t = t + 1
     end
     if HasModelLoaded(model) then
-        local s = Config.Station.truckSpawn
-        local veh = CreateVehicle(model, s.x, s.y, s.z, Config.Station.truckHeading, true, false)
+        local s = Config.Station.engineSpawn
+        local veh = CreateVehicle(model, s.x, s.y, s.z, Config.Station.engineHeading, true, false)
         SetVehicleNumberPlateText(veh, '196FD')
         SetVehicleFuelLevel(veh, 100.0)
-        QBCore.Functions.Notify('🚒 Yanğın maşını stansiyada hazır!', 'success')
+        QBCore.Functions.Notify('🚒 Yanğın maşını stansiyadadır!', 'success')
     end
 end)
 
@@ -177,7 +152,7 @@ CreateThread(function()
                         { header = '🚒 196 Yanğınsöndürmə', isMenuHeader = true, icon = 'fas fa-fire-extinguisher' },
                         {
                             header = '🚒 Yanğın maşını götür',
-                            txt = 'Stansiya yanında spawn olur',
+                            txt = 'Stansiya yanında hazır olur',
                             icon = 'fas fa-truck',
                             params = { eng = true },
                         },
@@ -191,20 +166,4 @@ CreateThread(function()
         },
         distance = 3.0,
     })
-end)
-
--- ── Yanan obyektləri izlə (müddət bitəndə söndür) ──
-CreateThread(function()
-    while true do
-        Wait(5000)
-        local now = GetGameTimer()
-        for handle, expiry in pairs(burningEntities) do
-            if GetGameTimer() >= expiry or not DoesEntityExist(handle) then
-                if DoesEntityExist(handle) and GetEntityOnFire(handle) then
-                    SetEntityOnFire(handle, false)
-                end
-                burningEntities[handle] = nil
-            end
-        end
-    end
 end)

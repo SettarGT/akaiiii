@@ -26,6 +26,7 @@ Config.Jobs = {
     bus          = { label = 'Avtobus',         icon = 'fas fa-bus',          desc = 'Marşrut sür' },
     garbage      = { label = 'Zibilçilik',      icon = 'fas fa-trash',        desc = 'Şəhəri təmizlə' },
     fire         = { label = 'Yanğınsöndürmə', icon = 'fas fa-fire-extinguisher', desc = 'Yanğınları söndür (/sondur, /yangin)' },
+    fire         = { label = 'Yanğınsöndürmə', icon = 'fas fa-fire-extinguisher', desc = 'Yanğınları söndür (/sondur, /yangin)' },
     tow          = { label = 'Yedək',           icon = 'fas fa-truck-pickup', desc = 'Avtomobil daşı' },
 }
 

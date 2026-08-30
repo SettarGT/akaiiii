@@ -137,3 +137,123 @@ RegisterNetEvent('196rp_casino:server:getBalance', function()
     if not Player then return end
     TriggerClientEvent('196rp_casino:client:balance', src, Player.PlayerData.money.cash or 0)
 end)
+
+-- ═══════════ BLACKJACK (21) ═══════════
+local bjState = {}
+local bjSuits = { '♠', '♥', '♦', '♣' }
+
+local function BuildDeck()
+    local deck = {}
+    for _ = 1, Config.Blackjack.Decks do
+        for _, suit in ipairs(bjSuits) do
+            for v = 1, 13 do
+                local label = ({ 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K' })[v]
+                local val = v > 10 and 10 or v
+                deck[#deck + 1] = { label = label, suit = suit, val = val }
+            end
+        end
+    end
+    for i = #deck, 2, -1 do
+        local j = math.random(i)
+        deck[i], deck[j] = deck[j], deck[i]
+    end
+    return deck
+end
+
+local function BjSum(hand)
+    local sum, aces = 0, 0
+    for _, c in ipairs(hand) do
+        sum = sum + c.val
+        if c.label == 'A' then aces = aces + 1 end
+    end
+    while sum > 21 and aces > 0 do
+        sum = sum - 10
+        aces = aces - 1
+    end
+    return sum
+end
+
+local function BjResolve(src, result, state)
+    local s = bjState[src]
+    if not s then return end
+    bjState[src] = nil
+
+    if result == 'win' or result == 'blackjack' then
+        local mult = result == 'blackjack' and Config.Blackjack.BlackjackPayout or Config.Blackjack.Payout
+        local win = math.min(math.floor(s.bet * mult), Config.Limits.MaxProfit)
+        PayWinnings(src, win)
+        state = state or {}
+        state.win = win
+    elseif result == 'push' then
+        -- mərc geri qaytarılır
+        local Player = QBCore.Functions.GetPlayer(src)
+        if Player then
+            local taxTaken = 0
+            if GetResourceState('196rp_tax') == 'started' then
+                taxTaken = exports['196rp_tax']:ChargeTax(src, s.bet, 'casino-push')
+            end
+            Player.Functions.AddMoney('cash', s.bet - taxTaken, 'casino-push')
+        end
+    end
+
+    TriggerClientEvent('196rp_casino:client:blackjackResult', src, {
+        player = state.player or s.player,
+        dealer = state.dealer or s.dealer,
+        result = result,
+        bet = s.bet,
+    })
+end
+
+RegisterNetEvent('196rp_casino:server:blackjackStart', function(amount)
+    local src = source
+    amount = math.floor(tonumber(amount) or 0)
+    if bjState[src] then
+        Notify(src, 'Artıq aktiv oyununuz var.', 'error')
+        return
+    end
+    if not Charge(src, amount) then return end
+
+    local deck = BuildDeck()
+    local player = { deck[1], deck[2] }
+    local dealer = { deck[3] }
+    local s = { bet = amount, deck = deck, idx = 4, player = player, dealer = dealer }
+    bjState[src] = s
+    TriggerClientEvent('196rp_casino:client:blackjackState', src, { player = player, dealer = dealer, bet = amount })
+
+    local ps = BjSum(player)
+    if ps == 21 then
+        BjResolve(src, 'blackjack', { player = player, dealer = { dealer[1] } })
+    end
+end)
+
+RegisterNetEvent('196rp_casino:server:blackjackHit', function()
+    local src = source
+    local s = bjState[src]
+    if not s then return end
+    s.player[#s.player + 1] = s.deck[s.idx]
+    s.idx = s.idx + 1
+
+    local sum = BjSum(s.player)
+    if sum > 21 then
+        BjResolve(src, 'lose', { player = s.player, dealer = s.dealer })
+        return
+    end
+    TriggerClientEvent('196rp_casino:client:blackjackState', src, { player = s.player, dealer = s.dealer, bet = s.bet, sum = sum })
+end)
+
+RegisterNetEvent('196rp_casino:server:blackjackStand', function()
+    local src = source
+    local s = bjState[src]
+    if not s then return end
+
+    while BjSum(s.dealer) < Config.Blackjack.DealerMin do
+        s.dealer[#s.dealer + 1] = s.deck[s.idx]
+        s.idx = s.idx + 1
+    end
+
+    local ps, ds = BjSum(s.player), BjSum(s.dealer)
+    local result = 'push'
+    if ds > 21 or ps > ds then result = 'win' end
+    if ds > ps and ds <= 21 then result = 'lose' end
+    BjResolve(src, result)
+end)

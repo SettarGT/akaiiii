@@ -15,26 +15,37 @@ local function DrawText3D(coords, text)
     EndTextCommandDisplayText(coords.x, coords.y, coords.z)
 end
 
+local function Anims(zoneId)
+    if zoneId == 'kitchen' then
+        return 'amb@world_human_const_drill@male@drill@base', 'base'
+    elseif zoneId == 'clean' then
+        return 'amb@world_human_const_bush_trim@male@trim@base', 'base'
+    elseif zoneId == 'gym' then
+        return 'amb@world_human_pushups@male@base', 'base'
+    end
+    return nil, nil
+end
+
 local function DoWork(zone)
     if busy then return end
     busy = true
     local ped = PlayerPedId()
     FreezeEntityPosition(ped, true)
 
-    local eff = Config.Effects[zone.id] or {}
-    if eff.anim then
-        RequestAnimDict(eff.anim)
+    local dict, name = Anims(zone.id)
+    if dict then
+        RequestAnimDict(dict)
         local t = 0
-        while not HasAnimDictLoaded(eff.anim) and t < 50 do
+        while not HasAnimDictLoaded(dict) and t < 50 do
             Wait(20)
             t = t + 1
         end
-        if HasAnimDictLoaded(eff.anim) then
-            TaskPlayAnim(ped, eff.anim, eff.animName or 'base', 3.0, 3.0, -1, 1, 0, false, false, false)
+        if HasAnimDictLoaded(dict) then
+            TaskPlayAnim(ped, dict, name, 3.0, 3.0, -1, 1, 0, false, false, false)
         end
     end
 
-    QBCore.Functions.Progressbar('196prison_' .. zone.id, 'İşlənir...', Config.WorkTime * 1000, false, true, {
+    QBCore.Functions.Progressbar('196prison_' .. zone.id, 'İşlənir...', (Config.WorkTime[zone.id] or 8) * 1000, false, true, {
         disableMovement = true, disableCarMovement = true, disableMouse = false, disableCombat = true,
     }, {}, {}, {}, function()
         ClearPedTasksImmediately(ped)
@@ -52,12 +63,13 @@ CreateThread(function()
     while true do
         Wait(1000)
         if not busy then
-            local meta = QBCore.Functions.GetPlayerData().metadata
-            if (tonumber(meta.injail) or 0) > 0 then
+            local pData = QBCore.Functions.GetPlayerData()
+            local jail = tonumber(pData.metadata.injail) or 0
+            if jail > 0 then
                 local pos = GetEntityCoords(PlayerPedId())
                 for _, zone in ipairs(Config.WorkZones) do
                     if #(pos - zone.coords) < 3.5 then
-                        DrawText3D(zone.coords + vector3(0, 0, 1.3), zone.label .. '\n[E] İşlə (-' .. (Config.Effects[zone.id] and Config.Effects[zone.id].seconds or 30) .. ' san)')
+                        DrawText3D(zone.coords + vector3(0, 0, 1.3), zone.label .. '\n[E] İşlə (-' .. (Config.Reduce[zone.id] or 30) .. ' san)')
                         if IsControlJustReleased(0, 38) then
                             DoWork(zone)
                             break

@@ -21,6 +21,12 @@ end)
 RegisterNetEvent('196rp_casino:client:slotsResult', function(data)
     SendNUIMessage({ action = 'slotsResult', data = data })
 end)
+RegisterNetEvent('196rp_casino:client:blackjackState', function(data)
+    SendNUIMessage({ action = 'blackjackState', data = data })
+end)
+RegisterNetEvent('196rp_casino:client:blackjackResult', function(data)
+    SendNUIMessage({ action = 'blackjackResult', data = data })
+end)
 
 RegisterNUICallback('roulette', function(data, cb)
     TriggerServerEvent('196rp_casino:server:roulette', data.betType, data.betValue, data.amount)
@@ -34,6 +40,17 @@ RegisterNUICallback('dice', function(data, cb)
 end)
 RegisterNUICallback('slots', function(data, cb)
     TriggerServerEvent('196rp_casino:server:slots', data.amount)
+    cb({})
+    return true
+end)
+RegisterNUICallback('blackjack', function(data, cb)
+    if data.action == 'start' then
+        TriggerServerEvent('196rp_casino:server:blackjackStart', data.amount)
+    elseif data.action == 'hit' then
+        TriggerServerEvent('196rp_casino:server:blackjackHit')
+    elseif data.action == 'stand' then
+        TriggerServerEvent('196rp_casino:server:blackjackStand')
+    end
     cb({})
     return true
 end)

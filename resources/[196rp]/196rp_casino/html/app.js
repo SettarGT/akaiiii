@@ -23,6 +23,24 @@ window.addEventListener('message', e => {
     if (d.action === 'rouletteResult') rouletteResult(d.data);
     if (d.action === 'diceResult') diceResult(d.data);
     if (d.action === 'slotsResult') slotsResult(d.data);
+    if (d.action === 'blackjackState') {
+        bjMine = d.data.player || [];
+        bjDealer = (d.data.dealer || []).slice();
+        bjDealer.push({ back: true });
+        bjActive = true;
+        bjRender();
+        bjOut('');
+    }
+    if (d.action === 'blackjackResult') {
+        bjMine = d.data.player || [];
+        bjDealer = d.data.dealer || [];
+        bjActive = false;
+        bjRender();
+        const r = d.data.result;
+        const txt = r === 'win' ? '🎉 Qazandınız!' : r === 'blackjack' ? '🃏 BLACKJACK! Qazandınız!' : r === 'push' ? '🤝 Bərabərə — mərc geri' : '💀 Uduzdunuz';
+        bjOut(txt);
+        post('getBalance');
+    }
 });
 
 // Tablar
@@ -108,3 +126,48 @@ document.getElementById('btn-close').addEventListener('click', () => post('close
 
 // Balans yeniləmə (uduşdan sonra server yenidən göndərir)
 // server tərəfdən 196rp_casino:server:getBalance client-ə müraciət edilir
+
+// ── BLACKJACK (21) ──
+let bjMine = [], bjDealer = [], bjActive = false;
+
+function bjCard(c) {
+    if (!c) return '';
+    if (c.back) return '<div class="card back">?</div>';
+    const red = (c.suit === '♥' || c.suit === '♦') ? ' red' : '';
+    return '<div class="card' + red + '"><span class="cv">' + c.label + '</span><span class="cs">' + c.suit + '</span></div>';
+}
+
+function bjSum(hand) {
+    let s = 0, aces = 0;
+    hand.forEach(c => { if (c.val) { s += c.val; if (c.label === 'A') aces++; } });
+    while (s > 21 && aces > 0) { s -= 10; aces--; }
+    return s;
+}
+
+function bjRender() {
+    document.getElementById('bj-mine').innerHTML = bjMine.map(bjCard).join('');
+    document.getElementById('bj-dealer').innerHTML = bjDealer.map(bjCard).join('');
+    document.getElementById('bj-my-sum').textContent = bjSum(bjMine);
+    const ds = bjDealer.filter(c => c.val).length ? bjSum(bjDealer.filter(c => c.val)) : 0;
+    document.getElementById('bj-dealer-sum').textContent = ds;
+    document.getElementById('bj-hit').classList.toggle('disabled', !bjActive);
+    document.getElementById('bj-stand').classList.toggle('disabled', !bjActive);
+}
+
+function bjOut(txt) {
+    const r = document.getElementById('bj-result');
+    if (!r) return;
+    r.textContent = txt;
+    r.classList.toggle('hidden', !txt);
+    if (txt) setTimeout(() => r.classList.add('hidden'), 3500);
+}
+
+document.getElementById('bj-start').addEventListener('click', () => {
+    const amt = Math.floor(+(document.getElementById('bj-bet').value || 0));
+    if (amt < 100) { showMsg('Minimum mərc ₣100'); return; }
+    showMsg('');
+    bjMine = []; bjDealer = []; bjActive = true;
+    post('blackjack', { action: 'start', amount: amt });
+});
+document.getElementById('bj-hit').addEventListener('click', () => { if (bjActive) post('blackjack', { action: 'hit' }); });
+document.getElementById('bj-stand').addEventListener('click', () => { if (bjActive) post('blackjack', { action: 'stand' }); });

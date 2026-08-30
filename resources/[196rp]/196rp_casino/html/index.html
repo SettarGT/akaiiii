@@ -18,6 +18,7 @@
         <button class="tab active" data-game="roulette">🎡 Rulet</button>
         <button class="tab" data-game="dice">🎲 Zar</button>
         <button class="tab" data-game="slots">🎰 Slot</button>
+        <button class="tab" data-game="blackjack">🃏 21</button>
       </div>
 
       <!-- RU LET -->
@@ -66,6 +67,29 @@
         </div>
         <div class="slot-pay">🍒 x5 · 🍋 x8 · 🔔 x15 · ⭐ x30 · 7️⃣ x100 &nbsp;|&nbsp; 2 eyni x1.5</div>
         <div class="result hidden" id="s-result"></div>
+      </section>
+
+      <!-- BLACKJACK -->
+      <section class="game" id="game-blackjack">
+        <div class="bet-row">
+          <input id="bj-bet" type="number" placeholder="Mərc (₣)" value="500">
+          <button class="go" id="bj-start">🃏 Paylaş</button>
+        </div>
+        <div class="bj-table">
+          <div class="bj-side">
+            <div class="bj-label">🃏 Sizin kartlar <b id="bj-my-sum">0</b></div>
+            <div class="bj-cards" id="bj-mine"></div>
+          </div>
+          <div class="bj-side">
+            <div class="bj-label">🎴 Diler <b id="bj-dealer-sum">0</b></div>
+            <div class="bj-cards" id="bj-dealer"></div>
+          </div>
+        </div>
+        <div class="bj-actions">
+          <button class="go" id="bj-hit">➕ Kart götür</button>
+          <button class="go" id="bj-stand">✋ Dayan</button>
+        </div>
+        <div class="result hidden" id="bj-result"></div>
       </section>
 
       <div class="cas-msg hidden" id="msg"></div>
