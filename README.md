@@ -89,6 +89,16 @@ qb-houses, qb-apartments, qb-interior, qb-loading, qb-adminmenu, qb-weapons.
 - **Yarış Liqası** — 3 trek (Şəhər ₣500 / Vinewood ₣750 / Magistral ₣1000), nəzarət nöqtələri, `/liqa` lider cədvəli, mövsüm xalları (10-8-6…)
 - **Evlər** — qb-houses: satış, açar paylaşımı, **3D mebel qoyma** (bütün mebel adları Azərbaycan dilində)
 
+## ⚖️ Məhkəmə / ₿ Kripto / 🐕 K9 / 🛸 Dron / 🛡 VIP (v1.3)
+
+- **196 Məhkəmə** `[E]` — öz qeydiyyatını gör; hakim: `/qerar <id> <cərimə> <həbs dəq> <səbəb>` (qb-prison həbs edir), `/qerar2 <id>` işə baxır; hüquqşünas: `/vekil <id>`
+- **196 Kripto Bazarı** `[E]` — 196COIN canlı qiymət (60 saniyədə yenilənir), SVG qrafik, al/sat (1% komissiya), balans paneli
+- **Vergi paneli** — `/vergi` (admin: `/vergi <faiz>` 0-50%), avtosalon/kazino/faktura vergiləri avtomatik, vergi statistikası
+- **K9** — `/k9` (polis iti çağır), `/k9axtar` (15m radius silah/qaçaqmal iyləmə, 90s soyutma) — narkotik YOX
+- **Dron** — `/dron` (60s batareya, klaviatura ilə idarə, kamera), `/dronendir`
+- **Streamer rejim** — `/streamer` (RP mesajlarında adı "Gizli Şəxs" edir)
+- **VIP** — `/vip` status, `/vipplate <plaka>` (3-8 simvol), admin: `/viptver <id> <gün>`, `/viptelə <id>` — pay-to-win YOX (kosmetika + növbə prioriti + plitə)
+
 ## 📖 Əmrlər
 
 - **Oyunçu əmrləri:** `/me /do /try /ooc /report /muraciet /is /anim /rentqaytar /vehicleui` (və ya F5), `/givekeys <id>`

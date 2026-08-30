@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="utf-8">
+  <title>196 RP | Kripto Bazarı</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="crypto" class="hidden">
+    <div class="cr-shell">
+      <header class="cr-head">
+        <div class="cr-logo">🪙 <span>196</span>COIN <small>KRİPTO BAZARI</small></div>
+        <button class="cr-close" id="btn-close">✕</button>
+      </header>
+
+      <div class="cr-price">
+        <span>CANLI QİYMƏT</span>
+        <b id="price">₣0</b>
+        <div id="delta" class="delta">—</div>
+      </div>
+
+      <div class="cr-chart">
+        <svg id="chart" viewBox="0 0 600 190" preserveAspectRatio="none"></svg>
+      </div>
+
+      <div class="cr-wallet">
+        <div class="w-box"><span>BALANS</span><b id="coins">0.0000</b><small>196COIN</small></div>
+        <div class="w-box"><span>NAĞD</span><b id="cash">₣0</b></div>
+        <div class="w-box"><span>BANK</span><b id="bank">₣0</b></div>
+      </div>
+
+      <div class="cr-trade">
+        <div class="cr-tabs">
+          <button class="t-tab active" data-side="buy">🛒 AL</button>
+          <button class="t-tab" data-side="sell">💵 SAT</button>
+        </div>
+        <div class="cr-row">
+          <input id="amount" type="number" placeholder="₣ / 196COIN">
+          <button class="cr-go" id="btn-go">Təsdiqlə</button>
+        </div>
+        <div class="cr-fee">Komissiya: 1%</div>
+      </div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

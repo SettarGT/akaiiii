@@ -29,27 +29,33 @@ RegisterNetEvent('196rp_dealer:server:buy', function(model)
     end
 
     local price = vehConfig.price
+    local taxed = price
+    local taxRate = 0
+    if GetResourceState('196rp_tax') == 'started' then
+        taxed = exports['196rp_tax']:ApplyTax(price)
+        taxRate = exports['196rp_tax']:GetRate()
+    end
     local bank = Player.PlayerData.money.bank or 0
     local cash = Player.PlayerData.money.cash or 0
 
-    if bank < price and cash < price then
-        TriggerClientEvent('QBCore:Notify', src, ('Kifayət qədər pul yoxdur — qiymət ₣%d'):format(price), 'error')
+    if bank < taxed and cash < taxed then
+        TriggerClientEvent('QBCore:Notify', src, ('Kifayət qədər pul yoxdur — qiymət (vergi ilə) ₣%d'):format(taxed), 'error')
         return
     end
 
     -- Əvvəl bankdan, qalığı nağddan
-    if bank >= price then
-        Player.Functions.RemoveMoney('bank', price, 'avtosalon-alis')
+    if bank >= taxed then
+        Player.Functions.RemoveMoney('bank', taxed, 'avtosalon-alis')
     else
         Player.Functions.RemoveMoney('bank', bank, 'avtosalon-alis')
-        Player.Functions.RemoveMoney('cash', price - bank, 'avtosalon-alis')
+        Player.Functions.RemoveMoney('cash', taxed - bank, 'avtosalon-alis')
     end
 
     local plate = GenPlate()
     MySQL.insert('INSERT INTO player_vehicles (license, citizenid, vehicle, hash, mods, plate, state, garage, fuel, engine, body) VALUES (?, ?, ?, ?, ?, ?, 1, ?, 100, 1000.0, 1000.0)', {
         Player.PlayerData.license, Player.PlayerData.citizenid, model, '', '{}', plate, 'pillboxgarage',
     }, function()
-        TriggerClientEvent('QBCore:Notify', src, ('🎉 Təbriklər! %s alındı (-₣%d). Plitə: %s — qarajdan götürün.'):format(vehConfig.label, price, plate), 'success')
+        TriggerClientEvent('QBCore:Notify', src, ('🎉 Təbriklər! %s alındı (-₣%d) + vergi %s%%. Plitə: %s — qarajdan götürün.'):format(vehConfig.label, taxed, taxRate, plate), 'success')
     end)
 end)
 

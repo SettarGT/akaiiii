@@ -29,7 +29,16 @@ end
 local function PayWinnings(src, amount)
     local Player = QBCore.Functions.GetPlayer(src)
     if Player and amount > 0 then
-        Player.Functions.AddMoney('cash', amount, 'casino-win')
+        local net = amount
+        local taxTaken = 0
+        if GetResourceState('196rp_tax') == 'started' then
+            taxTaken = exports['196rp_tax']:ChargeTax(src, amount, 'casino-win')
+        end
+        net = amount - taxTaken
+        Player.Functions.AddMoney('cash', net, 'casino-win')
+        if taxTaken > 0 then
+            Notify(src, ('Vergi çıxıldı: -₣%d (%s%%)'):format(taxTaken, exports['196rp_tax']:GetRate()), 'primary')
+        end
     end
 end
 

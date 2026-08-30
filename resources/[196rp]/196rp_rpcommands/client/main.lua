@@ -1,4 +1,20 @@
 local QBCore = exports['qb-core']:GetCoreObject()
+local vip = false
+
+RegisterNetEvent('196rp_vip:client:sync', function(data)
+    vip = data and data.vip or false
+end)
+
+local function GetRPName()
+    local name = GetPlayerName(PlayerId())
+    if GetResourceState('196rp_streamer') == 'started' and exports['196rp_streamer']:Enabled() then
+        name = exports['196rp_streamer']:Name()
+    end
+    if vip then
+        name = '★ ' .. name
+    end
+    return name
+end
 
 local function SendChatMessage(msg, color)
     TriggerServerEvent('196rp_rpcommands:chatMessage', msg, color or { 147, 196, 255 })
@@ -10,7 +26,7 @@ RegisterCommand('try', function(_, args)
         QBCore.Functions.Notify(Config.Text.wrong_usage:gsub('%%{cmd}', '/try'), 'error')
         return
     end
-    local playerName = GetPlayerName(PlayerId())
+    local playerName = GetRPName()
     if math.random() <= Config.TryChance then
         SendChatMessage(Config.Text.try_success:gsub('%%{name}', playerName):gsub('%%{text}', text), { 65, 200, 120 })
     else
@@ -35,7 +51,7 @@ RegisterCommand('ame', function(_, args)
         QBCore.Functions.Notify(Config.Text.wrong_usage:gsub('%%{cmd}', '/ame'), 'error')
         return
     end
-    local playerName = GetPlayerName(PlayerId())
+    local playerName = GetRPName()
     SendChatMessage(Config.Text.ame_prefix:gsub('%%{name}', playerName):gsub('%%{text}', text), { 180, 180, 180 })
 end, false)
 

@@ -46,6 +46,9 @@ end)
 RegisterNetEvent('196rp_rpcommands:doMessage', function(msg)
     local src = source
     local name = GetPlayerName(src)
+    if GetResourceState('196rp_streamer') == 'started' and exports['196rp_streamer']:IsStreamer(src) then
+        name = 'Gizli Şəxs'
+    end
     for _, player in ipairs(GetNearbyPlayers(src, 20.0)) do
         TriggerClientEvent('QBCore:Command:ShowMe3D', player, src, ('* %s %s'):format(name, msg))
     end

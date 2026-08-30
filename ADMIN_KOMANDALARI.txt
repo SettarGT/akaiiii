@@ -186,3 +186,16 @@ say / sv_...          → Konfiquraşdırmalar
 
  Evlər (qb-houses): evə yaxın [E] → alış/açar/mebel menyusu.
  Biznes: [E] iş yerində → alış + boss menyu (kassa, işçi).
+
+
+═══════════════════════════════════════════════════
+ v1.3 YENİ ƏMRLƏR: MƏHKƏMƏ / VERGİ / KRİPTO / VIP
+═══════════════════════════════════════════════════
+ /vergi              → Hazırkı vergi + statistika (admin)
+ /vergi <faiz>       → Vergi dərəcəsini dəyiş (0-50, admin)
+ /kriptoprice <pul>  → 196COIN qiymətini təyin et (admin)
+ /viptver <id> <gün> → VIP ver (admin)
+ /viptelə <id>       → VIP sil (admin)
+
+ HAMIDA: /qerar (hakim) · /vekil (hüquqşünas) · /k9, /k9axtar (polis)
+         /dron, /dronendir · /streamer · /vip, /vipplate
