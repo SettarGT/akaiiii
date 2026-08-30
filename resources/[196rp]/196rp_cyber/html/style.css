@@ -1,0 +1,50 @@
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Courier New', monospace; }
+body { background: transparent; overflow: hidden; }
+.hidden { display: none !important; }
+
+#hack {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(2, 6, 4, 0.75); backdrop-filter: blur(4px);
+}
+
+.hk-shell {
+  width: 460px; border-radius: 18px; overflow: hidden;
+  background: linear-gradient(165deg, #04140d, #06231a);
+  border: 1px solid rgba(70, 220, 180, 0.5);
+  box-shadow: 0 0 80px rgba(70, 220, 180, 0.2);
+  animation: flick .25s steps(2) 2;
+}
+
+@keyframes flick { 0% { opacity: .6; } 100% { opacity: 1; } }
+
+.hk-head { padding: 18px 20px 10px; text-align: center; border-bottom: 1px solid rgba(70,220,180,.25); }
+.hk-logo { color: #46dcb4; font-size: 20px; font-weight: 800; letter-spacing: 2px; }
+.hk-logo span { color: #f7b733; }
+.hk-sub { color: #2f8a6e; font-size: 11px; letter-spacing: 6px; margin-top: 4px; }
+
+.hk-seq {
+  display: flex; gap: 10px; justify-content: center; padding: 24px 20px 10px;
+}
+.hk-seq div {
+  width: 54px; height: 54px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; font-weight: 800;
+  background: #0b241b; border: 1px solid rgba(70,220,180,.4);
+  color: #b8ffd9;
+}
+.hk-seq div.lit { animation: lit .5s ease; background: rgba(70,220,180,.3); box-shadow: 0 0 20px rgba(70,220,180,.5); }
+@keyframes lit { 40% { transform: scale(1.15); } 100% { transform: scale(1); } }
+
+.hk-btns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 14px 20px 20px; }
+.hk-btns button {
+  padding: 18px; border-radius: 12px; cursor: pointer;
+  border: 1px solid rgba(70,220,180,.35);
+  background: #081812; color: #46dcb4; font-size: 22px; font-weight: 800;
+}
+.hk-btns button:hover { background: rgba(70,220,180,.15); }
+.hk-btns button.wrong { background: rgba(190,45,45,.3) !important; color: #ff9696; }
+
+.hk-chance { text-align: center; color: #2f8a6e; font-size: 13px; padding-bottom: 8px; }
+.hk-chance b { color: #ffd97a; }
+.hk-msg { text-align: center; padding: 0 20px 20px; color: #46dcb4; font-size: 13px; min-height: 20px; }

@@ -372,6 +372,8 @@ CREATE TABLE IF NOT EXISTS `items` (
 
 INSERT INTO `items` (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES
 ('fishing_rod', 'Balıqçı çubuğu', 1200, 0, 1),
+('cyber_kit', 'Kiber dəst', 300, 0, 1),
+('scrap_metal', 'Metal hissə', 400, 0, 1),
 ('fish', 'Təzə balıq', 800, 0, 1),
 ('pickaxe', 'Mədənçi kürəyi', 3000, 0, 1),
 ('stone', 'Daş', 500, 0, 1),

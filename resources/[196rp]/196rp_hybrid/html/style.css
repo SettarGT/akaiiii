@@ -1,0 +1,37 @@
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+body { background: transparent; overflow: hidden; }
+.hidden { display: none !important; }
+
+#panel {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(4, 6, 12, 0.5); backdrop-filter: blur(6px);
+}
+
+.pn-shell {
+  width: 560px; border-radius: 18px; overflow: hidden;
+  background: linear-gradient(165deg, rgba(12, 18, 32, 0.97), rgba(16, 26, 46, 0.97));
+  border: 1px solid rgba(80, 200, 255, 0.3);
+  box-shadow: 0 40px 120px rgba(0,0,0,.8);
+  animation: pop .3s ease;
+}
+
+.pn-head { display: flex; align-items: center; padding: 16px 20px; background: linear-gradient(90deg, rgba(80,200,255,.12), transparent); border-bottom: 1px solid rgba(80,200,255,.2); }
+.pn-logo { color: #7dd3fc; font-weight: 900; letter-spacing: 1px; }
+.pn-logo span { color: #ffd97a; font-size: 22px; }
+.pn-close { margin-left: auto; width: 34px; height: 34px; border: none; border-radius: 9px; background: rgba(190,45,45,.8); color: #fff; font-weight: 800; cursor: pointer; }
+
+.pn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 18px 20px 22px; }
+
+.pn-card {
+  padding: 16px; border-radius: 14px;
+  background: rgba(16, 26, 46, 0.8); border: 1px solid rgba(140,160,180,.15);
+}
+.pn-card .top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.pn-card .icon { font-size: 24px; }
+.pn-card .label { color: #dbe3ef; font-weight: 800; font-size: 14px; }
+.pn-card .count { margin-left: auto; font-size: 22px; font-weight: 900; }
+.pn-card .names { color: #8fa0b8; font-size: 12px; line-height: 1.5; }
+.pn-card .off { color: #55637a; font-size: 12px; }
+
+@keyframes pop { from { transform: scale(.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }

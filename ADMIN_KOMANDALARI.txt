@@ -199,3 +199,14 @@ say / sv_...          → Konfiquraşdırmalar
 
  HAMIDA: /qerar (hakim) · /vekil (hüquqşünas) · /k9, /k9axtar (polis)
          /dron, /dronendir · /streamer · /vip, /vipplate
+
+
+═══════════════════════════════════════════════════
+ QANUNSUZ GƏLİR (narkotik əvəzi) + HİBRİD
+═══════════════════════════════════════════════════
+ /hack        → Kiber hücum minigame (₣8-30k, 5 dəq)
+ /stress      → Stress səviyyəsi
+ /nefes       → Yenidən nəfəs (stress -20)
+ /nobvet      → Növbət paneli (kim işləyir?)
+ Söküm sexi  → [E] 196 Söküm Sexi (maşın sök)
+ DarkWeb     → [E] kiber kit al (₣5000)

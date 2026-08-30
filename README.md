@@ -99,6 +99,13 @@ qb-houses, qb-apartments, qb-interior, qb-loading, qb-adminmenu, qb-weapons.
 - **Streamer rejim** — `/streamer` (RP mesajlarında adı "Gizli Şəxs" edir)
 - **VIP** — `/vip` status, `/vipplate <plaka>` (3-8 simvol), admin: `/viptver <id> <gün>`, `/viptelə <id>` — pay-to-win YOX (kosmetika + növbə prioriti + plitə)
 
+## 💻 Kiber / 🔧 Söküm / 🧠 Stress / 🖥️ Hibrid (v1.3+)
+
+- **Kiber cinayət** (narkotik ƏVƏZİ) — `/hack`: yaddaş minigame (5 simvol) + server şansı, ₣8k-30k, kit ilə +25% (DarkWeb `[E]`: ₣5000), polis xəbərdarlığı
+- **Söküm sexi** `[E]` — yaxın maşını sök (45s, polis xəbərdarlığı), metal hissə → qara bazarda ₣120/əd; öz maşını sökülmür, 10 dəq soyutma
+- **Stress** — `/stress` (0-100), `/nəfəs` (4s → -20), yüksək stressdə ekran effekti
+- **Növbət paneli** — `[E]` PD/Xəstəxana/İş Mərkəzi və ya `/nobvet`: kim işləyir (PD/EMS/mexanik/yedək/hakim/reporter)
+
 ## 📖 Əmrlər
 
 - **Oyunçu əmrləri:** `/me /do /try /ooc /report /muraciet /is /anim /rentqaytar /vehicleui` (və ya F5), `/givekeys <id>`
