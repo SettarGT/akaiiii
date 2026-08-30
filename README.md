@@ -82,6 +82,13 @@ qb-houses, qb-apartments, qb-interior, qb-loading, qb-adminmenu, qb-weapons.
 - **196 Bank ATM-ləri** `[E]` — çıxarış/yatırma/köçürmə (₣250 000 limit)
 - **196 Avtosalon** — premium NUI salon, sınaq sürüşü, bank/nağd alış
 
+## 🎰 Kazino / 🏪 Biznes / 🏁 Yarış Liqası (v1.2)
+
+- **196 Kazino** `[E]` — Rulet (rəng/cüt-tək/nömrə x35), Zar (x2), Slot (🍒x5 … 7️⃣x100) — server RNG, ₣100–100 000 mərc
+- **Bizneslər** `[E]` — mağaza ₣25k / restoran ₣50k / avtoservis ₣75k / klub ₣100k — boss menyu (kassa yatır/çıxar, işçi əlavə et/sil)
+- **Yarış Liqası** — 3 trek (Şəhər ₣500 / Vinewood ₣750 / Magistral ₣1000), nəzarət nöqtələri, `/liqa` lider cədvəli, mövsüm xalları (10-8-6…)
+- **Evlər** — qb-houses: satış, açar paylaşımı, **3D mebel qoyma** (bütün mebel adları Azərbaycan dilində)
+
 ## 📖 Əmrlər
 
 - **Oyunçu əmrləri:** `/me /do /try /ooc /report /muraciet /is /anim /rentqaytar /vehicleui` (və ya F5), `/givekeys <id>`

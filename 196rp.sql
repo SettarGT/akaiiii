@@ -380,3 +380,27 @@ INSERT INTO `items` (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES
 ('wood', 'Odun', 900, 0, 1),
 ('brick', 'Kərpic', 1200, 0, 1),
 ('cement', 'Sement', 1500, 0, 1);
+
+CREATE TABLE IF NOT EXISTS `196_businesses` (
+  `id` VARCHAR(50) NOT NULL,
+  `type` VARCHAR(50) NOT NULL,
+  `label` VARCHAR(120) NOT NULL,
+  `owner` VARCHAR(11) DEFAULT NULL,
+  `balance` INT(11) NOT NULL DEFAULT 0,
+  `staff` TEXT,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `196_race_results` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `citizenid` VARCHAR(11) NOT NULL,
+  `name` VARCHAR(120) DEFAULT NULL,
+  `track_id` VARCHAR(30) NOT NULL,
+  `time_ms` INT(11) NOT NULL DEFAULT 0,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+  PRIMARY KEY (`id`),
+  KEY `citizenid` (`citizenid`),
+  KEY `track_id` (`track_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+

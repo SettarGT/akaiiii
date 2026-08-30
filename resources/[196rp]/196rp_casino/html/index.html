@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="utf-8">
+  <title>196 RP | Kazino</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="casino" class="hidden">
+    <div class="cas-shell">
+      <header class="cas-head">
+        <div class="cas-logo"><span>196</span> KAZİNO</div>
+        <div class="cas-balance">💵 <b id="cash">₣0</b></div>
+        <button class="cas-close" id="btn-close">✕</button>
+      </header>
+
+      <div class="cas-tabs">
+        <button class="tab active" data-game="roulette">🎡 Rulet</button>
+        <button class="tab" data-game="dice">🎲 Zar</button>
+        <button class="tab" data-game="slots">🎰 Slot</button>
+      </div>
+
+      <!-- RU LET -->
+      <section class="game active" id="game-roulette">
+        <div class="bet-row">
+          <input id="r-bet" type="number" placeholder="Mərc (₣)" value="500">
+          <select id="r-type">
+            <option value="color">Rəng</option>
+            <option value="evenodd">Cüt/Tək</option>
+            <option value="number">Nömrə (0-36)</option>
+          </select>
+          <select id="r-value">
+            <option value="qirmizi">🔴 Qırmızı</option>
+            <option value="qara">⚫ Qara</option>
+          </select>
+          <button class="go" id="r-go">Fırlat</button>
+        </div>
+        <div class="wheel" id="wheel">0</div>
+        <div class="result hidden" id="r-result"></div>
+      </section>
+
+      <!-- ZAR -->
+      <section class="game" id="game-dice">
+        <div class="bet-row">
+          <input id="d-bet" type="number" placeholder="Mərc (₣)" value="500">
+          <select id="d-choice">
+            <option value="cute">Cüt (2,4,6)</option>
+            <option value="tek">Tək (1,3,5)</option>
+          </select>
+          <button class="go" id="d-go">At</button>
+        </div>
+        <div class="dice-row" id="d-dice">
+          <div class="die">?</div>
+        </div>
+        <div class="result hidden" id="d-result"></div>
+      </section>
+
+      <!-- SLOT -->
+      <section class="game" id="game-slots">
+        <div class="bet-row">
+          <input id="s-bet" type="number" placeholder="Mərc (₣)" value="500">
+          <button class="go" id="s-go">Fırlat</button>
+        </div>
+        <div class="slots" id="s-reels">
+          <div class="reel">❔</div><div class="reel">❔</div><div class="reel">❔</div>
+        </div>
+        <div class="slot-pay">🍒 x5 · 🍋 x8 · 🔔 x15 · ⭐ x30 · 7️⃣ x100 &nbsp;|&nbsp; 2 eyni x1.5</div>
+        <div class="result hidden" id="s-result"></div>
+      </section>
+
+      <div class="cas-msg hidden" id="msg"></div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

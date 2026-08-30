@@ -1,0 +1,92 @@
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+body { background: transparent; overflow: hidden; }
+.hidden { display: none !important; }
+
+#casino {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(4, 6, 12, 0.5); backdrop-filter: blur(6px);
+}
+
+.cas-shell {
+  width: 520px; border-radius: 20px; overflow: hidden;
+  background: linear-gradient(165deg, #100b16, #15101f);
+  border: 1px solid rgba(230, 60, 120, 0.35);
+  box-shadow: 0 40px 120px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,255,255,.05);
+  animation: pop .3s ease;
+}
+
+.cas-head {
+  display: flex; align-items: center; gap: 14px; padding: 16px 20px;
+  background: linear-gradient(90deg, rgba(230,60,120,.16), rgba(247,183,51,.08), transparent);
+  border-bottom: 1px solid rgba(230,60,120,.25);
+}
+.cas-logo { color: #ff6b9d; font-weight: 900; letter-spacing: 2px; font-size: 15px; }
+.cas-logo span { color: #ffd97a; font-size: 24px; }
+.cas-balance { margin-left: auto; color: #b8c2d4; font-size: 14px; }
+.cas-balance b { color: #7ddfa8; font-size: 20px; }
+.cas-close { width: 36px; height: 36px; border: none; border-radius: 10px; background: rgba(190,45,45,.8); color: #fff; font-weight: 800; cursor: pointer; }
+
+.cas-tabs { display: flex; gap: 8px; padding: 14px 20px 0; }
+.tab { flex: 1; padding: 11px; border-radius: 10px; border: 1px solid rgba(140,160,180,.2); background: rgba(20,14,30,.6); color: #b8c2d4; font-weight: 800; font-size: 13px; cursor: pointer; }
+.tab.active { background: linear-gradient(135deg, #e63c78, #c22b60); color: #fff; border: none; }
+
+.game { display: none; padding: 18px 20px 22px; }
+.game.active { display: block; }
+
+.bet-row { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.bet-row input, .bet-row select {
+  padding: 11px 12px; border-radius: 10px; font-size: 14px; outline: none;
+  border: 1px solid rgba(140,160,180,.3); background: rgba(8,6,14,.9); color: #fff;
+}
+.bet-row input { flex: 1; min-width: 110px; }
+.go {
+  padding: 11px 20px; border: none; border-radius: 10px; cursor: pointer; font-weight: 800;
+  background: linear-gradient(135deg, #f7b733, #e09b1a); color: #1a1205;
+}
+
+.wheel {
+  width: 240px; height: 240px; margin: 10px auto; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 52px; font-weight: 900; color: #fff;
+  background: conic-gradient(#e63c78 0deg 180deg, #1b1b1f 180deg 360deg);
+  border: 10px solid #ffd97a;
+  box-shadow: 0 0 60px rgba(230,60,120,.35);
+  transition: transform 2.2s cubic-bezier(.15,.9,.2,1.1);
+}
+.wheel.spin { animation: spinAnim 2.2s cubic-bezier(.15,.9,.2,1.1); }
+@keyframes spinAnim { to { transform: rotate(1080deg); } }
+
+.dice-row { display: flex; justify-content: center; margin: 20px 0; }
+.die {
+  width: 110px; height: 110px; border-radius: 22px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 60px; font-weight: 900; color: #1a1205;
+  background: linear-gradient(135deg, #ffffff, #e8e0d0);
+  box-shadow: 0 14px 40px rgba(0,0,0,.5);
+  animation: diceShake .5s ease;
+}
+@keyframes diceShake { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-12deg) translateY(-6px); } 75% { transform: rotate(12deg) translateY(-6px); } }
+
+.slots { display: flex; gap: 12px; justify-content: center; margin: 20px 0; }
+.reel {
+  width: 120px; height: 130px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center; font-size: 64px;
+  background: linear-gradient(160deg, #1d1226, #26182f);
+  border: 1px solid rgba(247,183,51,.4);
+  box-shadow: inset 0 0 30px rgba(0,0,0,.6);
+}
+.reel.rolling { animation: reelBlink .12s linear infinite; }
+@keyframes reelBlink { 0% { filter: brightness(1); } 50% { filter: brightness(1.4); } 100% { filter: brightness(1); } }
+
+.slot-pay { text-align: center; color: #8fa0b8; font-size: 11px; margin-bottom: 14px; }
+
+.result {
+  text-align: center; padding: 13px; border-radius: 12px; font-weight: 800; font-size: 16px;
+  background: rgba(60,190,110,.12); color: #7ddfa8;
+}
+.result.lose { background: rgba(190,45,45,.15); color: #ff9696; }
+
+.cas-msg { padding: 12px 20px; text-align: center; color: #ffd97a; background: rgba(247,183,51,.1); }
+
+@keyframes pop { from { transform: scale(.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }

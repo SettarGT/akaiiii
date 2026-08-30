@@ -1,0 +1,52 @@
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+body { background: transparent; overflow: hidden; }
+.hidden { display: none !important; }
+
+#league {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(4, 6, 12, 0.5); backdrop-filter: blur(6px);
+}
+
+.lg-shell {
+  width: 640px; max-height: 82vh; display: flex; flex-direction: column;
+  border-radius: 20px; overflow: hidden;
+  background: linear-gradient(165deg, rgba(12, 18, 32, 0.97), rgba(16, 26, 46, 0.97));
+  border: 1px solid rgba(247, 183, 51, 0.3);
+  box-shadow: 0 40px 120px rgba(0,0,0,.8);
+  animation: pop .3s ease;
+}
+
+.lg-head {
+  display: flex; align-items: center; gap: 14px; padding: 18px 22px;
+  background: linear-gradient(90deg, rgba(247,183,51,.14), transparent);
+  border-bottom: 1px solid rgba(247,183,51,.25);
+}
+.lg-logo { color: #ffd97a; font-weight: 900; font-size: 17px; letter-spacing: 1px; }
+.lg-logo span { font-size: 24px; }
+.lg-sub { color: #8fa0b8; font-size: 12px; letter-spacing: 1px; }
+.lg-close { margin-left: auto; width: 36px; height: 36px; border: none; border-radius: 10px; background: rgba(190,45,45,.8); color: #fff; font-weight: 800; cursor: pointer; }
+
+.podium { display: flex; justify-content: center; align-items: flex-end; gap: 14px; padding: 20px 22px 10px; }
+.pod {
+  flex: 1; text-align: center; padding: 14px 8px; border-radius: 14px;
+  background: linear-gradient(160deg, rgba(20,30,50,.9), rgba(14,22,38,.9));
+  border: 1px solid rgba(140,160,180,.2);
+}
+.pod .rank { font-size: 26px; font-weight: 900; color: #ffd97a; }
+.pod .name { color: #fff; font-weight: 800; font-size: 14px; margin: 6px 0; }
+.pod .pts { color: #7ddfa8; font-size: 13px; font-weight: 700; }
+.pod.silver .rank { color: #cfd8e3; }
+.pod.bronze .rank { color: #e0a06a; }
+
+.table-wrap { overflow-y: auto; padding: 6px 22px 22px; }
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; color: #8fa0b8; font-size: 11px; letter-spacing: 1px; padding: 8px 10px; border-bottom: 1px solid rgba(247,183,51,.2); }
+td { color: #dbe3ef; font-size: 14px; padding: 11px 10px; border-bottom: 1px solid rgba(140,160,180,.08); }
+tr.me { background: rgba(247,183,51,.08); }
+td.points { color: #7ddfa8; font-weight: 800; }
+.empty { color: #66738a; text-align: center; padding: 30px; }
+
+@keyframes pop { from { transform: scale(.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+::-webkit-scrollbar { width: 7px; }
+::-webkit-scrollbar-thumb { background: rgba(247,183,51,.35); border-radius: 10px; }

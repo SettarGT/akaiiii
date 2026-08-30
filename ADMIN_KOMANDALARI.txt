@@ -174,3 +174,15 @@ say / sv_...          → Konfiquraşdırmalar
   mechanic     → mexanik (/temir)
   cardealer    → avtosalon əməkdaşı
 ```
+
+
+═══════════════════════════════════════════════════
+ v1.2 YENİ: KAZİNO / BİZNES / YARIŞ LİQASI
+═══════════════════════════════════════════════════
+ /liqa          → Yarış liqası lider cədvəli (hamı)
+ /liqasifirla   → ADMIN: mövsüm ballarını sıfırla
+ /liqamukafat <yer> <pul>
+                → ADMIN: liqada N-ci yerə mükafat ver
+
+ Evlər (qb-houses): evə yaxın [E] → alış/açar/mebel menyusu.
+ Biznes: [E] iş yerində → alış + boss menyu (kassa, işçi).
