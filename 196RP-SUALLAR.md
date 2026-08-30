@@ -54,6 +54,16 @@
 - `196rp_fire` — yanğınsöndürmə: stansiya kiosku, /yangin 911 zəngi, blip, /sondur (+₣120), təsadüfi avtomobil yanğınları, yanğın maşını.
 - `196rp_radar` — polis radarı (NUI, sürət həddi xəbərdarlığı) + /plate skan (DB sahib axtarışı).
 
+## ✅ V1.6 TƏHVİL EDİLDİ (bu gün)
+- `196rp_dispatch` — `/911` zəngi, `/dispatch` paneli (qəbul/bitdi), xidmət işçilərinə blip + bildiriş.
+- `196rp_social` — Twatter + 196-Gram: `/twatter`, `/gram`, `/social` feed paneli (bəyənmə ilə).
+- Kazino: **Blackjack (21)** əlavə edildi (server-side kart, hit/stand, 21=2.5x).
+- `196rp_pets` — heyvan mağazası, `/heyvan`, `/heyvanqaytar`, `/heyvanbesle` (stress -10), `/heyvanad`.
+- `196rp_winter` — `/qis` admin, qar havası, qış təkəri (`/qisteker` mexanik, buzda 70 km/s həddi).
+- **Narkotik TƏMİZLƏNMƏSİ** — bütün weed/meth/cocaine/psychotropic item-ları items.lua-dan və qb-shops `weedshop`-dan çıxarıldı; `qb-drugs` + `qb-weed` resursları server.cfg-də `stop` edildi.
+- **0 NPC** — qb-shops bütün 39 mağazada satıcı ped-ləri söndürüldü (tam self-service zona).
+- Streamer rejimi `/pm`-də də adı gizlədir.
+
 ## ⏳ NÖVBƏTİ MƏRHƏLƏLƏR (v1 davamı)
 
 - **v1.1:** Bələdiyyə paketi (pasport/FİN 11 rəqəm/qan qrupu + sürücülük imtahanı 10 sual), xüsusi MDT + dispatch, faktura NUI, ATM dizaynı, iş geyimləri (uniforma), cərimə bildiriş pəncərəsi.

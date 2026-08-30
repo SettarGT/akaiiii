@@ -47,6 +47,10 @@ qb-houses, qb-apartments, qb-interior, qb-loading, qb-adminmenu, qb-weapons.
 | `196rp_prison` | Həbsxana işləri — mətbəx/təmizlik/idman → vaxt azalması |
 | `196rp_fire` | Yanğınsöndürmə — stansiya kiosku, /yangin, /sondur, təsadüfi yanğınlar |
 | `196rp_radar` | Polis radarı + plate scanner (/radar, /plate) |
+| `196rp_dispatch` | Dispatch — /911 zəng, /dispatch paneli |
+| `196rp_social` | Twatter + 196-Gram — /twatter, /gram, /social |
+| `196rp_pets` | Heyvanlar — mağaza, /heyvan, qulluq |
+| `196rp_winter` | Qış mövsümü — /qis, qış təkərləri, buz |
 
 ---
 

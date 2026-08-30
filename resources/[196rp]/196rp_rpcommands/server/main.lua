@@ -99,6 +99,9 @@ QBCore.Commands.Add('pm', 'Oyunçuya şəxsi mesaj göndər', {
     if fullText == '' then return end
 
     local senderName = GetPlayerName(source)
+    if GetResourceState('196rp_streamer') == 'started' and exports['196rp_streamer']:IsStreamer(source) then
+        senderName = 'Gizli Şəxs'
+    end
     TriggerClientEvent('chat:addMessage', target, {
         color = { 255, 200, 100 },
         multiline = true,

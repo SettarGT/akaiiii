@@ -256,32 +256,8 @@ QBCore.Shared.Items = {
     grapejuice                   = { name = 'grapejuice', label = 'Üzüm şirəsi', weight = 200, type = 'item', image = 'grapejuice.png', unique = false, useable = true, shouldClose = false, description = 'Təbii şirə — susuzluğu azaldır' },
 
     -- Drugs
-    joint                        = { name = 'joint', label = 'Joint', weight = 0, type = 'item', image = 'joint.png', unique = false, useable = true, shouldClose = true, description = 'Yandırmaq üçün hazır marixuana siqareti' },
-    cokebaggy                    = { name = 'cokebaggy', label = 'Kokain kisəsi', weight = 0, type = 'item', image = 'cocaine_baggy.png', unique = false, useable = true, shouldClose = true, description = 'Ağ toz şəklində narkotik maddə' },
-    crack_baggy                  = { name = 'crack_baggy', label = 'Krek kisəsi', weight = 0, type = 'item', image = 'crack_baggy.png', unique = false, useable = true, shouldClose = true, description = 'Kokain törəməsi narkotik' },
-    xtcbaggy                     = { name = 'xtcbaggy', label = 'XTC kisəsi', weight = 0, type = 'item', image = 'xtc_baggy.png', unique = false, useable = true, shouldClose = true, description = 'Həb şəklində stimulyator' },
-    coke_brick                   = { name = 'coke_brick', label = 'Kokain briketi', weight = 1000, type = 'item', image = 'coke_brick.png', unique = true, useable = false, shouldClose = true, description = 'Böyük həcmdə qablaşdırılmış kokain' },
-    weed_brick                   = { name = 'weed_brick', label = 'Marixuana briketi', weight = 1000, type = 'item', image = 'weed_brick.png', unique = false, useable = false, shouldClose = true, description = 'Böyük həcmdə qablaşdırılmış marixuana' },
-    coke_small_brick             = { name = 'coke_small_brick', label = 'Kokain paketi', weight = 350, type = 'item', image = 'coke_small_brick.png', unique = true, useable = false, shouldClose = true, description = 'Kiçik paketdə kokain' },
-    oxy                          = { name = 'oxy', label = 'Oksikodon', weight = 0, type = 'item', image = 'oxy.png', unique = false, useable = true, shouldClose = true, description = 'Reseptli ağrıkəsici' },
-    meth                         = { name = 'meth', label = 'Metamfetamin', weight = 100, type = 'item', image = 'meth_baggy.png', unique = false, useable = true, shouldClose = true, description = 'Güclü sintetik stimulyator' },
-    rolling_paper                = { name = 'rolling_paper', label = 'Siqaret kağızı', weight = 0, type = 'item', image = 'rolling_paper.png', unique = false, useable = false, shouldClose = true, description = 'Joint hazırlamaq üçün kağız' },
 
     -- Seed And Weed
-    weed_whitewidow              = { name = 'weed_whitewidow', label = 'White Widow 2q', weight = 200, type = 'item', image = 'weed_baggy.png', unique = false, useable = true, shouldClose = false, description = 'Yüksək keyfiyyətli marixuana növü' },
-    weed_skunk                   = { name = 'weed_skunk', label = 'Skunk 2q', weight = 200, type = 'item', image = 'weed_baggy.png', unique = false, useable = true, shouldClose = false, description = 'Güclü təsirli marixuana növü' },
-    weed_purplehaze              = { name = 'weed_purplehaze', label = 'Purple Haze 2q', weight = 200, type = 'item', image = 'weed_baggy.png', unique = false, useable = true, shouldClose = false, description = 'Populyar marixuana növü' },
-    weed_ogkush                  = { name = 'weed_ogkush', label = 'OG Kush 2q', weight = 200, type = 'item', image = 'weed_baggy.png', unique = false, useable = true, shouldClose = false, description = 'Legendar marixuana növü' },
-    weed_amnesia                 = { name = 'weed_amnesia', label = 'Amnesia 2q', weight = 200, type = 'item', image = 'weed_baggy.png', unique = false, useable = true, shouldClose = false, description = 'Psixoaktiv marixuana növü' },
-    weed_ak47                    = { name = 'weed_ak47', label = 'AK47 2q', weight = 200, type = 'item', image = 'weed_baggy.png', unique = false, useable = true, shouldClose = false, description = 'Güclü marixuana növü' },
-    weed_whitewidow_seed         = { name = 'weed_whitewidow_seed', label = 'White Widow toxumu', weight = 0, type = 'item', image = 'weed_seed.png', unique = false, useable = true, shouldClose = false, description = 'Əkin üçün toxum' },
-    weed_skunk_seed              = { name = 'weed_skunk_seed', label = 'Skunk toxumu', weight = 0, type = 'item', image = 'weed_seed.png', unique = false, useable = true, shouldClose = true, description = 'Əkin üçün toxum' },
-    weed_purplehaze_seed         = { name = 'weed_purplehaze_seed', label = 'Purple Haze toxumu', weight = 0, type = 'item', image = 'weed_seed.png', unique = false, useable = true, shouldClose = true, description = 'Əkin üçün toxum' },
-    weed_ogkush_seed             = { name = 'weed_ogkush_seed', label = 'OG Kush toxumu', weight = 0, type = 'item', image = 'weed_seed.png', unique = false, useable = true, shouldClose = true, description = 'Əkin üçün toxum' },
-    weed_amnesia_seed            = { name = 'weed_amnesia_seed', label = 'Amnesia toxumu', weight = 0, type = 'item', image = 'weed_seed.png', unique = false, useable = true, shouldClose = true, description = 'Əkin üçün toxum' },
-    weed_ak47_seed               = { name = 'weed_ak47_seed', label = 'AK47 toxumu', weight = 0, type = 'item', image = 'weed_seed.png', unique = false, useable = true, shouldClose = true, description = 'Əkin üçün toxum' },
-    empty_weed_bag               = { name = 'empty_weed_bag', label = 'Boş ot kisəsi', weight = 0, type = 'item', image = 'weed_baggy_empty.png', unique = false, useable = true, shouldClose = true, description = 'İstifadə olunmuş boş kisə' },
-    weed_nutrition               = { name = 'weed_nutrition', label = 'Bitki gübrəsi', weight = 2000, type = 'item', image = 'weed_nutrition.png', unique = false, useable = true, shouldClose = true, description = 'Bitkilərin böyüməsini sürətləndirir' },
 
     -- Material
     plastic                      = { name = 'plastic', label = 'Plastik', weight = 100, type = 'item', image = 'plastic.png', unique = false, useable = false, shouldClose = false, description = 'Sənaye xammalı' },
