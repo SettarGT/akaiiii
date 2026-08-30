@@ -51,7 +51,12 @@ qb-houses, qb-apartments, qb-interior, qb-loading, qb-adminmenu, qb-weapons.
 | `196rp_social` | Twatter + 196-Gram — /twatter, /gram, /social |
 | `196rp_pets` | Heyvanlar — mağaza, /heyvan, qulluq |
 | `196rp_winter` | Qış mövsümü — /qis, qış təkərləri, buz |
-
+| `196rp_jobs` | İş sistemi: balıqçılıq, mədən, meşə, inşaat, mexanik, avtosalon (alət mağazası) |
+| `196rp_storage` | Self-Storage icarəsi + Storage Wars kor hərrac (/auk) |
+| `196rp_yachts` | Marina — yaxta icarəsi/alışı, /yaxta, /yaxtaqaytar |
+| `196rp_ghostguns` | Ghost Guns — lisenziyasız silah emalatxanası (seriya yox) |
+| `196rp_family` | Evlilik /boşanma + CK (admin+razılıq) |
+| `196rp_media` | Media — boombox/TV + /tvlink YouTube/Twitch NUI pleyer |
 ---
 
 ## 🚀 Quraşdırma (qısa)

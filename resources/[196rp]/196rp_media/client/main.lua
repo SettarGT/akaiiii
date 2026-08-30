@@ -56,10 +56,34 @@ RegisterCommand('tv', function()
     end
 end, false)
 
+
+-- ── TV NUI (YouTube / Twitch) ──
+local function OpenTvNui(url)
+    SetNuiFocus(true, true)
+    SendNUIMessage({ action = 'open', url = url })
+end
+
+RegisterNetEvent('196rp_media:client:tv', function(url)
+    OpenTvNui(url)
+end)
+
+RegisterNUICallback('close', function(_, cb)
+    SetNuiFocus(false, false)
+    QBCore.Functions.Notify('📺 TV bağlandı.', 'primary')
+    cb({})
+    return true
+end)
+
 -- ── Radio: stansiya seçimi (RP göstəricisi — audio GTA daxili radio ilə) ──
 RegisterCommand('radio', function()
     radioIdx = radioIdx + 1
     if radioIdx > #Config.Radio then radioIdx = 1 end
     local st = Config.Radio[radioIdx]
     QBCore.Functions.Notify(('📻 Stansiya: %s'):format(st.label), 'success')
+end, false)
+
+-- ── /tvlink <url>: NUI vasitəsilə YouTube/Twitch açmaq ──
+RegisterCommand('tvlink', function(_, args)
+    local url = table.concat(args, ' ')
+    OpenTvNui(url ~= '' and url or nil)
 end, false)

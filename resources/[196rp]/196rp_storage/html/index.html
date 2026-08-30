@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <title>196 RP | Storage Wars</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="panel" class="panel hidden">
+        <div class="panel-head">
+            <div>
+                <div class="title">🔨 Storage Wars</div>
+                <div class="subtitle"><span id="unit">—</span> nömrəli anbar · Məzmun: <span class="blind">???</span></div>
+            </div>
+            <button id="close">✕</button>
+        </div>
+        <div class="timer-box">
+            <div class="timer-label">Qalan vaxt</div>
+            <div id="timer">60</div>
+        </div>
+        <div class="bid-info">
+            <div class="b-current">Cari təklif</div>
+            <div id="current">₣0</div>
+            <div class="b-hint">Addım: <span id="step">₣250</span> · Min: <span id="min">₣500</span></div>
+        </div>
+        <div class="bid-row">
+            <input id="bid" type="number" placeholder="Təklifiniz (₣)">
+            <button id="submit">📈 Təklif et</button>
+        </div>
+        <div class="note">Kor hərrac — anbarın məzmununu bilmədən təklif verirsiniz. Qalib bütün məzmuna sahib olur.</div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

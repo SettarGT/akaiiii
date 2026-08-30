@@ -34,6 +34,16 @@ Config.RentCar = {
     returnRadius = 8.0,
 }
 
+-- Sim kart kiosk (TT-71: telefon nömrəsi 196-XXX)
+Config.SimKiosk = {
+    label = '196 Telefon | Sim Kart (₣500)',
+    coords = vector3(-1036.0, -2727.0, 13.9),
+    heading = 0.0,
+    prop = 'prop_atm_02',
+    price = 500,
+    radius = 5.0,
+}
+
 -- Onboarding menyusu (ilk giriş üçün)
 Config.Onboarding = {
     enabled = true,

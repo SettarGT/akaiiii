@@ -23,6 +23,28 @@ AddEventHandler('QBCore:Server:PlayerLoaded', function(Player)
 end)
 
 -- ═══════════════════════════════════════════════════════════════
+-- Sim kart: yeni 196-XXX nömrəsi
+-- ═══════════════════════════════════════════════════════════════
+
+RegisterNetEvent('196rp_onboarding:server:buysim', function()
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if not Player then return end
+
+    if (Player.PlayerData.money.cash or 0) < Config.SimKiosk.price then
+        TriggerClientEvent('QBCore:Notify', src, ('Sim kart qiyməti: ₣%d'):format(Config.SimKiosk.price), 'error')
+        return
+    end
+
+    local newNumber = QBCore.Functions.CreatePhoneNumber()
+    Player.Functions.RemoveMoney('cash', Config.SimKiosk.price, 'sim-card')
+    Player.PlayerData.charinfo.phone = newNumber
+    MySQL.update('UPDATE players SET charinfo = JSON_SET(charinfo, \'$.phone\', ?) WHERE citizenid = ?', { newNumber, Player.PlayerData.citizenid })
+
+    TriggerClientEvent('QBCore:Notify', src, ('📱 Yeni nömrəniz: %s (-₣%d)'):format(newNumber, Config.SimKiosk.price), 'success')
+end)
+
+-- ═══════════════════════════════════════════════════════════════
 -- Rentcar: kirayə / qaytarma / doldurma
 -- ═══════════════════════════════════════════════════════════════
 

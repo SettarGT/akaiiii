@@ -622,7 +622,7 @@ end
 
 function QBCore.Functions.CreatePhoneNumber()
     return createUniqueId(
-        function() return math.random(100, 999) .. math.random(1000000, 9999999) end,
+        function() return '196-' .. string.format('%03d', math.random(1, 999)) end,
         'SELECT EXISTS(SELECT 1 FROM players WHERE JSON_UNQUOTE(JSON_EXTRACT(charinfo, "$.phone")) = ?) AS uniqueCheck'
     )
 end

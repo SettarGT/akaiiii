@@ -43,3 +43,16 @@ Config.Blackjack = {
     BlackjackPayout = 2.5, -- 2 karta 21: mərc x2.5
     DealerMin = 17,      -- dealer bu dəyərə qədər kart çəkir
 }
+
+-- At Yarışı (virtual)
+Config.Horses = {
+    { name = 'Qara Şimşək', emoji = '🐎', chance = 22 },
+    { name = 'Sürətli Bərə', emoji = '🦄', chance = 28 },
+    { name = 'Gecə Atı',     emoji = '🏇', chance = 24 },
+    { name = 'Altın Dırnaq', emoji = '🐴', chance = 26 },
+}
+Config.HorseRace = {
+    MinOdds = 1.2,        -- minimum əmsal
+    MaxOdds = 20.0,       -- maksimum əmsal (əmsal = 100/chance)
+    Duration = 9000,      -- yarış animasiya müddəti (ms)
+}

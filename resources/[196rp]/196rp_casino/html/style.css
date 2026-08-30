@@ -120,3 +120,17 @@ body { background: transparent; overflow: hidden; }
 }
 .chip-btn.sell { background: rgba(255,255,255,.1); color: #b9c7db; border: 1px solid rgba(255,255,255,.15); }
 .chip-btn:hover { filter: brightness(1.1); }
+
+/* At yarışı */
+.race-track { padding: 10px 0; }
+.h-row {
+    display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.08); background: rgba(0,0,0,.22); margin-bottom: 8px; cursor: pointer;
+}
+.h-row.sel { border-color: rgba(247,183,51,.6); background: rgba(247,183,51,.08); }
+.h-row.win { border-color: #6ee7a8; background: rgba(110,231,168,.12); }
+.h-name { min-width: 120px; font-size: 13px; font-weight: 700; }
+.h-lane { flex: 1; height: 30px; background: rgba(255,255,255,.04); border-radius: 8px; overflow: hidden; position: relative; }
+.h-move { position: absolute; left: 4px; top: 0; font-size: 22px; line-height: 30px; }
+.race-odds { display: flex; flex-wrap: wrap; gap: 6px; }
+.h-odd { font-size: 11px; color: #b9c7db; background: rgba(255,255,255,.06); padding: 4px 8px; border-radius: 6px; }

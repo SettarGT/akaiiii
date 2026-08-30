@@ -230,3 +230,22 @@ say / sv_...          → Konfiquraşdırmalar
 /plate — Polis: yaxın avtomobilin sahibini tap
 /yangin — Hər kəs: yanğın zəngi (911 briqada)
 /sondur — Yanğınsöndürən: yanan obyekti söndür (+₣120)
+
+── V1.9 ƏLAVƏLƏR ─────────────────────────────
+
+/yaxta — Yaxta kiosk menyusu (196 Marina, Del Perro)
+/yaxtaqaytar — İcarə/yaxtanı qaytar
+/auk — Aktiv Storage Wars hərracını aç
+/aukstart <anbar> — ADMIN: kor hərrac başlat
+/yariş — yarış başlat (196rp_racing)
+/elo [top] — Yarış ELO reytinqi / TOP 5
+/evlen <id> — Evlilik təklifi (₣2500)
+/bosan — Boşanma
+/evli — Evlilik statusu
+/ck <id> — ADMIN: CK təklifi (oyunçu təsdiqləməlidir!)
+/tvlink <url> — YouTube/Twitch telefonda/TV-də aç (NUI)
+/is — Hazırkı işdən çıx (İş Mərkəzi yenisi üçün)
+/temir — Mexanik: yaxın maşını təmir et
+/avtomobil, /sat, /avtosalon — Avtosalon: model seç + müştəri ID
+/rentqaytar — rentcarı qaytar (aeroport)
+Sim Kart: aeroport terminalında kiosk — yeni 196-XXX nömrə (₣500)

@@ -183,3 +183,91 @@ document.getElementById('chips-sell').addEventListener('click', () => {
     const a = Math.floor(+(document.getElementById('chip-amount').value || 0));
     if (a > 0) post('sellChips', { amount: a });
 });
+
+// ── AT YARIŞI ──
+let horses = [];
+let horseSelected = 1;
+let racing = false;
+
+function renderHorses() {
+    const odds = h => Math.max(1.2, Math.min(20, 100 / (h.chance || 20)));
+    const track = document.getElementById('h-track');
+    const oddsBox = document.getElementById('h-odds');
+    track.innerHTML = '';
+    oddsBox.innerHTML = '';
+    horses.forEach((h, i) => {
+        const row = document.createElement('div');
+        row.className = 'h-row' + (i === 0 ? ' sel' : '');
+        row.dataset.i = i;
+        row.innerHTML = `<span class="h-name">${h.emoji} ${h.name}</span><span class="h-lane"><span class="h-move">${h.emoji}</span></span>`;
+        row.addEventListener('click', () => {
+            if (racing) return;
+            horseSelected = i;
+            document.querySelectorAll('.h-row').forEach(r => r.classList.remove('sel'));
+            row.classList.add('sel');
+        });
+        track.appendChild(row);
+        const o = document.createElement('span');
+        o.className = 'h-odd';
+        o.textContent = `${h.name}: x${odds(h).toFixed(1)}`;
+        oddsBox.appendChild(o);
+    });
+}
+
+document.getElementById('h-go').addEventListener('click', () => {
+    if (racing || !horses.length) return;
+    const amount = Math.floor(+(document.getElementById('h-bet').value || 0));
+    if (amount <= 0) return;
+    racing = true;
+    const res = document.getElementById('h-result');
+    res.classList.add('hidden');
+    res.textContent = '';
+    const moves = [...document.querySelectorAll('.h-move')];
+    moves.forEach((m, i) => {
+        m.style.transition = 'none';
+        m.style.transform = 'translateX(0)';
+    });
+    setTimeout(() => {
+        moves.forEach((m, i) => {
+            m.style.transition = `transform ${0.4 + Math.random() * 0.6}s linear`;
+            m.style.transform = `translateX(${Math.floor(Math.random() * 60) + 10}px)`;
+        });
+        requestAnimationFrame(() => {
+            moves.forEach((m, i) => {
+                m.style.transition = `transform ${7.5}s cubic-bezier(.2,.6,.3,1)`;
+                m.style.transform = `translateX(${(Math.random() * 130 + (i === horseSelected ? 20 : 0))}px)`;
+            });
+        });
+    }, 50);
+    post('horse', { horse: horseSelected, amount });
+});
+
+window.addEventListener('message', (e) => {
+    const d = e.data || {};
+    if (d.action === 'open' && d.horses) {
+        horses = d.horses;
+        horseSelected = 1;
+        renderHorses();
+    }
+    if (d.action === 'horseResult') {
+        const h = d.data;
+        racing = false;
+        const moves = [...document.querySelectorAll('.h-move')];
+        const row = document.querySelectorAll('.h-row')[h.winner];
+        if (row) {
+            moves.forEach((m, i) => {
+                if (i === h.winner) m.style.transform = 'translateX(200px)';
+            });
+            row.classList.add('win');
+        }
+        const res = document.getElementById('h-result');
+        res.classList.remove('hidden');
+        res.textContent = h.won
+            ? `🏆 ${horses[h.winner]?.name || 'At'} qazandı! Siz uddunuz: +₣${Number(h.win).toLocaleString('az-AZ')} (x${h.odds.toFixed(1)})`
+            : `💨 ${horses[h.winner]?.name || 'At'} qazandı. Uduzdunuz (−₣${Number(h.bet).toLocaleString('az-AZ')})`;
+        setTimeout(() => {
+            racing = false;
+            document.querySelectorAll('.h-row').forEach(r => r.classList.remove('win'));
+        }, 5000);
+    }
+});

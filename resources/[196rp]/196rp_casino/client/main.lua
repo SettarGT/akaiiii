@@ -4,7 +4,7 @@ local casinoOpen = false
 local function OpenCasino()
     casinoOpen = true
     SetNuiFocus(true, true)
-    SendNUIMessage({ action = 'open' })
+    SendNUIMessage({ action = 'open', horses = Config.Horses })
     TriggerServerEvent('196rp_casino:server:getBalance')
 end
 
@@ -27,6 +27,9 @@ end)
 RegisterNetEvent('196rp_casino:client:blackjackResult', function(data)
     SendNUIMessage({ action = 'blackjackResult', data = data })
 end)
+RegisterNetEvent('196rp_casino:client:horseResult', function(data)
+    SendNUIMessage({ action = 'horseResult', data = data })
+end)
 
 RegisterNUICallback('roulette', function(data, cb)
     TriggerServerEvent('196rp_casino:server:roulette', data.betType, data.betValue, data.amount)
@@ -43,6 +46,12 @@ RegisterNUICallback('slots', function(data, cb)
     cb({})
     return true
 end)
+RegisterNUICallback('horse', function(data, cb)
+    TriggerServerEvent('196rp_casino:server:horse', data.horse, data.amount)
+    cb({})
+    return true
+end)
+
 RegisterNUICallback('blackjack', function(data, cb)
     if data.action == 'start' then
         TriggerServerEvent('196rp_casino:server:blackjackStart', data.amount)

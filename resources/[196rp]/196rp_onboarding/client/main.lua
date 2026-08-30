@@ -103,6 +103,25 @@ CreateThread(function()
         },
         distance = 2.5,
     })
+
+    -- Sim Kart kiosk (TT-71)
+    if Config.SimKiosk and Config.SimKiosk.prop then
+        local simKiosk = CreateObject(GetHashKey(Config.SimKiosk.prop), Config.SimKiosk.coords.x, Config.SimKiosk.coords.y, Config.SimKiosk.coords.z, true, true, false)
+        SetEntityHeading(simKiosk, Config.SimKiosk.heading)
+        FreezeEntityPosition(simKiosk, true)
+        exports['qb-target']:AddTargetEntity(simKiosk, {
+            options = {
+                {
+                    label = ColorText(Config.SimKiosk.label),
+                    icon = 'mobile-alt',
+                    action = function()
+                        TriggerServerEvent('196rp_onboarding:server:buysim')
+                    end,
+                },
+            },
+            distance = 2.5,
+        })
+    end
 end)
 
 function ColorText(text)

@@ -64,6 +64,7 @@ CORE_EXPORTS = {
     ('qb-menu', 'closeMenu'),
     ('progressbar', 'Progress'),
     ('qb-target', 'AddBoxZone'),
+    ('qb-target', 'AddCircleZone'),
     ('qb-target', 'RemoveZone'),
     ('qb-target', 'AddTargetEntity'),
     ('qb-inventory', 'OpenInventory'),

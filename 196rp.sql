@@ -381,7 +381,12 @@ INSERT INTO `items` (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES
 ('axe', 'Balta', 2500, 0, 1),
 ('wood', 'Odun', 900, 0, 1),
 ('brick', 'Kərpic', 1200, 0, 1),
-('cement', 'Sement', 1500, 0, 1);
+('cement', 'Sement', 1500, 0, 1),
+('hammer', 'Çəkic', 800, 0, 1),
+('plank', 'Taxta lövhə', 2500, 0, 1),
+('ghost_frame', 'Ghost Çərçivə', 2500, 0, 1),
+('ghost_slide', 'Ghost Sürüşmə', 1200, 0, 1),
+('ghost_trigger', 'Ghost Tetik', 400, 0, 1);
 
 CREATE TABLE IF NOT EXISTS `196_businesses` (
   `id` VARCHAR(50) NOT NULL,
@@ -467,3 +472,55 @@ CREATE TABLE IF NOT EXISTS 196_chips (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (citizenid)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ═══════ 196 RP | Yaxtalar ═══════
+CREATE TABLE IF NOT EXISTS 196_yachts (
+  citizenid VARCHAR(50) NOT NULL,
+  model VARCHAR(50) NOT NULL,
+  bought_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (citizenid, model)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ═══════ 196 RP | Anbarlar (self-storage) ═══════
+CREATE TABLE IF NOT EXISTS 196_storage (
+  unit INT NOT NULL,
+  citizenid VARCHAR(50),
+  rented_until INT DEFAULT 0,
+  PRIMARY KEY (unit)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ═══════ 196 RP | Yarış ELO ═══════
+CREATE TABLE IF NOT EXISTS 196_racing (
+  citizenid VARCHAR(50) NOT NULL,
+  rating INT NOT NULL DEFAULT 1200,
+  races INT NOT NULL DEFAULT 0,
+  wins INT NOT NULL DEFAULT 0,
+  best_ms INT NOT NULL DEFAULT 0,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (citizenid)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ═══════ 196 RP | Evlilik ═══════
+CREATE TABLE IF NOT EXISTS 196_marriage (
+  citizenid VARCHAR(50) NOT NULL,
+  spouse_citizenid VARCHAR(50) NOT NULL,
+  spouse_name VARCHAR(100) DEFAULT '',
+  married_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (citizenid)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ═══════ 196 RP | İşlər (hibrid self-service) ═══════
+CREATE TABLE IF NOT EXISTS `196_jobs` (
+  `name` VARCHAR(50) NOT NULL,
+  `label` VARCHAR(60) NOT NULL,
+  `type` VARCHAR(10) NOT NULL DEFAULT 'job',
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT IGNORE INTO `196_jobs` (`name`, `label`, `type`) VALUES
+('fisher', 'Balıqçı', 'job'),
+('miner', 'Mədənçi', 'job'),
+('lumberjack', 'Meşəçi', 'job'),
+('construction', 'İnşaatçı', 'job'),
+('mechanic', 'Mexanik', 'job'),
+('cardealer', 'Avtosalon', 'job');

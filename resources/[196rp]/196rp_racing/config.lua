@@ -54,3 +54,9 @@ Config.Points = { 10, 8, 6, 5, 4, 3, 2, 1 }
 
 -- Nəzarət nöqtəsi radiusu (metr)
 Config.CheckpointRadius = 6.0
+
+-- ELO (gizli reytinq)
+Config.Elo = {
+    K = 32,          -- dəyişmə əmsalı
+    Default = 1200,  -- başlanğıc reytinq
+}

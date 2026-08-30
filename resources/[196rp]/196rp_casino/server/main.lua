@@ -357,3 +357,46 @@ RegisterNetEvent('196rp_casino:server:blackjackStand', function()
     if ds > ps and ds <= 21 then result = 'lose' end
     BjResolve(src, result)
 end)
+
+-- ═══════════ AT YARIŞI ═══════════
+RegisterNetEvent('196rp_casino:server:horse', function(horseIndex, amount)
+    local src = source
+    amount = math.floor(tonumber(amount) or 0)
+    horseIndex = tonumber(horseIndex)
+    local horse = Config.Horses[horseIndex]
+    if not horse then return end
+
+    local ok, Player = Charge(src, amount)
+    if not ok then return end
+
+    -- qalib seçim (çəki əsaslı)
+    local totalChance = 0
+    for _, h in ipairs(Config.Horses) do totalChance = totalChance + h.chance end
+    local r = math.random(0, totalChance)
+    local winner, acc = 1, 0
+    for i, h in ipairs(Config.Horses) do
+        acc = acc + h.chance
+        if r <= acc then winner = i break end
+    end
+
+    local odds = math.max(Config.HorseRace.MinOdds, math.min(Config.HorseRace.MaxOdds, 100 / horse.chance))
+    local won = winner == horseIndex
+    local winAmount = 0
+
+    -- mərc artıq çıxılıb — uduşu gecikdirilmiş veririk
+    SetTimeout(Config.HorseRace.Duration, function()
+        if won then
+            winAmount = math.min(math.floor(amount * odds), Config.Limits.MaxProfit)
+            PayWinnings(src, winAmount)
+        else
+            RecordLoss(Player, amount)
+        end
+        TriggerClientEvent('196rp_casino:client:horseResult', src, {
+            winner = winner, chosen = horseIndex, odds = odds, won = won, win = winAmount, bet = amount,
+        })
+        local p2 = QBCore.Functions.GetPlayer(src)
+        if p2 then
+            TriggerClientEvent('196rp_casino:client:balance', src, p2.PlayerData.money.cash or 0, LoadChips(p2).chips)
+        end
+    end)
+end)

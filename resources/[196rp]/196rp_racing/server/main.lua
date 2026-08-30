@@ -50,6 +50,40 @@ RegisterNetEvent('196rp_racing:server:finish', function(trackId, timeMs)
     }, function()
         Notify(src, ('🏁 Yarış bitdi: %s — vaxt: %s'):format(track.label, fmtTime(timeMs)), 'success')
     end)
+
+    -- ── ELO reytinq ──
+    local cid = Player.PlayerData.citizenid
+    local tMs = math.floor(timeMs)
+    MySQL.query('SELECT * FROM 196_racing WHERE citizenid = ?', { cid }, function(rows)
+        local me = rows and rows[1] or { rating = 1200, races = 0, wins = 0, best_ms = 0 }
+
+        MySQL.scalar('SELECT MIN(time_ms) FROM 196_race_results WHERE track_id = ?', { trackId }, function(bestMs)
+            bestMs = tonumber(bestMs) or 0
+            if bestMs == 0 or tMs < bestMs then bestMs = tMs end
+
+            local isNewBest = (me.best_ms or 0) == 0 or tMs < me.best_ms
+            local expected = 1 / (1 + 10 ^ (((tMs - bestMs) / 1000) / 400))
+            local score = (tMs <= bestMs) and 1 or 0
+            if isNewBest then score = 1 end
+            local rawDelta = Config.Elo.K * (score - expected)
+            local rounded = rawDelta >= 0 and math.floor(rawDelta + 0.5) or math.ceil(rawDelta - 0.5)
+            local delta = math.max(-40, math.min(40, rounded))
+
+            local rating = (me.rating or 1200) + delta
+            local races = (me.races or 0) + 1
+            local wins = (me.wins or 0) + (isNewBest and 1 or 0)
+
+            MySQL.insert('INSERT INTO 196_racing (citizenid, rating, races, wins, best_ms, updated_at) VALUES (?, ?, ?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE rating = VALUES(rating), races = VALUES(races), wins = VALUES(wins), best_ms = VALUES(best_ms), updated_at = NOW()', {
+                cid, rating, races, wins, isNewBest and tMs or (me.best_ms or tMs),
+            }, function()
+                local plus = delta >= 0 and ('+' .. delta) or tostring(delta)
+                Notify(src, ('📊 ELO: %d (%s)'):format(rating, plus), 'primary')
+                if isNewBest then
+                    Notify(src, '🏆 Yeni şəxsi rekordu!', 'success')
+                end
+            end)
+        end)
+    end)
 end)
 
 function fmtTime(ms)
@@ -149,4 +183,29 @@ RegisterCommand('liqamukafat', function(source, args)
         end
         if src > 0 then Notify(src, 'Mükafat alan oyunçu onlayn deyil!', 'error') end
     end)
+end, false)
+
+-- ── ELO reytinq əmrləri ──
+RegisterCommand('elo', function(source, args)
+    local Player = QBCore.Functions.GetPlayer(source)
+    if not Player then return end
+    local cid = Player.PlayerData.citizenid
+    MySQL.query('SELECT * FROM 196_racing WHERE citizenid = ?', { cid }, function(rows)
+        local me = rows and rows[1]
+        if me then
+            Notify(source, ('📊 ELO reytinqiniz: %d | Yarış: %d | Qələbə: %d | Ən yaxşı: %s'):format(
+                me.rating, me.races, me.wins, me.best_ms and fmtTime(me.best_ms) or '—'), 'primary')
+        else
+            Notify(source, 'Hələ yarış bitirməmisiniz — /yarış ilə başlayın.', 'primary')
+        end
+    end)
+    if args[1] == 'top' then
+        MySQL.query('SELECT * FROM 196_racing ORDER BY rating DESC LIMIT 5', {}, function(list)
+            local msg = '🏆 TOP 5 ELO:'
+            for i, r in ipairs(list or {}) do
+                msg = msg .. ('\n%d. %s — %d'):format(i, r.citizenid, r.rating)
+            end
+            Notify(source, msg, 'primary')
+        end)
+    end
 end, false)

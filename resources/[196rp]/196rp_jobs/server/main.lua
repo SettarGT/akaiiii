@@ -2,223 +2,241 @@ local QBCore = exports['qb-core']:GetCoreObject()
 
 local busy = {}
 
--- ── İşə düzəl ──
-RegisterNetEvent('196rp_jobs:apply', function(jobName)
+local function Notify(src, msg, type)
+    TriggerClientEvent('QBCore:Notify', src, msg, type or 'primary')
+end
+
+local function GetJobCfg(job)
+    for _, j in ipairs(Config.Jobs) do
+        if j.job == job then return j end
+    end
+end
+
+-- İş mərkəzi: iş seç
+RegisterNetEvent('196rp_jobs:server:setJob', function(job)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if not Player then return end
+    if job == Player.PlayerData.job.name then
+        Notify(src, 'Bu işdə artıq işləyirsiniz.', 'primary')
+        return
+    end
+    if Player.PlayerData.job.name ~= 'unemployed' then
+        Notify(src, 'Əvvəlcə hazırkı işdən çıxın (/is).', 'error')
+        return
+    end
+    local j = GetJobCfg(job)
+    if not j then
+        Notify(src, 'Naməlum iş.', 'error')
+        return
+    end
+    Player.Functions.SetJob(job)
+    Notify(src, ('✅ İş qəbul edildi: %s!'):format(j.label), 'success')
+end)
+
+-- İşdən çıx
+RegisterCommand('is', function(source)
+    local Player = QBCore.Functions.GetPlayer(source)
+    if not Player then return end
+    if Player.PlayerData.job.name == 'unemployed' then
+        Notify(source, 'Artıq işsizsiniz.', 'primary')
+        return
+    end
+    Player.Functions.SetJob('unemployed')
+    Notify(source, '📋 İşdən çıxdınız.', 'primary')
+end, false)
+
+-- İş mərkəzi menyusu
+RegisterNetEvent('196rp_jobs:server:openCenter', function()
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if not Player then return end
+    local jobs = {}
+    for _, j in ipairs(Config.Jobs) do
+        jobs[#jobs + 1] = { job = j.job, label = j.label, current = Player.PlayerData.job.name == j.job }
+    end
+    TriggerClientEvent('196rp_jobs:client:showCenter', src, jobs)
+end)
+
+-- Alət mağazası
+Config.Tools = Config.Tools or {
+    { item = 'fishing_rod', label = '🐟 Qarmaq', price = 500 },
+    { item = 'pickaxe',     label = '⛏ Pikak',  price = 400 },
+    { item = 'axe',         label = '🪓 Balta',  price = 350 },
+    { item = 'hammer',      label = '🔨 Çəkic',  price = 300 },
+}
+
+RegisterNetEvent('196rp_jobs:server:openTools', function()
+    TriggerClientEvent('196rp_jobs:client:showTools', source)
+end)
+
+RegisterNetEvent('196rp_jobs:server:buyTool', function(item, price)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if not Player then return end
+    local tool
+    for _, t in ipairs(Config.Tools) do
+        if t.item == item then tool = t end
+    end
+    if not tool then return end
+    price = tonumber(price) or tool.price
+    if (Player.PlayerData.money.cash or 0) < price then
+        Notify(src, ('Kifayət qədər pul yoxdur — ₣%d'):format(price), 'error')
+        return
+    end
+    Player.Functions.RemoveMoney('cash', price, 'job-tool')
+    Player.Functions.AddItem(item, 1)
+    Notify(src, ('🛠 %s alındı (-₣%d)'):format(tool.label, price), 'success')
+end)
+
+-- İş zonası: topla (server təsdiqi)
+RegisterNetEvent('196rp_jobs:server:collect', function(zoneId)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if not Player then return end
 
-    if not Config.Jobs[jobName] then
-        TriggerClientEvent('QBCore:Notify', src, Config.Text.not_open, 'error')
+    local zone
+    for _, z in ipairs(Config.Zones) do
+        if z.id == zoneId then zone = z end
+    end
+    if not zone then return end
+    if Player.PlayerData.job.name ~= zone.job then
+        Notify(src, 'Bu zona üçün işləməlisiniz.', 'error')
         return
     end
-    if Player.PlayerData.job.name == jobName then
-        TriggerClientEvent('QBCore:Notify', src, Config.Text.already, 'error')
+    local jobCfg = GetJobCfg(zone.job)
+    if not jobCfg or not jobCfg.tool then return end
+
+    -- alət yoxlanışı
+    local hasTool = false
+    for _, it in ipairs(Player.PlayerData.items) do
+        if it and it.name == jobCfg.tool then hasTool = true end
+    end
+    if not hasTool then
+        Notify(src, ('Alət lazımdır: %s (Avtosalon/şəhər mağazası)'):format(jobCfg.tool), 'error')
         return
     end
 
-    Player.Functions.SetJob(jobName, 0)
-    local label = Config.Jobs[jobName].label or jobName
-
-    local tool = Config.Tools[jobName]
-    if tool then
-        Player.Functions.AddItem(tool, 1, false, false, '196rp_jobs:apply')
+    if busy[src] and busy[src] > os.time() then
+        Notify(src, 'Bir az gözləyin — əməliyyat davam edir.', 'error')
+        return
     end
 
-    TriggerClientEvent('QBCore:Notify', src, Config.Text.applied:gsub('%%{job}', label), 'success')
+    Player.Functions.AddItem(zone.item, 1, false, false, zone.id)
+    busy[src] = os.time() + jobCfg.time
+    Notify(src, ('✅ %s əldə edildi!'):format(zone.item), 'success')
 end)
 
--- ── İşdən çıx ──
-RegisterNetEvent('196rp_jobs:quit', function()
+-- İş satışı
+RegisterNetEvent('196rp_jobs:server:sell', function(sellId, item, amount)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if not Player then return end
 
-    local tool = Config.Tools[Player.PlayerData.job.name]
-    if tool then
-        Player.Functions.RemoveItem(tool, 1, false, false, '196rp_jobs:quit')
+    local sp
+    for _, s in ipairs(Config.SellPoints) do
+        if s.id == sellId then sp = s end
+    end
+    if not sp or not sp.buys[item] then return end
+    if Player.PlayerData.job.name ~= sp.job then
+        Notify(src, 'Bu məntəqə yalnız müvafiq iş üçündür.', 'error')
+        return
     end
 
-    Player.Functions.SetJob('unemployed', 0)
-    TriggerClientEvent('QBCore:Notify', src, Config.Text.quit_msg, 'success')
+    amount = tonumber(amount) or 1
+    amount = math.max(1, math.min(amount, 50))
+    local item_count = 0
+    for _, it in ipairs(Player.PlayerData.items) do
+        if it and it.name == item then item_count = item_count + (it.amount or 0) end
+    end
+    if item_count < amount then
+        Notify(src, ('Əlinizdə kifayət qədər %s yoxdur.'):format(item), 'error')
+        return
+    end
+
+    local price = sp.buys[item] * amount
+    Player.Functions.RemoveItem(item, amount, false, false, 'job-sell')
+    Player.Functions.AddMoney('cash', price, 'job-sell')
+    Notify(src, ('💰 %d × %s satıldı: +₣%d'):format(amount, item, price), 'success')
 end)
 
--- ── İş əməliyyatı (server-side vaxt yoxlaması + məhsul) ──
-RegisterNetEvent('196rp_jobs:server:collect', function(job, zoneLabel)
-    local src = source
-    if busy[src] then return end
-    local Player = QBCore.Functions.GetPlayer(src)
-    if not Player then return end
-
-    if Player.PlayerData.job.name ~= job then
-        TriggerClientEvent('QBCore:Notify', src, Config.Text.wrong_job, 'error')
-        return
-    end
-
-    local tool = Config.Tools[job]
-    if tool and not Player.Functions.GetItemByName(tool) then
-        TriggerClientEvent('QBCore:Notify', src, Config.Text.need_tool, 'error')
-        return
-    end
-
-    local result = {}
-    if job == 'fisher' then
-        result = { item = 'fish', count = math.random(1, 2), time = Config.WorkTime.fisher }
-    elseif job == 'miner' then
-        local r = math.random(100)
-        result = r < 55 and { item = 'stone', count = 1, time = Config.WorkTime.miner }
-              or r < 95 and { item = 'coal', count = 1, time = Config.WorkTime.miner }
-              or { item = 'stone', count = 3, time = Config.WorkTime.miner }
-    elseif job == 'lumberjack' then
-        result = { item = 'wood', count = math.random(1, 2), time = Config.WorkTime.lumberjack }
-    elseif job == 'construction' then
-        local mat = Config.Construction.Materials[math.random(#Config.Construction.Materials)]
-        result = { item = mat, count = 1, time = Config.WorkTime.construction }
-    else
-        return
-    end
-
-    busy[src] = true
-
-    SetTimeout(result.time * 1000, function()
-        busy[src] = nil
-        local p = QBCore.Functions.GetPlayer(src)
-        if not p then return end
-        local added = p.Functions.AddItem(result.item, result.count, false, false, '196rp_jobs:collect')
-        if added then
-            local label = (QBCore.Shared.Items[result.item] and QBCore.Shared.Items[result.item].label) or result.item
-            TriggerClientEvent('QBCore:Notify', src, Config.Text.got_item:gsub('%%{item}', ('%s x%d'):format(label, result.count)), 'success')
-        else
-            TriggerClientEvent('QBCore:Notify', src, 'Çantanız doludur!', 'error')
-        end
-
-        if job == 'construction' then
-            Config._sites = Config._sites or {}
-            local key = zoneLabel or 'site'
-            Config._sites[key] = (Config._sites[key] or 0) + 1
-            TriggerClientEvent('QBCore:Notify', src, Config.Text.site_progress
-                :gsub('%%{step}', Config._sites[key])
-                :gsub('%%{total}', Config.Construction.StepsPerSite), 'primary')
-            if Config._sites[key] >= Config.Construction.StepsPerSite then
-                Config._sites[key] = 0
-                p.Functions.AddMoney('cash', Config.Construction.Bonus, 'construction-site-bonus')
-                TriggerClientEvent('QBCore:Notify', src, Config.Text.site_done:gsub('%%{bonus}', Config.Construction.Bonus), 'success')
-            end
-        end
-    end)
-end)
-
--- ── Satış ──
-RegisterNetEvent('196rp_jobs:server:sell', function(job)
+-- ✦ Mexanik: təmir
+RegisterNetEvent('196rp_jobs:server:mechRepair', function(plate, damage)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if not Player then return end
-
-    local items = { fisher = { 'fish' }, miner = { 'stone', 'coal' }, lumberjack = { 'wood' }, construction = { 'brick', 'cement' } }
-    if not items[job] then return end
-
-    local earned = 0
-    for _, item in ipairs(items[job]) do
-        local info = Player.Functions.GetItemByName(item)
-        local count = info and info.amount or 0
-        if count > 0 then
-            local price = Config.Prices[item] or 20
-            earned = earned + (price * count)
-            Player.Functions.RemoveItem(item, count, false, false, '196rp_jobs:sell')
-            local label = (QBCore.Shared.Items[item] and QBCore.Shared.Items[item].label) or item
-            TriggerClientEvent('QBCore:Notify', src, Config.Text.sold
-                :gsub('%%{item}', label):gsub('%%{count}', count):gsub('%%{money}', price * count), 'success')
-        end
-    end
-
-    if earned == 0 then
-        TriggerClientEvent('QBCore:Notify', src, Config.Text.no_items, 'error')
+    if Player.PlayerData.job.name ~= 'mechanic' then
+        Notify(src, 'Mexanik işi tələb olunur.', 'error')
         return
     end
-    Player.Functions.AddMoney('cash', earned, '196rp_jobs:sell')
+    damage = tonumber(damage) or 0
+    if damage <= 0 then
+        Notify(src, 'Maşın zədəli deyil.', 'primary')
+        return
+    end
+    local price = math.ceil(Config.Mechanic.RepairPrice * (damage / 100))
+    TriggerClientEvent('196rp_jobs:client:fixVehicle', src, plate)
+    Notify(src, ('🔧 Təmir edildi — ödəniş: ₣%d'):format(price), 'success')
 end)
 
--- ── Mexanik təmiri (/temir) ──
-RegisterNetEvent('196rp_jobs:server:repairVehicle', function(plate, damage)
+-- ✦ Mexanik: benzin + təkər
+RegisterNetEvent('196rp_jobs:server:mechBoost', function(plate)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if not Player then return end
-    if Player.PlayerData.job.name ~= 'mechanic' then return end
-
-    local price = Config.Repair.BasePrice + math.ceil(damage or 0) * Config.Repair.PricePerDamage
-    if price > Config.Repair.MaxPrice then price = Config.Repair.MaxPrice end
-
-    if Player.Functions.GetMoney('cash') >= price then
-        Player.Functions.RemoveMoney('cash', price, 'mechanic-repair')
-        TriggerClientEvent('196rp_jobs:client:fixVehicle', src, plate)
-        TriggerClientEvent('QBCore:Notify', src, ('✅ Maşın təmir olundu: -₣%d'):format(price), 'success')
-        TriggerEvent('196rp_logs:server:vehEvent', plate, 'Mexanik təmir', ('-₣%d'):format(price))
-    else
-        TriggerClientEvent('QBCore:Notify', src, ('Kifayət qədər pul yoxdur — təmir ₣%d-dir'):format(price), 'error')
+    if Player.PlayerData.job.name ~= 'mechanic' then
+        Notify(src, 'Mexanik işi tələb olunur.', 'error')
+        return
     end
+    TriggerClientEvent('196rp_jobs:client:boostVehicle', src, plate)
+    Notify(src, ('⚡ Təkərlər + yanacaq yeniləndi (-₣%d)'):format(Config.Mechanic.BoostPrice), 'success')
 end)
 
--- ── Avtosalon: satış maşını çağır (/avtomobil) ──
-RegisterNetEvent('196rp_jobs:server:dealerCar', function()
+-- ✦ Avtosalon: satış
+RegisterNetEvent('196rp_jobs:server:cardealerSell', function(model, targetId)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if not Player then return end
     if Player.PlayerData.job.name ~= 'cardealer' then
-        TriggerClientEvent('QBCore:Notify', src, 'Bu əmr yalnız avtosalon işçisi üçündür.', 'error')
+        Notify(src, 'Avtosalon işi tələb olunur.', 'error')
+        return
+    end
+    local veh
+    for _, v in ipairs(Config.CarDealer.Vehicles) do
+        if v.model == model then veh = v end
+    end
+    if not veh then return end
+
+    local Target = QBCore.Functions.GetPlayer(tonumber(targetId))
+    if not Target then
+        Notify(src, 'Müştəri tapılmadı.', 'error')
+        return
+    end
+    if (Target.PlayerData.money.cash or 0) < veh.price then
+        Notify(src, ('Müştərinin kifayət qədər nağd pulu yoxdur (₣%d).'):format(veh.price), 'error')
         return
     end
 
-    local model = Config.Dealer.Models[math.random(#Config.Dealer.Models)]
-    local veh = QBCore.Shared.Vehicles[model]
-    local price = math.floor((veh and veh.price or 15000) * Config.Dealer.PriceMultiplier)
+    -- Plate yarat
+    local plate
+    repeat
+        plate = ('196%d%d%d'):format(math.random(10000, 99999), math.random(0, 9), math.random(0, 9))
+    until not MySQL.scalar.await('SELECT 1 FROM player_vehicles WHERE plate = ? LIMIT 1', { plate })
 
-    local plate = '196SAT' .. math.random(100, 999)
-    TriggerClientEvent('196rp_jobs:client:dealerSpawn', src, model, Config.Dealer.SpawnAt, Config.Dealer.SpawnHeading, plate, price)
-end)
+    Target.Functions.RemoveMoney('cash', veh.price, 'cardealer-buy')
+    Player.Functions.AddMoney('cash', math.floor(veh.price * 0.9), 'cardealer-sell')
 
--- ── Avtosalon: yaxın oyunçuya sat (/sat) ──
-RegisterNetEvent('196rp_jobs:server:sellCar', function(price, plate, model)
-    local src = source
-    local dealer = QBCore.Functions.GetPlayer(src)
-    if not dealer or dealer.PlayerData.job.name ~= 'cardealer' then return end
-
-    -- dealer-in yaxınlığında alıcı tap (citizenid ilə)
-    local buyer, buyerDist
-    for _, target in ipairs(QBCore.Functions.GetPlayers()) do
-        if target ~= src then
-            local p = QBCore.Functions.GetPlayer(target)
-            if p then
-                local coords = GetEntityCoords(GetPlayerPed(target))
-                local d = #(coords - Config.Dealer.SpawnAt)
-                if not buyerDist or d < buyerDist then
-                    buyer, buyerDist = p, d
-                end
-            end
-        end
-    end
-
-    if not buyer or buyerDist > Config.Dealer.Radius then
-        TriggerClientEvent('QBCore:Notify', src, 'Yaxınlıqda alıcı yoxdur.', 'error')
-        return
-    end
-
-    price = tonumber(price) or 0
-    if buyer.PlayerData.money.cash < price then
-        TriggerClientEvent('QBCore:Notify', src, 'Alıcının kifayət qədər pulu yoxdur.', 'error')
-        return
-    end
-
-    buyer.Functions.RemoveMoney('cash', price, 'car-dealer-buy')
-    dealer.Functions.AddMoney('cash', price, 'car-dealer-sell')
-
-    -- Oyunçuya qeydiyyat (player_vehicles: vehicle = model adı)
-    model = model or 'sultan'
-    MySQL.insert('INSERT INTO player_vehicles (license, citizenid, plate, vehicle, garage, state) VALUES (?, ?, ?, ?, ?, ?)', {
-        buyer.PlayerData.license, buyer.PlayerData.citizenid, plate, model, 'airportp', 1,
+    MySQL.insert('INSERT INTO player_vehicles (license, citizenid, vehicle, hash, mods, plate, state) VALUES (?, ?, ?, ?, ?, ?, 0)', {
+        Target.PlayerData.license, Target.PlayerData.citizenid, veh.model, joaat(veh.model), '', plate,
     })
 
-    TriggerClientEvent('196rp_jobs:client:dealerSell', src, buyer.PlayerData.citizenid)
-    TriggerClientEvent('QBCore:Notify', src, ('💰 Avtomobil satıldı: +₣%d'):format(price), 'success')
-    TriggerClientEvent('QBCore:Notify', buyer.PlayerData.source, ('🚗 Yeni avtomobiliniz qarajdadır (plate: %s)'):format(plate), 'success')
-    TriggerEvent('196rp_logs:server:vehEvent', plate, 'Avtosalon satış', ('₣%d'):format(price))
+    local coords = Config.CarDealer.SaleCenter.coords
+    local spawn = CreateVehicleServerSetter(joaat(veh.model), 0, coords.x, coords.y, coords.z, 0.0)
+    SetVehicleNumberPlateText(spawn, plate)
+    SetVehicleFuelLevel(spawn, 100.0)
+    SetEntityHeading(spawn, 180.0)
+    TriggerEvent('qb-vehiclekeys:server:GiveVehicleKeys', Target.PlayerData.source, plate)
+
+    Notify(Target.PlayerData.source, ('🚗 %s aldınız! Açarlar verildi — maşın avtosalonun qarşısındadır.'):format(veh.label), 'success')
+    Notify(src, ('💰 %s satıldı — komissiya ₣%d'):format(veh.label, math.floor(veh.price * 0.9)), 'success')
 end)
