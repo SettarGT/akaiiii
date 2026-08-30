@@ -12,7 +12,7 @@ $(document).on('click', '.racing-race', function(e){
     var RaceData = $(this).data('RaceData');
     var IsRacer = IsInRace(QB.Phone.Data.PlayerData.citizenid, RaceData.RaceData.Racers)
 
-    if (!RaceData.RaceData.Started || IsRacer) {
+    if (!RaceData.RaceData.Başlaed || IsRacer) {
         if (OpenedRaceElement === null) {
             $(this).css({"height":OpenSize});
             setTimeout(() => {
@@ -33,7 +33,7 @@ $(document).on('click', '.racing-race', function(e){
             OpenedRaceElement = this;
         }
     } else {
-        QB.Phone.Notifications.Add("fas fa-flag-checkered", "Racing", "The race already started..", "#1DA1F2");
+        QB.Phone.Notifications.Add("fas fa-flag-checkered", "Yarış", "Yarış artıq başlayıb..", "#1DA1F2");
     }
 });
 
@@ -69,30 +69,30 @@ function SetupRaces(Races) {
         Races = (Races).reverse();
         $.each(Races, function(i, race){
             var Locked = '<i class="fas fa-unlock"></i> Not started yet';
-            if (race.RaceData.Started) {
-                Locked = '<i class="fas fa-lock"></i> Started';
+            if (race.RaceData.Başlaed) {
+                Locked = '<i class="fas fa-lock"></i> Başlaed';
             }
-            var LapLabel = "";
+            var DövrəLabel = "";
             if (race.Laps == 0) {
-                LapLabel = "SPRINT"
+                DövrəLabel = "SPRINT"
             } else {
                 if (race.Laps == 1) {
-                    LapLabel = race.Laps + " Lap";
+                    DövrəLabel = race.Laps + " Dövrə";
                 } else {
-                    LapLabel = race.Laps + " Laps";
+                    DövrəLabel = race.Laps + " Dövrə";
                 }
             }
             var InRace = IsInRace(QB.Phone.Data.PlayerData.citizenid, race.RaceData.Racers);
             var Creator = IsCreator(QB.Phone.Data.PlayerData.citizenid, race);
-            var Buttons = '<div class="race-buttons"> <div class="race-button" id="join-race" data-toggle="racetooltip" data-placement="left" title="Join"><i class="fas fa-sign-in-alt"></i></div>';
+            var Buttons = '<div class="race-buttons"> <div class="race-button" id="join-race" data-toggle="racetooltip" data-placement="left" title="Qoşul"><i class="fas fa-sign-in-alt"></i></div>';
             if (InRace) {
                 if (!Creator) {
-                    Buttons = '<div class="race-buttons"> <div class="race-button" id="quit-race" data-toggle="racetooltip" data-placement="right" title="Quit"><i class="fas fa-sign-out-alt"></i></div>';
+                    Buttons = '<div class="race-buttons"> <div class="race-button" id="quit-race" data-toggle="racetooltip" data-placement="right" title="Çıx"><i class="fas fa-sign-out-alt"></i></div>';
                 } else {
-                    if (!race.RaceData.Started) {
-                        Buttons = '<div class="race-buttons"> <div class="race-button" id="start-race" data-toggle="racetooltip" data-placement="left" title="Start"><i class="fas fa-flag-checkered"></i></div><div class="race-button" id="quit-race" data-toggle="racetooltip" data-placement="right" title="Quit"><i class="fas fa-sign-out-alt"></i></div>';
+                    if (!race.RaceData.Başlaed) {
+                        Buttons = '<div class="race-buttons"> <div class="race-button" id="start-race" data-toggle="racetooltip" data-placement="left" title="Başla"><i class="fas fa-flag-checkered"></i></div><div class="race-button" id="quit-race" data-toggle="racetooltip" data-placement="right" title="Çıx"><i class="fas fa-sign-out-alt"></i></div>';
                     } else {
-                        Buttons = '<div class="race-buttons"> <div class="race-button" id="quit-race" data-toggle="racetooltip" data-placement="right" title="Quit"><i class="fas fa-sign-out-alt"></i></div>';
+                        Buttons = '<div class="race-buttons"> <div class="race-button" id="quit-race" data-toggle="racetooltip" data-placement="right" title="Çıx"><i class="fas fa-sign-out-alt"></i></div>';
                     }
                 }
             }
@@ -100,7 +100,7 @@ function SetupRaces(Races) {
             var element = '<div class="racing-race" id="raceid-'+i+'"> <span class="race-name"><i class="fas fa-flag-checkered"></i> '+race.RaceData.RaceName+'</span> <span class="race-track">'+Locked+'</span> <div class="race-infomation"> <div class="race-infomation-tab" id="race-information-laps">'+LapLabel+'</div> <div class="race-infomation-tab" id="race-information-distance">'+race.RaceData.Distance+' m</div> <div class="race-infomation-tab" id="race-information-player"><i class="fas fa-user"></i> '+Racers+'</div> </div> '+Buttons+' </div> </div>';
             $(".racing-races").append(element);
             $("#raceid-"+i).data('RaceData', race);
-            if (!race.RaceData.Started) {
+            if (!race.RaceData.Başlaed) {
                 $("#raceid-"+i).css({"border-bottom-color":"#34b121"});
             } else {
                 $("#raceid-"+i).css({"border-bottom-color":"#b12121"});
@@ -124,27 +124,27 @@ $(document).on('click', '#join-race', function(e){
         if (!IsInRace) {
             $.post('https://qb-phone/RaceDistanceCheck', JSON.stringify({
                 RaceId: Data.RaceId,
-                Joined: true,
+                Qoşuled: true,
             }), function(InDistance){
                 if (InDistance) {
                     $.post('https://qb-phone/IsBusyCheck', JSON.stringify({
                         check: "editor"
                     }), function(IsBusy){
                         if (!IsBusy) {
-                            $.post('https://qb-phone/JoinRace', JSON.stringify({
+                            $.post('https://qb-phone/QoşulRace', JSON.stringify({
                                 ...Data
                             }));
                             $.post('https://qb-phone/GetAvailableRaces', JSON.stringify({}), function(Races){
                                 SetupRaces(Races);
                             });
                         } else {
-                            QB.Phone.Notifications.Add("fas fa-flag-checkered", "Racing", "You're in a editor..", "#1DA1F2");
+                            QB.Phone.Notifications.Add("fas fa-flag-checkered", "Yarış", "Redaktordasınız..", "#1DA1F2");
                         }
                     });
                 }
             })
         } else {
-            QB.Phone.Notifications.Add("fas fa-flag-checkered", "Racing", "You're already in a race..", "#1DA1F2");
+            QB.Phone.Notifications.Add("fas fa-flag-checkered", "Yarış", "Artıq yarışdasınız..", "#1DA1F2");
         }
     });
 });
@@ -171,7 +171,7 @@ $(document).on('click', '#start-race', function(e){
     var RaceId = $(this).parent().parent().attr('id');
     var Data = $("#"+RaceId).data('RaceData');
 
-    $.post('https://qb-phone/StartRace', JSON.stringify({
+    $.post('https://qb-phone/BaşlaRace', JSON.stringify({
         RaceData: Data,
     }));
 
@@ -209,15 +209,15 @@ $(document).on('click', '.dropdown .dropdown-menu li', function(e) {
         var CreatorTag = TrackData.CreatorData.charinfo.firstname.charAt(0).toUpperCase() + ". " + TrackData.CreatorData.charinfo.lastname;
 
         $(".racing-setup-information-distance").html('Distance: '+TrackData.Distance+' m');
-        $(".racing-setup-information-creator").html('Creator: ' + CreatorTag);
+        $(".racing-setup-information-creator").html('Yaradıcı: ' + CreatorTag);
         if (TrackData.Records.Holder !== undefined) {
             if (TrackData.Records.Holder[1].length > 8) {
                 TrackData.Records.Holder[1] = TrackData.Records.Holder[1].substring(0, 8) + "..";
             }
             var Holder = TrackData.Records.Holder[0].charAt(0).toUpperCase() + ". " + TrackData.Records.Holder[1];
-            $(".racing-setup-information-wr").html('WR: ' + secondsTimeSpanToHMS(TrackData.Records.Time) + ' ('+Holder+')');
+            $(".racing-setup-information-wr").html('Rekord: ' + secondsTimeSpanToHMS(TrackData.Records.Time) + ' ('+Holder+')');
         } else {
-            $(".racing-setup-information-wr").html('WR: N/A');
+            $(".racing-setup-information-wr").html('Rekord: yoxdur');
         }
     });
 
@@ -240,7 +240,7 @@ $(document).on('click', '#setup-race', function(e){
         if (Races !== undefined && Races !== null) {
             $(".dropdown-menu").html("");
             $.each(Races, function(i, race){
-                if (!race.Started && !race.Waiting) {
+                if (!race.Başlaed && !race.Waiting) {
                     var elem = '<li id="'+race.RaceId+'">'+race.RaceName+'</li>';
                     $(".dropdown-menu").append(elem);
                 }
@@ -260,14 +260,14 @@ $(document).on('click', '#create-race', function(e){
                     if (!InRace) {
                         $(".racing-create").fadeIn(200);
                     } else {
-                        QB.Phone.Notifications.Add("fas fa-flag-checkered", "Racing", "You're in a race..", "#1DA1F2");
+                        QB.Phone.Notifications.Add("fas fa-flag-checkered", "Yarış", "Yarışdasınız..", "#1DA1F2");
                     }
                 });
             } else {
-                QB.Phone.Notifications.Add("fas fa-flag-checkered", "Racing", "You're already setting up a track..", "#1DA1F2");
+                QB.Phone.Notifications.Add("fas fa-flag-checkered", "Yarış", "Artıq trek qurursunuz..", "#1DA1F2");
             }
         } else {
-            QB.Phone.Notifications.Add("fas fa-flag-checkered", "Racing", "You don't have rights to make Race Tracks..", "#1DA1F2");
+            QB.Phone.Notifications.Add("fas fa-flag-checkered", "Yarış", "Yarış treki yaratmaq hüququnuz yoxdur..", "#1DA1F2");
         }
     });
 });
@@ -287,21 +287,21 @@ $(document).on('click', '#racing-create-accept', function(e){
         }), function(data){
             if (data.IsAuthorized) {
                 if (data.IsNameAvailable) {
-                    $.post('https://qb-phone/StartTrackEditor', JSON.stringify({
+                    $.post('https://qb-phone/BaşlaTrackEditor', JSON.stringify({
                         TrackName: TrackName
                     }));
                     $(".racing-create").fadeOut(200, function(){
                         $(".racing-create-trackname").val("");
                     });
                 } else {
-                    QB.Phone.Notifications.Add("fas fa-flag-checkered", "Racing", "This name is not available..", "#1DA1F2");
+                    QB.Phone.Notifications.Add("fas fa-flag-checkered", "Yarış", "Bu ad mövcud deyil..", "#1DA1F2");
                 }
             } else {
-                QB.Phone.Notifications.Add("fas fa-flag-checkered", "Racing", "You don't have any rights to create Race Tracks..", "#1DA1F2");
+                QB.Phone.Notifications.Add("fas fa-flag-checkered", "Yarış", "Yarış treki yaratmaq hüququnuz yoxdur..", "#1DA1F2");
             }
         });
     } else {
-        QB.Phone.Notifications.Add("fas fa-flag-checkered", "Racing", "You have to enter a track name..", "#1DA1F2");
+        QB.Phone.Notifications.Add("fas fa-flag-checkered", "Yarış", "Trek adı daxil etməlisiniz..", "#1DA1F2");
     }
 });
 
@@ -322,7 +322,7 @@ $(document).on('click', '#setup-race-accept', function(e){
         if (!HasCreatedRace) {
             $.post('https://qb-phone/RaceDistanceCheck', JSON.stringify({
                 RaceId: track,
-                Joined: false,
+                Qoşuled: false,
             }), function(InDistance){
                 if (InDistance) {
                     if (track !== undefined || track !== null) {
@@ -339,27 +339,27 @@ $(document).on('click', '#setup-race-accept', function(e){
                                     $(".racing-setup").animate({
                                         left: -30+"vh"
                                     }, 300, function(){
-                                        $(".racing-setup-information-distance").html('Select a Track');
-                                        $(".racing-setup-information-creator").html('Select a Track');
-                                        $(".racing-setup-information-wr").html('Select a Track');
+                                        $(".racing-setup-information-distance").html('Trek seç');
+                                        $(".racing-setup-information-creator").html('Trek seç');
+                                        $(".racing-setup-information-wr").html('Trek seç');
                                         $(".racing-setup-laps").val("");
                                         $('.dropdown').find('input').removeAttr('value');
-                                        $('.dropdown').find('span').text("Select a Track");
+                                        $('.dropdown').find('span').text("Trek seç");
                                     });
                                 } else {
-                                    QB.Phone.Notifications.Add("fas fa-flag-checkered", "Racing", "There can't be any ..", "#1DA1F2");
+                                    QB.Phone.Notifications.Add("fas fa-flag-checkered", "Yarış", "Heç biri ola bilməz..", "#1DA1F2");
                                 }
                             });
                         } else {
-                            QB.Phone.Notifications.Add("fas fa-flag-checkered", "Racing", "Fill in an amount of laps..", "#1DA1F2");
+                            QB.Phone.Notifications.Add("fas fa-flag-checkered", "Yarış", "Dövrə sayını daxil edin..", "#1DA1F2");
                         }
                     } else {
-                        QB.Phone.Notifications.Add("fas fa-flag-checkered", "Racing", "You haven't selected a track..", "#1DA1F2");
+                        QB.Phone.Notifications.Add("fas fa-flag-checkered", "Yarış", "Trek seçməmisiniz..", "#1DA1F2");
                     }
                 }
             })
         } else {
-            QB.Phone.Notifications.Add("fas fa-flag-checkered", "Racing", "You already have a race active..", "#1DA1F2");
+            QB.Phone.Notifications.Add("fas fa-flag-checkered", "Yarış", "Artıq aktiv yarışınız var..", "#1DA1F2");
         }
     });
 });
@@ -373,12 +373,12 @@ $(document).on('click', '#setup-race-cancel', function(e){
     $(".racing-setup").animate({
         left: -30+"vh"
     }, 300, function(){
-        $(".racing-setup-information-distance").html('Select a Track');
-        $(".racing-setup-information-creator").html('Select a Track');
-        $(".racing-setup-information-wr").html('Select a Track');
+        $(".racing-setup-information-distance").html('Trek seç');
+        $(".racing-setup-information-creator").html('Trek seç');
+        $(".racing-setup-information-wr").html('Trek seç');
         $(".racing-setup-laps").val("");
         $('.dropdown').find('input').removeAttr('value');
-        $('.dropdown').find('span').text("Select a Track");
+        $('.dropdown').find('span').text("Trek seç");
     });
 });
 
@@ -427,12 +427,12 @@ $(document).on('click', '.racing-leaderboards-button', function(e){
 $(document).on('click', '#leaderboards-race', function(e){
     e.preventDefault();
 
-    $.post('https://qb-phone/GetRacingLeaderboards', JSON.stringify({}), function(Races){
+    $.post('https://qb-phone/GetYarışLeaderboards', JSON.stringify({}), function(Races){
         if (Races !== null) {
             $(".racing-leaderboards").html("");
             $.each(Races, function(i, race){
                 if (race.LastLeaderboard.length > 0) {
-                    var elem = '<div class="racing-leaderboard-item" id="leaderboard-item-'+i+'"> <span class="racing-leaderboard-item-name"><i class="fas fa-flag-checkered"></i> '+race.RaceName+'</span> <span class="racing-leaderboard-item-info">Click for more details</span> </div>'
+                    var elem = '<div class="racing-leaderboard-item" id="leaderboard-item-'+i+'"> <span class="racing-leaderboard-item-name"><i class="fas fa-flag-checkered"></i> '+race.RaceName+'</span> <span class="racing-leaderboard-item-info">Ətraflı məlumat üçün kliklə</span> </div>'
                     $(".racing-leaderboards").append(elem);
                     $("#leaderboard-item-"+i).data('LeaderboardData', race);
                 }

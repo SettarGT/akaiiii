@@ -27,7 +27,7 @@ OpenMeosPage = function(page) {
 }
 
 SetupMeosHome = function() {
-    $("#meos-app-name").html("Welcome " + QB.Phone.Data.PlayerData.charinfo.firstname + " " + QB.Phone.Data.PlayerData.charinfo.lastname);
+    $("#meos-app-name").html("Xoş gəlmisiniz " + QB.Phone.Data.PlayerData.charinfo.firstname + " " + QB.Phone.Data.PlayerData.charinfo.lastname);
 }
 
 MeosHomePage = function() {
@@ -81,7 +81,7 @@ $(document).on('click', '.person-search-result', function(e){
         appartementData = ClickedPersonData.appartmentdata;
     }
 
-    var OpenElement = '<div class="person-search-result-name">Name: '+ClickedPersonData.firstname+' '+ClickedPersonData.lastname+'</div> <div class="person-search-result-bsn">CSN: '+ClickedPersonData.citizenid+'</div> <div class="person-opensplit"></div> &nbsp; <div class="person-search-result-dob">Birth Date: '+ClickedPersonData.birthdate+'</div> <div class="person-search-result-number">Phone number: '+ClickedPersonData.phone+'</div> <div class="person-search-result-nationality">Nationality: '+ClickedPersonData.nationality+'</div> <div class="person-search-result-gender">Gender: '+Gender+'</div> &nbsp; <div class="person-search-result-apartment"><span id="'+ClickedPersonId+'">Apartment: '+appartementData.label+'</span> <i class="fas fa-map-marker-alt appartment-adress-location" id="'+ClickedPersonId+'"></i></div> &nbsp; <div class="person-search-result-warned">Signaled: '+IsWarrant+'</div> <div class="person-search-result-driverslicense">Drivers License: '+HasLicense+'</div>';
+    var OpenElement = '<div class="person-search-result-name">Name: '+ClickedPersonData.firstname+' '+ClickedPersonData.lastname+'</div> <div class="person-search-result-bsn">CSN: '+ClickedPersonData.citizenid+'</div> <div class="person-opensplit"></div> &nbsp; <div class="person-search-result-dob">Birth Date: '+ClickedPersonData.birthdate+'</div> <div class="person-search-result-number">Phone number: '+ClickedPersonData.phone+'</div> <div class="person-search-result-nationality">Nationality: '+ClickedPersonData.nationality+'</div> <div class="person-search-result-gender">Cins: '+Gender+'</div> &nbsp; <div class="person-search-result-apartment"><span id="'+ClickedPersonId+'">Mənzil: '+appartementData.label+'</span> <i class="fas fa-map-marker-alt appartment-adress-location" id="'+ClickedPersonId+'"></i></div> &nbsp; <div class="person-search-result-warned">Elan edilib: '+IsWarrant+'</div> <div class="person-search-result-driverslicense">Sürücülük lisenziyası: '+HasLicense+'</div>';
 
     if (OpenedPerson === null) {
         $(ClickedPerson).html(OpenElement)
@@ -140,7 +140,7 @@ $(document).on('click', '.person-search-result-apartment > span', function(e){
     copyText.setSelectionRange(0, 99999);
     document.execCommand("copy");
 
-    QB.Phone.Notifications.Add("fas fa-university", "MDT", "House number copied!", "#badc58", 1750);
+    QB.Phone.Notifications.Add("fas fa-university", "MDT", "Ev nömrəsi kopyalandı!", "#badc58", 1750);
 
     $.post('https://qb-phone/SetApartmentLocation', JSON.stringify({
         data: ClickedPersonData
@@ -160,7 +160,7 @@ $(document).on('click', '.person-search-result-house', function(e){
         GarageLabel = "Yes";
     }
 
-    var OpenElement = '<div class="person-search-result-name">Owner: '+ClickedHouseData.charinfo.firstname+' '+ClickedHouseData.charinfo.lastname+'</div><div class="person-search-result-bsn">House: '+ClickedHouseData.label+'</div> <div class="person-opensplit"></div> &nbsp; <div class="person-search-result-dob">Address: '+ClickedHouseData.label+' &nbsp; <i class="fas fa-map-marker-alt house-adress-location" id="'+ClickedHouseId+'"></i></div> <div class="person-search-result-number">Tier: '+ClickedHouseData.tier+'</div> <div class="person-search-result-nationality">Garage: ' + GarageLabel + '</div>';
+    var OpenElement = '<div class="person-search-result-name">Owner: '+ClickedHouseData.charinfo.firstname+' '+ClickedHouseData.charinfo.lastname+'</div><div class="person-search-result-bsn">Ev: '+ClickedHouseData.label+'</div> <div class="person-opensplit"></div> &nbsp; <div class="person-search-result-dob">Address: '+ClickedHouseData.label+' &nbsp; <i class="fas fa-map-marker-alt house-adress-location" id="'+ClickedHouseId+'"></i></div> <div class="person-search-result-number">Sinif: '+ClickedHouseData.tier+'</div> <div class="person-search-result-nationality">Qaraj: ' + GarageLabel + '</div>';
 
     if (OpenedHouse === null) {
         $(ClickedHouse).html(OpenElement)
@@ -168,13 +168,13 @@ $(document).on('click', '.person-search-result-house', function(e){
     } else if (OpenedHouse == ClickedHouse) {
         var PreviousPersonId = $(OpenedHouse).attr('id');
         var PreviousPersonData = $("#"+PreviousPersonId).data('HouseData');
-        var PreviousElement = '<div class="person-search-result-name">Owner: '+PreviousPersonData.charinfo.firstname+' '+PreviousPersonData.charinfo.lastname+'</div> <div class="person-search-result-bsn">House: '+PreviousPersonData.label+'</div>';
+        var PreviousElement = '<div class="person-search-result-name">Owner: '+PreviousPersonData.charinfo.firstname+' '+PreviousPersonData.charinfo.lastname+'</div> <div class="person-search-result-bsn">Ev: '+PreviousPersonData.label+'</div>';
         $(ClickedHouse).html(PreviousElement)
         OpenedHouse = null;
     } else {
         var PreviousPersonId = $(OpenedHouse).attr('id');
         var PreviousPersonData = $("#"+PreviousPersonId).data('HouseData');
-        var PreviousElement = '<div class="person-search-result-name">Owner: '+PreviousPersonData.charinfo.firstname+' '+PreviousPersonData.charinfo.lastname+'</div> <div class="person-search-result-bsn">House: '+PreviousPersonData.label+'</div>';
+        var PreviousElement = '<div class="person-search-result-name">Owner: '+PreviousPersonData.charinfo.firstname+' '+PreviousPersonData.charinfo.lastname+'</div> <div class="person-search-result-bsn">Ev: '+PreviousPersonData.label+'</div>';
         $(OpenedHouse).html(PreviousElement)
         $(ClickedHouse).html(OpenElement)
         OpenedHouse = ClickedHouse;
@@ -197,12 +197,12 @@ $(document).on('click', '.confirm-search-person-test', function(e){
                     $("#person-"+i).data("PersonData", person);
                 });
             } else {
-                QB.Phone.Notifications.Add("politie", "MDT", "There are no search results!");
+                QB.Phone.Notifications.Add("politie", "MDT", "Axtarış nəticəsi yoxdur!");
                 $(".person-search-results").html("");
             }
         });
     } else {
-        QB.Phone.Notifications.Add("politie", "MDT", "There are no search results!");
+        QB.Phone.Notifications.Add("politie", "MDT", "Axtarış nəticəsi yoxdur!");
         $(".person-search-results").html("");
     }
 });
@@ -218,17 +218,17 @@ $(document).on('click', '.confirm-search-person-house', function(e){
             if (result != null) {
                 $(".person-search-results").html("");
                 $.each(result, function (i, house) {
-                    var PersonElement = '<div class="person-search-result-house" id="personhouse-'+i+'"><div class="person-search-result-name">Owner: '+house.charinfo.firstname+' '+house.charinfo.lastname+'</div> <div class="person-search-result-bsn">House: '+house.label+'</div></div>';
+                    var PersonElement = '<div class="person-search-result-house" id="personhouse-'+i+'"><div class="person-search-result-name">Owner: '+house.charinfo.firstname+' '+house.charinfo.lastname+'</div> <div class="person-search-result-bsn">Ev: '+house.label+'</div></div>';
                     $(".person-search-results").append(PersonElement);
                     $("#personhouse-"+i).data("HouseData", house);
                 });
             } else {
-                QB.Phone.Notifications.Add("politie", "MDT", "There are no search results!");
+                QB.Phone.Notifications.Add("politie", "MDT", "Axtarış nəticəsi yoxdur!");
                 $(".person-search-results").html("");
             }
         });
     } else {
-        QB.Phone.Notifications.Add("politie", "MDT", "There are no search results!");
+        QB.Phone.Notifications.Add("politie", "MDT", "Axtarış nəticəsi yoxdur!");
         $(".person-search-results").html("");
     }
 });
@@ -253,13 +253,13 @@ $(document).on('click', '.confirm-search-vehicle', function(e){
                         Flagged = "Yes";
                     }
                     
-                    var VehicleElement = '<div class="vehicle-search-result"> <div class="vehicle-search-result-name">'+vehicle.label+'</div> <div class="vehicle-search-result-plate">License Plate: '+vehicle.plate+'</div> <div class="vehicle-opensplit"></div> &nbsp; <div class="vehicle-search-result-owner">Owner: '+vehicle.owner+'</div> &nbsp; <div class="vehicle-search-result-apk">MOT: '+APK+'</div> <div class="vehicle-search-result-warrant">Signaled: '+Flagged+'</div> </div>'
+                    var VehicleElement = '<div class="vehicle-search-result"> <div class="vehicle-search-result-name">'+vehicle.label+'</div> <div class="vehicle-search-result-plate">License Plate: '+vehicle.plate+'</div> <div class="vehicle-opensplit"></div> &nbsp; <div class="vehicle-search-result-owner">Owner: '+vehicle.owner+'</div> &nbsp; <div class="vehicle-search-result-apk">MOT: '+APK+'</div> <div class="vehicle-search-result-warrant">Elan edilib: '+Flagged+'</div> </div>'
                     $(".vehicle-search-results").append(VehicleElement);
                 });
             }
         });
     } else {
-        QB.Phone.Notifications.Add("politie", "MDT", "There are no search results!");
+        QB.Phone.Notifications.Add("politie", "MDT", "Axtarış nəticəsi yoxdur!");
         $(".vehicle-search-results").html("");
     }
 });
@@ -278,10 +278,10 @@ $(document).on('click', '.scan-search-vehicle', function(e){
                 Flagged = "Yes";
             }
 
-            var VehicleElement = '<div class="vehicle-search-result"> <div class="vehicle-search-result-name">'+vehicle.label+'</div> <div class="vehicle-search-result-plate">License Plate: '+vehicle.plate+'</div> <div class="vehicle-opensplit"></div> &nbsp; <div class="vehicle-search-result-owner">Owner: '+vehicle.owner+'</div> &nbsp; <div class="vehicle-search-result-apk">MOT: '+APK+'</div> <div class="vehicle-search-result-warrant">Signaled: '+Flagged+'</div> </div>'
+            var VehicleElement = '<div class="vehicle-search-result"> <div class="vehicle-search-result-name">'+vehicle.label+'</div> <div class="vehicle-search-result-plate">License Plate: '+vehicle.plate+'</div> <div class="vehicle-opensplit"></div> &nbsp; <div class="vehicle-search-result-owner">Owner: '+vehicle.owner+'</div> &nbsp; <div class="vehicle-search-result-apk">MOT: '+APK+'</div> <div class="vehicle-search-result-warrant">Elan edilib: '+Flagged+'</div> </div>'
             $(".vehicle-search-results").append(VehicleElement);
         } else {
-            QB.Phone.Notifications.Add("politie", "MDT", "No vehicle nearby!");
+            QB.Phone.Notifications.Add("politie", "MDT", "Yaxınlıqda avtomobil yoxdur!");
             $(".vehicle-search-results").append("");
         }
     });
@@ -296,9 +296,9 @@ AddPoliceAlert = function(data) {
         AlertElement = '<div class="meos-alert" id="alert-'+randId+'"> <span class="meos-alert-new" style="margin-bottom: 1vh;">NEW</span> <p class="meos-alert-type">Alert: '+data.alert.title+'</p> <p class="meos-alert-description">'+data.alert.description+'</p></div>';
     }
     $(".meos-recent-alerts").html('<div class="meos-recent-alert" id="recent-alert-'+randId+'"><span class="meos-recent-alert-title">Alert: '+data.alert.title+'</span><p class="meos-recent-alert-description">'+data.alert.description+'</p></div>');
-    if (data.alert.title == "Assistance colleague") {
+    if (data.alert.title == "Köməkçi həmkar") {
         $(".meos-recent-alert").css({"background-color":"#d30404"}); 
-        $(".meos-recent-alert").addClass("emergency button");
+        $(".meos-recent-alert").addClass("təcili yardım düyməsi");
     }
     $(".meos-alerts").prepend(AlertElement);
     $("#alert-"+randId).data("alertData", data.alert);
@@ -315,10 +315,10 @@ $(document).on('click', '.meos-recent-alert', function(e){
                 alert: alertData,
             }));
         } else {
-            QB.Phone.Notifications.Add("politie", "MDT", "This alert doesn't have a GPS location!");
+            QB.Phone.Notifications.Add("politie", "MDT", "Bu xəbərdarlığın GPS mövqeyi yoxdur!");
         }
     }else {
-        QB.Phone.Notifications.Add("politie", "MDT", "There are no alerts available.");
+        QB.Phone.Notifications.Add("politie", "MDT", "Hazırda xəbərdarlıq yoxdur.");
     }
 });
 
@@ -333,5 +333,5 @@ $(document).on('click', '.meos-location-button', function(e){
 $(document).on('click', '.meos-clear-alerts', function(e){
     $(".meos-alerts").html("");
     $(".meos-recent-alerts").html('<div class="meos-recent-alert"> <span class="meos-recent-alert-title">You don\'t have any alerts!</span></div>');
-    QB.Phone.Notifications.Add("politie", "MDT", "All alerts have been deleted!");
+    QB.Phone.Notifications.Add("politie", "MDT", "Bütün xəbərdarlıqlar silindi!");
 });

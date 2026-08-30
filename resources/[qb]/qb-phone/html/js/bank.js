@@ -6,7 +6,7 @@ $(document).on('click', '.bank-app-account', function(e){
     copyText.setSelectionRange(0, 99999);
     document.execCommand("copy");
 
-    QB.Phone.Notifications.Add("fas fa-university", "QBank", "Account number. copied!", "#badc58", 1750);
+    QB.Phone.Notifications.Add("fas fa-university", "QBank", "Hesab nömrəsi kopyalandı!", "#badc58", 1750);
 });
 
 var CurrentTab = "accounts";
@@ -49,7 +49,7 @@ $(document).on('click', '.bank-app-header-button', function(e){
 QB.Phone.Functions.DoBankOpen = function() {
     QB.Phone.Data.PlayerData.money.bank = (QB.Phone.Data.PlayerData.money.bank).toFixed();
     $(".bank-app-account-number").val(QB.Phone.Data.PlayerData.charinfo.account);
-    $(".bank-app-account-balance").html("&#36; "+QB.Phone.Data.PlayerData.money.bank);
+    $(".bank-app-account-balance").html("₣ "+QB.Phone.Data.PlayerData.money.bank);
     $(".bank-app-account-balance").data('balance', QB.Phone.Data.PlayerData.money.bank);
 
     $(".bank-app-loaded").css({"display":"none", "padding-left":"30vh"});
@@ -109,23 +109,23 @@ $(document).on('click', '#accept-transfer', function(e){
                     $("#bank-transfer-iban").val("");
                     $("#bank-transfer-amount").val("");
 
-                    $(".bank-app-account-balance").html("&#36; " + (data.NewBalance).toFixed(0));
+                    $(".bank-app-account-balance").html("₣ " + (data.NewBalance).toFixed(0));
                     $(".bank-app-account-balance").data('balance', (data.NewBalance).toFixed(0));
-                    QB.Phone.Notifications.Add("fas fa-university", "QBank", "You have transfered &#36; "+amount+"!", "#badc58", 1500);
+                    QB.Phone.Notifications.Add("fas fa-university", "QBank", "Siz ₣ köçürdünüz "+amount+"!", "#badc58", 1500);
                 } else {
-                    QB.Phone.Notifications.Add("fas fa-university", "QBank", "You don't have enough balance!", "#badc58", 1500);
+                    QB.Phone.Notifications.Add("fas fa-university", "QBank", "Balansınız kifayət deyil!", "#badc58", 1500);
                 }
                 QB.Phone.Animations.TopSlideUp(".bank-app-transfer", 400, -100);
             });
     } else {
-        QB.Phone.Notifications.Add("fas fa-university", "QBank", "Fill out all fields!", "#badc58", 1750);
+        QB.Phone.Notifications.Add("fas fa-university", "QBank", "Bütün xanaları doldurun!", "#badc58", 1750);
     }
 });
 
-GetInvoiceLabel = function(type) {
+GetFakturaLabel = function(type) {
     retval = null;
     if (type == "request") {
-        retval = "Payment Request";
+        retval = "Ödəniş tələbi";
     }
 
     return retval
@@ -134,71 +134,71 @@ GetInvoiceLabel = function(type) {
 $(document).on('click', '.pay-invoice', function(event){
     event.preventDefault();
 
-    var InvoiceId = $(this).parent().parent().parent().attr('id');
-    var InvoiceData = $("#"+InvoiceId).data('invoicedata');
+    var FakturaId = $(this).parent().parent().parent().attr('id');
+    var FakturaData = $("#"+FakturaId).data('invoicedata');
     var BankBalance = $(".bank-app-account-balance").data('balance');
 
-    if (BankBalance >= InvoiceData.amount) {
-        $.post('https://qb-phone/PayInvoice', JSON.stringify({
-            sender: InvoiceData.sender,
-            amount: InvoiceData.amount,
-            society: InvoiceData.society,
-            invoiceId: InvoiceData.id,
-            senderCitizenId: InvoiceData.sendercitizenid
+    if (BankBalance >= FakturaData.amount) {
+        $.post('https://qb-phone/PayFaktura', JSON.stringify({
+            sender: FakturaData.sender,
+            amount: FakturaData.amount,
+            society: FakturaData.society,
+            invoiceId: FakturaData.id,
+            senderCitizenId: FakturaData.sendercitizenid
         }), function(CanPay){
             if (CanPay) {
-                $("#"+InvoiceId).animate({
+                $("#"+FakturaId).animate({
                     left: 30+"vh",
                 }, 300, function(){
                     setTimeout(function(){
-                        $("#"+InvoiceId).remove();
+                        $("#"+FakturaId).remove();
                     }, 100);
                 });
-                QB.Phone.Notifications.Add("fas fa-university", "QBank", "You have paid &#36;"+InvoiceData.amount+"!", "#badc58", 1500);
+                QB.Phone.Notifications.Add("fas fa-university", "QBank", "You have paid &#36;"+FakturaData.amount+"!", "#badc58", 1500);
                 var amountData = $(".bank-app-account-balance").data('balance');
-                var NewAmount = (amountData - InvoiceData.amount).toFixed();
+                var NewAmount = (amountData - FakturaData.amount).toFixed();
                 $("#bank-transfer-amount").val(NewAmount);
                 $(".bank-app-account-balance").data('balance', NewAmount);
             } else {
-                QB.Phone.Notifications.Add("fas fa-university", "QBank", "You don't have enough balance!", "#badc58", 1500);
+                QB.Phone.Notifications.Add("fas fa-university", "QBank", "Balansınız kifayət deyil!", "#badc58", 1500);
             }
         });
     } else {
-        QB.Phone.Notifications.Add("fas fa-university", "QBank", "You don't have enough balance!", "#badc58", 1500);
+        QB.Phone.Notifications.Add("fas fa-university", "QBank", "Balansınız kifayət deyil!", "#badc58", 1500);
     }
 });
 
 $(document).on('click', '.decline-invoice', async function(event) {
     event.preventDefault();
-    var InvoiceId = $(this).parent().parent().parent().attr('id');
-    var InvoiceData = $("#"+InvoiceId).data('invoicedata');
+    var FakturaId = $(this).parent().parent().parent().attr('id');
+    var FakturaData = $("#"+FakturaId).data('invoicedata');
 
-    const resp = await $.post('https://qb-phone/DeclineInvoice', JSON.stringify({
-        sender: InvoiceData.sender,
-        amount: InvoiceData.amount,
-        society: InvoiceData.society,
-        invoiceId: InvoiceData.id,
+    const resp = await $.post('https://qb-phone/DeclineFaktura', JSON.stringify({
+        sender: FakturaData.sender,
+        amount: FakturaData.amount,
+        society: FakturaData.society,
+        invoiceId: FakturaData.id,
     }));
     if(resp === true) {
-        QB.Phone.Notifications.Add("fas fa-university", "QBank", "You declined the invoice", "#8c7ae6")
-        $("#"+InvoiceId).animate({
+        QB.Phone.Notifications.Add("fas fa-university", "QBank", "Fakturanı imtina etdiniz", "#8c7ae6")
+        $("#"+FakturaId).animate({
             left: 30+"vh",
         }, 300, function(){
             setTimeout(function(){
-                $("#"+InvoiceId).remove();
+                $("#"+FakturaId).remove();
             }, 100);
         });
     } else {
-        QB.Phone.Notifications.Add("fas fa-university", "QBank", "Couldnt decline this invoice...", "#8c7ae6")
+        QB.Phone.Notifications.Add("fas fa-university", "QBank", "Fakturanı imtina etmək mümkün olmadı...", "#8c7ae6")
     }
 });
 
-QB.Phone.Functions.LoadBankInvoices = function(invoices) {
+QB.Phone.Functions.LoadBankFakturas = function(invoices) {
     if (invoices !== null) {
         $(".bank-app-invoices-list").html("");
 
         $.each(invoices, function(i, invoice){
-            var Elem = '<div class="bank-app-invoice" id="invoiceid-'+invoice.id+'"> <div class="bank-app-invoice-title">'+invoice.society+' <span style="font-size: 1vh; color: gray;">(Sender: '+invoice.sender+')</span></div>' + (typeof invoice.reason === 'string' ? `<div class="bank-app-invoice-reason">${invoice.reason}</div>` : '') + '<div class="bank-app-invoice-info"><div class="bank-app-invoice-amount">&#36; '+invoice.amount+'</div> <div class="bank-app-invoice-buttons"> <i class="fas fa-check-circle pay-invoice"></i>'+ (invoice.candecline === 1 ? '<i class="fas fa-times-circle decline-invoice"></i>' : '') + '</div></div></div>';
+            var Elem = '<div class="bank-app-invoice" id="invoiceid-'+invoice.id+'"> <div class="bank-app-invoice-title">'+invoice.society+' <span style="font-size: 1vh; color: gray;">(Göndərən: '+invoice.sender+')</span></div>' + (typeof invoice.reason === 'string' ? `<div class="bank-app-invoice-reason">${invoice.reason}</div>` : '') + '<div class="bank-app-invoice-info"><div class="bank-app-invoice-amount">₣ '+invoice.amount+'</div> <div class="bank-app-invoice-buttons"> <i class="fas fa-check-circle pay-invoice"></i>'+ (invoice.candecline === 1 ? '<i class="fas fa-times-circle decline-invoice"></i>' : '') + '</div></div></div>';
 
             $(".bank-app-invoices-list").append(Elem);
             $("#invoiceid-"+invoice.id).data('invoicedata', invoice);
@@ -249,7 +249,7 @@ $(document).on('click', '.bank-app-my-contact', function(e){
     if (PressedContactData.iban !== "" && PressedContactData.iban !== undefined && PressedContactData.iban !== null) {
         $("#bank-transfer-iban").val(PressedContactData.iban);
     } else {
-        QB.Phone.Notifications.Add("fas fa-university", "QBank", "There is no bank account attached to this number!", "#badc58", 2500);
+        QB.Phone.Notifications.Add("fas fa-university", "QBank", "Bu nömrəyə bağlı bank hesabı yoxdur!", "#badc58", 2500);
     }
     QB.Phone.Animations.TopSlideUp(".bank-app-my-contacts", 400, -100);
 });

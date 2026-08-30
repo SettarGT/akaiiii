@@ -76,11 +76,11 @@ HeliCam.UpdateVehicleInfo = function (data) {
         .html("MODEL: " + data.model);
     $(".heli-plate")
         .find("p")
-        .html("PLATE: " + data.plate);
+        .html("NOMRƏ: " + data.plate);
     $(".heli-street").find("p").html(data.street);
     $(".heli-speed")
         .find("p")
-        .html(data.speed + " KM/U");
+        .html(data.speed + " KM/S");
 };
 
 HeliCam.DisableVehicleInfo = function () {
@@ -110,7 +110,7 @@ Databank.Close = function () {
 
 Fingerprint.Open = function () {
     $(".fingerprint-container").fadeIn(150);
-    $(".fingerprint-id").html("Fingerprint ID<p>No result</p>");
+    $(".fingerprint-id").html("Barmaq izi ID<p>Nəticə yoxdur</p>");
 };
 
 Fingerprint.Close = function () {

@@ -227,7 +227,8 @@ function populateVehicleList(garageLabel, vehicles) {
             stat.classList.add("stat");
             const label = document.createElement("div");
             label.classList.add("label");
-            label.textContent = statLabel.charAt(0).toUpperCase() + statLabel.slice(1);
+            const statNames = { fuel: "Yanacaq", engine: "Mühərrik", body: "Kuzov" };
+            label.textContent = statNames[statLabel] || statLabel;
             stat.appendChild(label);
             const progressBar = document.createElement("div");
             progressBar.classList.add("progress-bar");

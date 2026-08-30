@@ -1,7 +1,7 @@
 let meterStarted = false;
 
 const updateMeter = (meterData) => {
-    $("#total-price").html("$ " + meterData.currentFare.toFixed(2));
+    $("#total-price").html("₣ " + meterData.currentFare.toFixed(2));
     $("#total-distance").html(meterData.distanceTraveled.toFixed(2) + " mi");
 };
 
@@ -15,7 +15,7 @@ const toggleMeter = (enabled) => {
         $(".toggle-meter-btn").html("<p>Started</p>");
         $(".toggle-meter-btn p").css({ color: "rgb(51, 160, 37)" });
     } else {
-        $(".toggle-meter-btn").html("<p>Stopped</p>");
+        $(".toggle-meter-btn").html("<p>Dayandı</p>");
         $(".toggle-meter-btn p").css({ color: "rgb(231, 30, 37)" });
     }
 };

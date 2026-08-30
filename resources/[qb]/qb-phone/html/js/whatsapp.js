@@ -145,7 +145,7 @@ QB.Phone.Functions.ReloadWhatsappAlerts = function(chats) {
     });
 }
 
-const monthNames = ["January", "February", "March", "April", "May", "June", "JulY", "August", "September", "October", "November", "December"];
+const monthNames = ["Yanvar", "Fevral", "Mart", "Aprel", "May", "İyun", "İyul", "Avqust", "Sentyabr", "Oktyabr", "Noyabr", "Dekabr"];
 
 FormatChatDate = function(date) {
     var TestDate = date.split("-");
@@ -160,7 +160,7 @@ FormatChatDate = function(date) {
 
     var ReturnedValue = ChatDate;
     if (CurrentDate == CurDateee) {
-        ReturnedValue = "Today";
+        ReturnedValue = "Bu gün";
     }
 
     return ReturnedValue;
@@ -198,7 +198,7 @@ $(document).on('click', '#whatsapp-openedchat-send', function(e){
         $("#whatsapp-openedchat-message").val("");
         $("div.emojionearea-editor").data("emojioneArea").setText('');
     } else {
-        QB.Phone.Notifications.Add("fab fa-whatsapp", "Whatsapp", "You can't send a empty message!", "#25D366", 1750);
+        QB.Phone.Notifications.Add("fab fa-whatsapp", "Whatsapp", "Boş mesaj göndərə bilməzsiniz!", "#25D366", 1750);
     }
 });
 
@@ -222,7 +222,7 @@ $(document).on('keypress', function (e) {
                 }));
                 $("#whatsapp-openedchat-message").val("");
             } else {
-                QB.Phone.Notifications.Add("fab fa-whatsapp", "Whatsapp", "You can't send a empty message!", "#25D366", 1750);
+                QB.Phone.Notifications.Add("fab fa-whatsapp", "Whatsapp", "Boş mesaj göndərə bilməzsiniz!", "#25D366", 1750);
             }
         }
     }
@@ -234,7 +234,7 @@ $(document).on('click', '#send-location', function(e){
     $.post('https://qb-phone/SendMessage', JSON.stringify({
         ChatNumber: OpenedChatData.number,
         ChatDate: GetCurrentDateKey(),
-        ChatMessage: "Shared location",
+        ChatMessage: "Paylaşılan mövqe",
         ChatTime: FormatMessageTime(),
         ChatType: "location",
     }));
@@ -243,12 +243,12 @@ $(document).on('click', '#send-location', function(e){
 $(document).on('click', '#send-image', function(e){
     e.preventDefault();
     let ChatNumber2 = OpenedChatData.number;
-    $.post('https://qb-phone/TakePhoto', JSON.stringify({}),function(url){
+    $.post('https://qb-phone/TakeŞəkil', JSON.stringify({}),function(url){
         if(url){
         $.post('https://qb-phone/SendMessage', JSON.stringify({
         ChatNumber: ChatNumber2,
         ChatDate: GetCurrentDateKey(),
-        ChatMessage: "Photo",
+        ChatMessage: "Şəkil",
         ChatTime: FormatMessageTime(),
         ChatType: "picture",
         url : url

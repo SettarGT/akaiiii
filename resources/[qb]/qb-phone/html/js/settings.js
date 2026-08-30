@@ -3,7 +3,7 @@ QB.Phone.Settings.Background = "default-qbcore";
 QB.Phone.Settings.OpenedTab = null;
 QB.Phone.Settings.Backgrounds = {
     'default-qbcore': {
-        label: "Standard QBCore"
+        label: "Standart QBCore"
     }
 };
 
@@ -59,7 +59,7 @@ $(document).on(
             text: function () {
                 QB.Phone.Notifications.Add(
                     "fas fa-phone",
-                    "Copied " + title + "!",
+                    "Kopyalandı " + title + "!",
                     textToCopy
                 );
                 return textToCopy;
@@ -73,11 +73,11 @@ $(document).on('click', '#accept-background', function(e){
     var hasCustomBackground = QB.Phone.Functions.IsBackgroundCustom();
 
     if (hasCustomBackground === false) {
-        QB.Phone.Notifications.Add("fas fa-paint-brush", "Settings", QB.Phone.Settings.Backgrounds[QB.Phone.Settings.Background].label+" is set!")
+        QB.Phone.Notifications.Add("fas fa-paint-brush", "Settings", QB.Phone.Settings.Backgrounds[QB.Phone.Settings.Background].label+" quraşdırıldı!")
         QB.Phone.Animations.TopSlideUp(".settings-"+QB.Phone.Settings.OpenedTab+"-tab", 200, -100);
         $(".phone-background").css({"background-image":"url('/html/img/backgrounds/"+QB.Phone.Settings.Background+".png')"})
     } else {
-        QB.Phone.Notifications.Add("fas fa-paint-brush", "Settings", "Personal background set!")
+        QB.Phone.Notifications.Add("fas fa-paint-brush", "Settings", "Şəxsi fon quruldu!")
         QB.Phone.Animations.TopSlideUp(".settings-"+QB.Phone.Settings.OpenedTab+"-tab", 200, -100);
         $(".phone-background").css({"background-image":"url('"+QB.Phone.Settings.Background+"')"});
     }
@@ -172,11 +172,11 @@ $(document).on('click', '#accept-profilepicture', function(e){
     e.preventDefault();
     var ProfilePicture = QB.Phone.Data.MetaData.profilepicture;
     if (ProfilePicture === "default") {
-        QB.Phone.Notifications.Add("fas fa-paint-brush", "Settings", "Standard avatar set!")
+        QB.Phone.Notifications.Add("fas fa-paint-brush", "Settings", "Standart avatar quruldu!")
         QB.Phone.Animations.TopSlideUp(".settings-"+QB.Phone.Settings.OpenedTab+"-tab", 200, -100);
         $("[data-settingstab='profilepicture']").find('.settings-tab-icon').html('<img src="./img/default.png">');
     } else {
-        QB.Phone.Notifications.Add("fas fa-paint-brush", "Settings", "Personal avatar set!")
+        QB.Phone.Notifications.Add("fas fa-paint-brush", "Settings", "Şəxsi avatar quruldu!")
         QB.Phone.Animations.TopSlideUp(".settings-"+QB.Phone.Settings.OpenedTab+"-tab", 200, -100);
         $("[data-settingstab='profilepicture']").find('.settings-tab-icon').html('<img src="'+ProfilePicture+'">');
     }

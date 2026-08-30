@@ -73,7 +73,7 @@ QB.Phone.Functions.SetupMails = function(Mails) {
     var MessageTime = Hourssssss + ":" + Minutessss;
 
     $("#mail-header-mail").html(QB.Phone.Data.PlayerData.charinfo.firstname+"."+QB.Phone.Data.PlayerData.charinfo.lastname+"@qbcore.com");
-    $("#mail-header-lastsync").html("Last synchronized "+MessageTime);
+    $("#mail-header-lastsync").html("Son sinxronlaşdırma "+MessageTime);
     if (Mails !== null && Mails !== undefined) {
         if (Mails.length > 0) {
             $(".mail-list").html("");
@@ -92,7 +92,7 @@ QB.Phone.Functions.SetupMails = function(Mails) {
     }
 }
 
-var MonthFormatting = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+var MonthFormatting = ["Yanvar", "Fevral", "Mart", "Aprel", "May", "İyun", "İyul", "Avqust", "Sentyabr", "Oktyabr", "Noyabr", "Dekabr"];
 
 QB.Phone.Functions.SetupMail = function(MailData) {
     var date = new Date(MailData.date);
@@ -180,7 +180,7 @@ $(document).on('click', '#new-advert-submit', function(e){
         $('#advert-new-url').val("")
         $(".new-advert-textarea").val("");
     } else {
-        QB.Phone.Notifications.Add("fas fa-ad", "Advertisement", "You can\'t post an empty ad!", "#ff8f1a", 2000);
+        QB.Phone.Notifications.Add("fas fa-ad", "Elan", "You can\'t post an empty ad!", "#ff8f1a", 2000);
     }
 });
 
@@ -194,7 +194,7 @@ QB.Phone.Functions.RefreshAdverts = function(Adverts) {
                 ALLOWED_ATTR: []
             });
 
-            if (clean == '') { clean = 'I\'m a silly goose :/' }
+            if (clean == '') { clean = 'I\'' }
 
             if (advert.url) {
                 var element = `<div class="advert"><span class="advert-sender">${advert.name} | ${advert.number}</span><p>${clean}</p></br><img class="advimage" src=`+advert.url +` style=" border-radius:4px; width: 95%; position:relative; z-index: 1; right:1px;height: auto; bottom:1vh;"></br><span><div class="adv-icon"></div> </span></div>`;
@@ -219,7 +219,7 @@ $(document).on('click','#adv-delete',function(e){
     e.preventDefault();
     $.post('https://qb-phone/DeleteAdvert', function(){
         setTimeout(function(){
-            QB.Phone.Notifications.Add("fas fa-ad", "Advertisement", "The ad was deleted", "#ff8f1a", 2000);
+            QB.Phone.Notifications.Add("fas fa-ad", "Elan", "Elan silindi", "#ff8f1a", 2000);
         },400)
     });
 })

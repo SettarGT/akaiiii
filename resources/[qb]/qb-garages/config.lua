@@ -5,7 +5,7 @@ Config.SharedGarages = false       -- true == take any car from any garage | fal
 Config.ClassSystem = false         -- true == restrict vehicles by class | false == any vehicle class in any garage
 Config.FuelResource = 'LegacyFuel' -- supports any that has a GetFuel() and SetFuel() export
 Config.Warp = true                 -- true == warp player into vehicle | false == vehicle spawns without warping
-Config.StoredVehicleLimit = 15 -- TT-42: qarajda maksimum saxlanılan maşın                 -- true == warp player into vehicle | false == vehicle spawns without warping
+Config.StoredVehicleLimit = 15 -- TT-42: qarajda maksimum saxlanılan maşın
 
 -- https://docs.fivem.net/natives/?_0x29439776AAA00A62
 Config.VehicleClass = {
@@ -18,7 +18,7 @@ Config.VehicleClass = {
 
 Config.Garages = {
     motelgarage = {
-        label = 'Motel Parking',
+        label = 'Motel Qarajı',
         takeVehicle = vector3(274.29, -334.15, 44.92),
         spawnPoint = {
             vector4(265.96, -332.3, 44.51, 250.68)
@@ -31,7 +31,7 @@ Config.Garages = {
         category = Config.VehicleClass['car']
     },
     casinogarage = {
-        label = 'Casino Parking',
+        label = 'Kazino Qarajı',
         takeVehicle = vector3(883.96, -4.71, 78.76),
         spawnPoint = {
             vector4(895.39, -4.75, 78.35, 146.85)
@@ -44,7 +44,7 @@ Config.Garages = {
         category = Config.VehicleClass['car']
     },
     sapcounsel = {
-        label = 'San Andreas Parking',
+        label = 'San Andreas Qarajı',
         takeVehicle = vector3(-330.01, -780.33, 33.96),
         spawnPoint = {
             vector4(-341.57, -767.45, 33.56, 92.61)
@@ -57,7 +57,7 @@ Config.Garages = {
         category = Config.VehicleClass['car']
     },
     spanishave = {
-        label = 'Spanish Ave Parking',
+        label = 'İspan Prospekti Qarajı',
         takeVehicle = vector3(-1160.86, -741.41, 19.63),
         spawnPoint = {
             vector4(-1145.2, -745.42, 19.26, 108.22)
@@ -70,7 +70,7 @@ Config.Garages = {
         category = Config.VehicleClass['car']
     },
     caears24 = {
-        label = 'Caears 24 Parking',
+        label = 'Sezar Qarajı',
         takeVehicle = vector3(69.84, 12.6, 68.96),
         spawnPoint = {
             vector4(60.8, 17.54, 68.82, 339.7)
@@ -83,7 +83,7 @@ Config.Garages = {
         category = Config.VehicleClass['car']
     },
     caears242 = {
-        label = 'Caears 24 Parking',
+        label = 'Sezar Qarajı',
         takeVehicle = vector3(-453.7, -786.78, 30.56),
         spawnPoint = {
             vector4(-472.39, -787.71, 30.14, 180.52)
@@ -96,7 +96,7 @@ Config.Garages = {
         category = Config.VehicleClass['car']
     },
     lagunapi = {
-        label = 'Laguna Parking',
+        label = 'Laguna Qarajı',
         takeVehicle = vector3(364.37, 297.83, 103.49),
         spawnPoint = {
             vector4(375.09, 294.66, 102.86, 164.04)
@@ -109,7 +109,7 @@ Config.Garages = {
         category = Config.VehicleClass['car']
     },
     airportp = {
-        label = 'Airport Parking',
+        label = 'Aeroport Qarajı',
         takeVehicle = vector3(-773.12, -2033.04, 8.88),
         spawnPoint = {
             vector4(-779.77, -2040.18, 8.47, 315.34)
@@ -122,7 +122,7 @@ Config.Garages = {
         category = Config.VehicleClass['car']
     },
     beachp = {
-        label = 'Beach Parking',
+        label = 'Çimərlik Qarajı',
         takeVehicle = vector3(-1185.32, -1500.64, 4.38),
         spawnPoint = {
             vector4(-1188.14, -1487.95, 3.97, 124.06)
@@ -135,7 +135,7 @@ Config.Garages = {
         category = Config.VehicleClass['car']
     },
     themotorhotel = {
-        label = 'The Motor Hotel Parking',
+        label = 'Motor Hotel Qarajı',
         takeVehicle = vector3(1137.77, 2663.54, 37.9),
         spawnPoint = {
             vector4(1127.7, 2647.84, 37.58, 1.41)
@@ -148,7 +148,7 @@ Config.Garages = {
         category = Config.VehicleClass['car']
     },
     liqourparking = {
-        label = 'Liqour Parking',
+        label = 'Likör Qarajı',
         takeVehicle = vector3(883.99, 3649.67, 32.87),
         spawnPoint = {
             vector4(898.38, 3649.41, 32.36, 90.75)
@@ -161,7 +161,7 @@ Config.Garages = {
         category = Config.VehicleClass['car']
     },
     shoreparking = {
-        label = 'Shore Parking',
+        label = 'Sahil Qarajı',
         takeVehicle = vector3(1737.03, 3718.88, 34.05),
         spawnPoint = {
             vector4(1725.4, 3716.78, 34.15, 20.54)
@@ -174,7 +174,7 @@ Config.Garages = {
         category = Config.VehicleClass['car']
     },
     haanparking = {
-        label = 'Bell Farms Parking',
+        label = 'Bell Ferması Qarajı',
         takeVehicle = vector3(76.88, 6397.3, 31.23),
         spawnPoint = {
             vector4(62.15, 6403.41, 30.81, 211.38)
@@ -187,7 +187,7 @@ Config.Garages = {
         category = Config.VehicleClass['car']
     },
     dumbogarage = {
-        label = 'Dumbo Private Parking',
+        label = 'Dumbo Şəxsi Qarajı',
         takeVehicle = vector3(165.75, -3227.2, 5.89),
         spawnPoint = {
             vector4(168.34, -3236.1, 5.43, 272.05)
@@ -200,7 +200,7 @@ Config.Garages = {
         category = Config.VehicleClass['car']
     },
     pillboxgarage = {
-        label = 'Pillbox Garage Parking',
+        label = 'Pillbox Qarajı',
         takeVehicle = vector3(213.2, -796.05, 30.86),
         spawnPoint = {
             vector4(222.02, -804.19, 30.26, 248.19),
@@ -217,7 +217,7 @@ Config.Garages = {
         category = Config.VehicleClass['car']
     },
     grapeseedgarage = {
-        label = 'Grapeseed Parking',
+        label = 'Grapeseed Qarajı',
         takeVehicle = vector3(2552.68, 4671.8, 33.95),
         spawnPoint = {
             vector4(2550.17, 4681.96, 33.81, 17.05)
@@ -230,7 +230,7 @@ Config.Garages = {
         category = Config.VehicleClass['car']
     },
     depotLot = {
-        label = 'Depot Lot',
+        label = 'Depo Sahəsi',
         takeVehicle = vector3(401.76, -1632.57, 29.29),
         spawnPoint = {
             vector4(396.55, -1643.93, 28.88, 321.91)
