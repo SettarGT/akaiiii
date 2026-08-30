@@ -340,3 +340,8 @@ CREATE TABLE IF NOT EXISTS `196_rentals` (
   KEY `citizenid` (`citizenid`),
   KEY `plate` (`plate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ═══════════════════════════════════════════════════════════════
+-- 196 RP Bələdiyyə qeydləri (metadata əsaslı — struktur dəyişikliyi yoxdur)
+--   players.metadata: fin (11 rəqəm), bloodtype, drivinglicense, weaponlicense
+-- ═══════════════════════════════════════════════════════════════

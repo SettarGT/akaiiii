@@ -1,0 +1,68 @@
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+
+body { background: transparent; overflow: hidden; }
+
+.hidden { display: none !important; }
+
+#bill {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(4, 6, 12, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 300;
+}
+
+.bill-card {
+  width: 420px; border-radius: 18px; overflow: hidden;
+  background: linear-gradient(160deg, #0e1626, #101b30);
+  border: 1px solid rgba(247, 183, 51, 0.45);
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.7);
+  animation: pop 0.35s cubic-bezier(.2, 1.1, .4, 1);
+}
+
+.bill-head {
+  display: flex; align-items: center; gap: 14px;
+  padding: 18px 22px;
+  background: linear-gradient(135deg, rgba(247, 183, 51, 0.14), rgba(247, 183, 51, 0.04));
+  border-bottom: 1px solid rgba(247, 183, 51, 0.25);
+}
+
+.bill-icon { font-size: 38px; filter: drop-shadow(0 0 10px rgba(247,183,51,.5)); }
+.bill-title { color: #ffd97a; font-weight: 800; letter-spacing: 1px; font-size: 17px; }
+.bill-sub { color: #8fa0b8; font-size: 12px; letter-spacing: 2px; }
+
+.bill-body { padding: 20px 22px; }
+
+.bill-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 7px 0; color: #b8c2d4; font-size: 14px;
+}
+.bill-row b { color: #fff; }
+
+.bill-amount {
+  text-align: center; margin: 16px 0; padding: 14px;
+  background: rgba(247, 183, 51, 0.08);
+  border: 1px solid rgba(247, 183, 51, 0.25);
+  border-radius: 12px;
+}
+.bill-amount span { color: #8fa0b8; font-size: 11px; letter-spacing: 3px; font-weight: 700; }
+.bill-amount b {
+  display: block; margin-top: 4px;
+  color: #ffd97a; font-size: 34px; font-weight: 800;
+  text-shadow: 0 0 24px rgba(247, 183, 51, 0.4);
+}
+
+.bill-timer { text-align: center; color: #7dd3fc; font-size: 13px; margin-top: 6px; }
+
+.bill-btns { display: flex; gap: 12px; padding: 16px 22px 20px; }
+
+.btn {
+  flex: 1; padding: 12px; border: none; border-radius: 11px;
+  font-weight: 800; font-size: 15px; cursor: pointer; letter-spacing: 0.5px;
+  transition: all 0.15s ease;
+}
+.btn:hover { transform: translateY(-1px); filter: brightness(1.12); }
+.btn.accept { background: linear-gradient(135deg, #22c55e, #15803d); color: #fff; }
+.btn.decline { background: rgba(180, 40, 40, 0.85); color: #fff; }
+
+@keyframes pop { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }

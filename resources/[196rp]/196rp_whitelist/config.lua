@@ -6,11 +6,11 @@ Config = {}
 
 -- TRUE  = Yalnız whitelist-də olan oyunçular qoşula bilər
 -- FALSE = Hamı qoşula bilər (açıq lansman rejimi; /muraciet yenə işləyir)
-Config.WhitelistEnabled = true
+Config.WhitelistEnabled = false   -- ⚠️ AÇIQ LANSMAN: hamı qoşula bilər (adminlar /wluygula ilə yenə müraciətləri görür)
 
 -- TRUE  = Whitelist yoxlanılmır, hamı daxil olur (açıq lansman)
 -- FALSE = Whitelist aktiv, qəbul edilməmiş oyunçular /muraciet edə bilər
-Config.OpenRegistration = false
+Config.OpenRegistration = true    -- ⚠️ Qeydiyyat açıqdır — /muraciet formaları da qəbul olunur
 
 -- Discord Webhook (müraciətlər + qəbul/rədd bildirişləri bura düşür)
 -- https://discord.com/developers/applications → Webhooks

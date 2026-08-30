@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="utf-8">
+  <title>196 RP | Bələdiyyə</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- ── İmtahan ── -->
+  <div id="exam" class="panel hidden">
+    <div class="panel-head">
+      <span id="exam-title">🚗 Sürücülük Nəzəri İmtahanı — 196 RP</span>
+      <span class="timer" id="exam-timer">05:00</span>
+    </div>
+    <div class="exam-body">
+      <div class="question" id="q-text"></div>
+      <div class="answers" id="q-answers"></div>
+      <div class="exam-nav">
+        <button id="btn-prev" class="btn ghost">◀ Əvvəlki</button>
+        <span id="q-index">1 / 10</span>
+        <button id="btn-next" class="btn">Növbəti ▶</button>
+      </div>
+    </div>
+    <div class="panel-foot">
+      <button id="btn-submit" class="btn gold">Təqdim et ✅</button>
+      <button id="btn-exit" class="btn red">İmtina</button>
+    </div>
+  </div>
+
+  <!-- ── Pasport kartı ── -->
+  <div id="card" class="panel hidden">
+    <div class="passport">
+      <div class="p-top">
+        <div class="p-flag">196</div>
+        <div class="p-name">AZERBAIJAN ROLE PLAY</div>
+      </div>
+      <div class="p-row">
+        <div class="p-avatar">196</div>
+        <div class="p-info">
+          <div class="p-field"><span>AD</span><b id="c-first">—</b></div>
+          <div class="p-field"><span>SOYAD</span><b id="c-last">—</b></div>
+          <div class="p-field"><span>DOĞUM</span><b id="c-birth">—</b></div>
+          <div class="p-field"><span>CİNS</span><b id="c-gender">—</b></div>
+        </div>
+      </div>
+      <div class="p-row2">
+        <div class="p-field"><span>FİN</span><b id="c-fin">19600000000</b></div>
+        <div class="p-field"><span>QAN QRUPLU</span><b id="c-blood">O+</b></div>
+        <div class="p-field"><span>Lisenziya</span><b id="c-license">—</b></div>
+        <div class="p-field"><span>Silah</span><b id="c-weapon">—</b></div>
+      </div>
+      <div class="p-sign">196 RP | Bələdiyyə</div>
+    </div>
+    <button id="card-close" class="btn gold">Bağla ✖</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -66,6 +66,12 @@ qb-houses, qb-apartments, qb-interior, qb-loading, qb-adminmenu, qb-weapons.
 
 > `setr qb_locale "az"` server.cfg-də artıq var — bütün UI Azərbaycandır.
 
+## 🏛️ Bələdiyyə və Faktura (v1.1)
+
+- **/pasport** — FİN (11 rəqəm) + qan qrupu ilə NUI şəxsiyyət kartı
+- Bələdiyyə (City Hall): pasport ₣500, sürücülük lisenziyası ₣1500 (nəzəri 10 sual + praktik 3 nöqtə), silah lisenziyası ₣5000
+- **/faktura <id> <məbləğ> <səbəb>** — NUI faktura (qəbul/imtina, bank/nağd ödəniş, Discord webhook)
+
 ## 📖 Əmrlər
 
 - **Oyunçu əmrləri:** `/me /do /try /ooc /report /muraciet /is /anim /rentqaytar /vehicleui` (və ya F5), `/givekeys <id>`

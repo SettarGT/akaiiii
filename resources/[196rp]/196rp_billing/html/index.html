@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="utf-8">
+  <title>196 RP | Faktura</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="bill" class="hidden">
+    <div class="bill-card">
+      <div class="bill-head">
+        <span class="bill-icon">🧾</span>
+        <div>
+          <div class="bill-title">Faktura Qəbul Edildi</div>
+          <div class="bill-sub">196 RP | Azerbaijan Role Play</div>
+        </div>
+      </div>
+      <div class="bill-body">
+        <div class="bill-row"><span>Göndərən</span><b id="b-from">—</b></div>
+        <div class="bill-row"><span>Səbəb</span><b id="b-reason">—</b></div>
+        <div class="bill-amount">
+          <span>MƏBLƏĞ</span>
+          <b id="b-amount">₣0</b>
+        </div>
+        <div class="bill-timer">⏱ vaxt: <span id="b-timer">5:00</span></div>
+      </div>
+      <div class="bill-btns">
+        <button id="btn-accept" class="btn accept">✔ Qəbul et</button>
+        <button id="btn-decline" class="btn decline">✖ İmtina</button>
+      </div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
