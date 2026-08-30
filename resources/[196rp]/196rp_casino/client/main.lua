@@ -8,8 +8,8 @@ local function OpenCasino()
     TriggerServerEvent('196rp_casino:server:getBalance')
 end
 
-RegisterNetEvent('196rp_casino:client:balance', function(cash)
-    SendNUIMessage({ action = 'balance', cash = cash })
+RegisterNetEvent('196rp_casino:client:balance', function(cash, chips)
+    SendNUIMessage({ action = 'balance', cash = cash, chips = chips or 0 })
 end)
 
 RegisterNetEvent('196rp_casino:client:rouletteResult', function(data)
@@ -54,6 +54,17 @@ RegisterNUICallback('blackjack', function(data, cb)
     cb({})
     return true
 end)
+RegisterNUICallback('buyChips', function(data, cb)
+    TriggerServerEvent('196rp_casino:server:buyChips', data.amount)
+    cb({})
+    return true
+end)
+RegisterNUICallback('sellChips', function(data, cb)
+    TriggerServerEvent('196rp_casino:server:sellChips', data.amount)
+    cb({})
+    return true
+end)
+
 RegisterNUICallback('getBalance', function(_, cb)
     TriggerServerEvent('196rp_casino:server:getBalance')
     cb({})

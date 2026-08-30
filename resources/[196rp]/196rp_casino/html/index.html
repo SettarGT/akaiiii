@@ -10,9 +10,15 @@
     <div class="cas-shell">
       <header class="cas-head">
         <div class="cas-logo"><span>196</span> KAZİNO</div>
-        <div class="cas-balance">💵 <b id="cash">₣0</b></div>
+        <div class="cas-balance">💵 <b id="cash">₣0</b> · 🪙 <b id="chips">0</b></div>
         <button class="cas-close" id="btn-close">✕</button>
       </header>
+
+      <div class="chip-row">
+        <input id="chip-amount" type="number" placeholder="Fiş sayı" value="1000">
+        <button class="chip-btn" id="chips-buy">🪙 Fiş al</button>
+        <button class="chip-btn sell" id="chips-sell">💵 Fiş sat (95%)</button>
+      </div>
 
       <div class="cas-tabs">
         <button class="tab active" data-game="roulette">🎡 Rulet</button>

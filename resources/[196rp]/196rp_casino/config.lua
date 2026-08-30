@@ -8,6 +8,12 @@ Config.Limits = {
     MinBet = 100,        -- minimum mərc (₣)
     MaxBet = 100000,     -- maksimum mərc (₣)
     MaxProfit = 500000,  -- bir oyunda maksimum uduş (₣)
+    DailyLoss = 250000,  -- günlük maksimum itki (₣) → limit çatanda sabaha qədər oyun dayanır
+}
+
+-- Fiş dəyişmə
+Config.Chips = {
+    Fee = 0.95,  -- fiş → nağd (5% komissiya)
 }
 
 -- Rulet xüsusiyyətləri

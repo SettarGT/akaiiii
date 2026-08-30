@@ -1,31 +1,64 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 
+local chipsCache = {}   -- citizenid -> { chips, loss, day }
+
 local function Notify(src, msg, type)
     TriggerClientEvent('QBCore:Notify', src, msg, type or 'primary')
 end
 
-local function GetBet(src)
-    local Player = QBCore.Functions.GetPlayer(src)
-    if not Player then return nil, nil end
-    return Player, (Player.PlayerData.money.cash or 0)
+-- ── Fiş balansı ──
+local function LoadChips(Player)
+    local cid = Player.PlayerData.citizenid
+    local c = chipsCache[cid]
+    if c then return c end
+
+    local row = MySQL.single('SELECT * FROM 196_chips WHERE citizenid = ?', { cid })
+    if row then
+        c = { chips = tonumber(row.chips) or 0, loss = tonumber(row.daily_loss) or 0, day = row.last_loss_day or os.date('%Y-%m-%d') }
+    else
+        MySQL.insert('INSERT INTO 196_chips (citizenid, chips, daily_loss, last_loss_day) VALUES (?, 0, 0, ?) ON DUPLICATE KEY UPDATE citizenid = VALUES(citizenid)', {
+            cid, os.date('%Y-%m-%d'),
+        })
+        c = { chips = 0, loss = 0, day = os.date('%Y-%m-%d') }
+    end
+    -- gün dəyişibsə itkini sıfırla
+    if c.day ~= os.date('%Y-%m-%d') then
+        c.loss, c.day = 0, os.date('%Y-%m-%d')
+        MySQL.update('UPDATE 196_chips SET daily_loss = 0, last_loss_day = ? WHERE citizenid = ?', { c.day, cid })
+    end
+    chipsCache[cid] = c
+    return c
 end
 
--- Qəbul: pul yoxlanır, əvvəlcədən silinir (mümkün şübhələr serverdə qalır)
+local function SaveChips(Player, c)
+    MySQL.update('UPDATE 196_chips SET chips = ?, daily_loss = ?, last_loss_day = ? WHERE citizenid = ?', {
+        c.chips, c.loss, c.day, Player.PlayerData.citizenid,
+    })
+end
+
+-- ── Mərc qəbulu (fiş ödənilir) ──
 local function Charge(src, amount)
     local Player = QBCore.Functions.GetPlayer(src)
-    if not Player then return false end
+    if not Player then return false, Player end
     if amount < Config.Limits.MinBet or amount > Config.Limits.MaxBet then
         Notify(src, ('Mərc ₣%d - ₣%d arası olmalıdır.'):format(Config.Limits.MinBet, Config.Limits.MaxBet), 'error')
-        return false
+        return false, Player
     end
-    if (Player.PlayerData.money.cash or 0) < amount then
-        Notify(src, 'Kifayət qədər nağd pul yoxdur!', 'error')
-        return false
+    local c = LoadChips(Player)
+    if c.loss >= Config.Limits.DailyLoss then
+        Notify(src, ('Günlük itki limiti çatdı (%s). Sabah yenidən gəlin.'):format(Config.Limits.DailyLoss), 'error')
+        return false, Player
     end
-    Player.Functions.RemoveMoney('cash', amount, 'casino-bet')
-    return true
+    if c.chips < amount then
+        Notify(src, ('Fiş kifayət deyil — fiş alın (/fiş). Balans: %d'):format(c.chips), 'error')
+        return false, Player
+    end
+    c.chips = c.chips - amount
+    SaveChips(Player, c)
+    return true, Player
 end
 
+-- ── Uduş (nağd, vergi ilə) ──
 local function PayWinnings(src, amount)
     local Player = QBCore.Functions.GetPlayer(src)
     if Player and amount > 0 then
@@ -42,11 +75,72 @@ local function PayWinnings(src, amount)
     end
 end
 
--- ── RULet ──
+-- ── İtki qeydi (uduzan əməliyyatlar) ──
+local function RecordLoss(Player, amount)
+    local c = LoadChips(Player)
+    c.loss = c.loss + amount
+    SaveChips(Player, c)
+end
+
+-- ══════════════════════════════════════
+--  FİŞ ƏMƏLİYYATLARI
+-- ══════════════════════════════════════
+RegisterNetEvent('196rp_casino:server:buyChips', function(amount)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if not Player then return end
+    amount = math.floor(tonumber(amount) or 0)
+    if amount < Config.Limits.MinBet then
+        Notify(src, ('Minimum fiş: ₣%d'):format(Config.Limits.MinBet), 'error')
+        return
+    end
+    if (Player.PlayerData.money.cash or 0) < amount then
+        Notify(src, 'Kifayət qədər nağd pul yoxdur.', 'error')
+        return
+    end
+    Player.Functions.RemoveMoney('cash', amount, 'casino-buy-chips')
+    local c = LoadChips(Player)
+    c.chips = c.chips + amount
+    SaveChips(Player, c)
+    Notify(src, ('🪙 %d fiş alındı!'):format(amount), 'success')
+    TriggerClientEvent('196rp_casino:client:balance', src, Player.PlayerData.money.cash or 0, c.chips)
+end)
+
+RegisterNetEvent('196rp_casino:server:sellChips', function(amount)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if not Player then return end
+    amount = math.floor(tonumber(amount) or 0)
+    local c = LoadChips(Player)
+    if c.chips < amount or amount <= 0 then
+        Notify(src, 'Kifayət qədər fiş yoxdur.', 'error')
+        return
+    end
+    local cash = math.floor(amount * Config.Chips.Fee)
+    c.chips = c.chips - amount
+    SaveChips(Player, c)
+    Player.Functions.AddMoney('cash', cash, 'casino-sell-chips')
+    Notify(src, ('🪙 %d fiş → ₣%d'):format(amount, cash), 'success')
+    TriggerClientEvent('196rp_casino:client:balance', src, Player.PlayerData.money.cash or 0, c.chips)
+end)
+
+-- ── Balans ──
+RegisterNetEvent('196rp_casino:server:getBalance', function()
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    if not Player then return end
+    local c = LoadChips(Player)
+    TriggerClientEvent('196rp_casino:client:balance', src, Player.PlayerData.money.cash or 0, c.chips)
+end)
+
+-- ══════════════════════════════════════
+--  RULet
+-- ══════════════════════════════════════
 RegisterNetEvent('196rp_casino:server:roulette', function(betType, betValue, amount)
     local src = source
     amount = math.floor(tonumber(amount) or 0)
-    if not Charge(src, amount) then return end
+    local ok, Player = Charge(src, amount)
+    if not ok then return end
 
     local number = math.random(0, Config.Roulette.Numbers)
     local color = nil
@@ -75,19 +169,25 @@ RegisterNetEvent('196rp_casino:server:roulette', function(betType, betValue, amo
     if won then
         winAmount = math.min(amount * multiplier, Config.Limits.MaxProfit)
         PayWinnings(src, winAmount)
+    else
+        RecordLoss(Player, amount)
     end
 
     TriggerClientEvent('196rp_casino:client:rouletteResult', src, {
         number = number, color = color, won = won, win = winAmount, bet = amount, betType = betType, betValue = betValue,
     })
+    TriggerClientEvent('196rp_casino:client:balance', src, Player.PlayerData.money.cash or 0, LoadChips(Player).chips)
 end)
 
--- ── Zar ──
+-- ══════════════════════════════════════
+--  Zar
+-- ══════════════════════════════════════
 RegisterNetEvent('196rp_casino:server:dice', function(choice, amount)
     local src = source
     amount = math.floor(tonumber(amount) or 0)
     if choice ~= 'cute' and choice ~= 'tek' then return end
-    if not Charge(src, amount) then return end
+    local ok, Player = Charge(src, amount)
+    if not ok then return end
 
     local roll = math.random(1, 6)
     local even = roll % 2 == 0
@@ -96,46 +196,47 @@ RegisterNetEvent('196rp_casino:server:dice', function(choice, amount)
     if won then
         winAmount = math.min(math.floor(amount * Config.Dice.Payout), Config.Limits.MaxProfit)
         PayWinnings(src, winAmount)
+    else
+        RecordLoss(Player, amount)
     end
     TriggerClientEvent('196rp_casino:client:diceResult', src, { roll = roll, won = won, win = winAmount, bet = amount })
+    TriggerClientEvent('196rp_casino:client:balance', src, Player.PlayerData.money.cash or 0, LoadChips(Player).chips)
 end)
 
--- ── Slot ──
+-- ══════════════════════════════════════
+--  Slot
+-- ══════════════════════════════════════
 RegisterNetEvent('196rp_casino:server:slots', function(amount)
     local src = source
     amount = math.floor(tonumber(amount) or 0)
-    if not Charge(src, amount) then return end
+    local ok, Player = Charge(src, amount)
+    if not ok then return end
 
-    local function rollSymbol()
-        local r = math.random(1, 100)
+    local symbols = {}
+    for i = 1, 3 do
+        local r = math.random(100)
+        local idx = 1
         local acc = 0
-        for i, w in ipairs(Config.Slots.Weights) do
-            acc = acc + w
-            if r <= acc then return Config.Slots.Symbols[i] end
+        for w, weight in ipairs(Config.Slots.Weights) do
+            acc = acc + weight
+            if r <= acc then idx = w break end
         end
-        return Config.Slots.Symbols[#Config.Slots.Symbols]
+        symbols[i] = Config.Slots.Symbols[idx]
     end
 
-    local a, b, c = rollSymbol(), rollSymbol(), rollSymbol()
     local winAmount = 0
-    if a == b and b == c then
-        local mult = Config.Slots.Payouts.ThreeSame[a] or 3
-        winAmount = math.min(math.floor(amount * mult), Config.Limits.MaxProfit)
-    elseif a == b or b == c or a == c then
-        winAmount = math.min(math.floor(amount * Config.Slots.Payouts.TwoSame), Config.Limits.MaxProfit)
-    end
-    if winAmount > 0 then
+    if symbols[1] == symbols[2] and symbols[2] == symbols[3] then
+        winAmount = math.min(math.floor(amount * (Config.Slots.Payouts.ThreeSame[symbols[1]] or 1)), Config.Limits.MaxProfit)
         PayWinnings(src, winAmount)
+    elseif symbols[1] == symbols[2] or symbols[2] == symbols[3] or symbols[1] == symbols[3] then
+        winAmount = math.min(math.floor(amount * Config.Slots.Payouts.TwoSame), Config.Limits.MaxProfit)
+        PayWinnings(src, winAmount)
+    else
+        RecordLoss(Player, amount)
     end
-    TriggerClientEvent('196rp_casino:client:slotsResult', src, { symbols = { a, b, c }, won = winAmount > 0, win = winAmount, bet = amount })
-end)
 
--- ── Balans (client üçün) ──
-RegisterNetEvent('196rp_casino:server:getBalance', function()
-    local src = source
-    local Player = QBCore.Functions.GetPlayer(src)
-    if not Player then return end
-    TriggerClientEvent('196rp_casino:client:balance', src, Player.PlayerData.money.cash or 0)
+    TriggerClientEvent('196rp_casino:client:slotsResult', src, { symbols = symbols, won = winAmount > 0, win = winAmount, bet = amount })
+    TriggerClientEvent('196rp_casino:client:balance', src, Player.PlayerData.money.cash or 0, LoadChips(Player).chips)
 end)
 
 -- ═══════════ BLACKJACK (21) ═══════════
@@ -177,31 +278,31 @@ local function BjResolve(src, result, state)
     local s = bjState[src]
     if not s then return end
     bjState[src] = nil
+    local Player = QBCore.Functions.GetPlayer(src)
 
-    if result == 'win' or result == 'blackjack' then
-        local mult = result == 'blackjack' and Config.Blackjack.BlackjackPayout or Config.Blackjack.Payout
-        local win = math.min(math.floor(s.bet * mult), Config.Limits.MaxProfit)
-        PayWinnings(src, win)
-        state = state or {}
-        state.win = win
-    elseif result == 'push' then
-        -- mərc geri qaytarılır
-        local Player = QBCore.Functions.GetPlayer(src)
-        if Player then
-            local taxTaken = 0
-            if GetResourceState('196rp_tax') == 'started' then
-                taxTaken = exports['196rp_tax']:ChargeTax(src, s.bet, 'casino-push')
-            end
-            Player.Functions.AddMoney('cash', s.bet - taxTaken, 'casino-push')
+    if Player then
+        if result == 'win' or result == 'blackjack' then
+            local mult = result == 'blackjack' and Config.Blackjack.BlackjackPayout or Config.Blackjack.Payout
+            local win = math.min(math.floor(s.bet * mult), Config.Limits.MaxProfit)
+            PayWinnings(src, win)
+        elseif result == 'push' then
+            local c = LoadChips(Player)
+            c.chips = c.chips + s.bet
+            SaveChips(Player, c)
+        else
+            RecordLoss(Player, s.bet)
         end
     end
 
     TriggerClientEvent('196rp_casino:client:blackjackResult', src, {
-        player = state.player or s.player,
-        dealer = state.dealer or s.dealer,
+        player = (state and state.player) or s.player,
+        dealer = (state and state.dealer) or s.dealer,
         result = result,
         bet = s.bet,
     })
+    if Player then
+        TriggerClientEvent('196rp_casino:client:balance', src, Player.PlayerData.money.cash or 0, LoadChips(Player).chips)
+    end
 end
 
 RegisterNetEvent('196rp_casino:server:blackjackStart', function(amount)
@@ -211,17 +312,16 @@ RegisterNetEvent('196rp_casino:server:blackjackStart', function(amount)
         Notify(src, 'Artıq aktiv oyununuz var.', 'error')
         return
     end
-    if not Charge(src, amount) then return end
+    local ok, Player = Charge(src, amount)
+    if not ok then return end
 
     local deck = BuildDeck()
     local player = { deck[1], deck[2] }
     local dealer = { deck[3] }
-    local s = { bet = amount, deck = deck, idx = 4, player = player, dealer = dealer }
-    bjState[src] = s
+    bjState[src] = { bet = amount, deck = deck, idx = 4, player = player, dealer = dealer }
     TriggerClientEvent('196rp_casino:client:blackjackState', src, { player = player, dealer = dealer, bet = amount })
 
-    local ps = BjSum(player)
-    if ps == 21 then
+    if BjSum(player) == 21 then
         BjResolve(src, 'blackjack', { player = player, dealer = { dealer[1] } })
     end
 end)
@@ -235,7 +335,7 @@ RegisterNetEvent('196rp_casino:server:blackjackHit', function()
 
     local sum = BjSum(s.player)
     if sum > 21 then
-        BjResolve(src, 'lose', { player = s.player, dealer = s.dealer })
+        BjResolve(src, 'lose')
         return
     end
     TriggerClientEvent('196rp_casino:client:blackjackState', src, { player = s.player, dealer = s.dealer, bet = s.bet, sum = sum })

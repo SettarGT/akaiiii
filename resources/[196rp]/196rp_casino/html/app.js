@@ -19,7 +19,10 @@ window.addEventListener('message', e => {
     if (!d || !d.action) return;
     if (d.action === 'open') casino.classList.remove('hidden');
     if (d.action === 'close') casino.classList.add('hidden');
-    if (d.action === 'balance') document.getElementById('cash').textContent = '₣' + Number(d.cash || 0).toLocaleString('az-AZ');
+    if (d.action === 'balance') {
+        document.getElementById('cash').textContent = '₣' + Number(d.cash || 0).toLocaleString('az-AZ');
+        document.getElementById('chips').textContent = Number(d.chips || 0).toLocaleString('az-AZ');
+    }
     if (d.action === 'rouletteResult') rouletteResult(d.data);
     if (d.action === 'diceResult') diceResult(d.data);
     if (d.action === 'slotsResult') slotsResult(d.data);
@@ -171,3 +174,12 @@ document.getElementById('bj-start').addEventListener('click', () => {
 });
 document.getElementById('bj-hit').addEventListener('click', () => { if (bjActive) post('blackjack', { action: 'hit' }); });
 document.getElementById('bj-stand').addEventListener('click', () => { if (bjActive) post('blackjack', { action: 'stand' }); });
+
+document.getElementById('chips-buy').addEventListener('click', () => {
+    const a = Math.floor(+(document.getElementById('chip-amount').value || 0));
+    if (a > 0) post('buyChips', { amount: a });
+});
+document.getElementById('chips-sell').addEventListener('click', () => {
+    const a = Math.floor(+(document.getElementById('chip-amount').value || 0));
+    if (a > 0) post('sellChips', { amount: a });
+});

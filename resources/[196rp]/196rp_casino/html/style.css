@@ -108,3 +108,15 @@ body { background: transparent; overflow: hidden; }
 .card.back { background: linear-gradient(135deg,#7a1f2b,#a32638); color: transparent; }
 .bj-actions { display: flex; gap: 10px; justify-content: center; }
 .bj-actions .disabled { opacity: .35; pointer-events: none; }
+
+.chip-row { display: flex; gap: 8px; padding: 0 18px 10px; }
+.chip-row input {
+    flex: 1; padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,.12);
+    background: rgba(0,0,0,.3); color: #fff; font-size: 13px;
+}
+.chip-btn {
+    padding: 8px 16px; border: none; border-radius: 8px; font-weight: 700; font-size: 12px;
+    background: linear-gradient(135deg,#f7b733,#ffd97a); color: #141414; cursor: pointer;
+}
+.chip-btn.sell { background: rgba(255,255,255,.1); color: #b9c7db; border: 1px solid rgba(255,255,255,.15); }
+.chip-btn:hover { filter: brightness(1.1); }
