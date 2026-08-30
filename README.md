@@ -47,7 +47,14 @@ qb-houses, qb-apartments, qb-interior, qb-loading, qb-adminmenu, qb-weapons.
 1. **Artifact:** FXServer-i [Windows](https://runtime.fivem.net/) / [Linux](https://runtime.fivem.net/)
    yükləyin və `server/` qovluğuna açın.
 2. **Fayllar:** Bu reponun bütün fayllarını server qovluğuna kopyalayın
-   (`server.cfg`, `resources/`, `196rp.sql`, `icon.png`).
+   (`server.cfg`, `resources/`, `196rp.sql`, `icon.png`). **Vacib:** reponun
+   `resources/` qovluğu AVTOMATİK olaraq sistem resurslarını da ehtiva edir
+   (`[system]` — mapmanager, chat, spawnmanager, sessionmanager,
+   basic-gamemode, hardcap, baseevents). Ona görə artefaktın köhnə `resources/`
+   qovluğu əgər varsa onu silmək **olmaz** — köhnə sistem resurslarını saxlayıb
+   yalnız repodakı faylları onun üzərinə **birləşdirin (merge)**. Əgər host-da
+   sistem resursları artıq mövcuddursa və təkrarçılıq xətası çıxarsa,
+   `resources/[system]/` qovluğunu sadəcə silin.
 3. **Verilənlər bazası:** MySQL-də `196rp` adlı boş bazanı yaradın və
    `196rp.sql` faylını idxal edin.
 4. **server.cfg:** `sv_licenseKey` və `mysql_connection_string` dəyərlərini doldurun.
@@ -58,6 +65,16 @@ qb-houses, qb-apartments, qb-interior, qb-loading, qb-adminmenu, qb-weapons.
 7. İşə salın: `run.bat` (Windows) və ya `./server/run.sh +exec server.cfg` (Linux).
 
 > `setr qb_locale "az"` server.cfg-də artıq var — bütün UI Azərbaycandır.
+
+## 🆘 Tez-tez xətalar (troubleshooting)
+
+| Ekranda görünən | Səbəb | Həll |
+|---|---|---|
+| `Could not find dependency oxmysql for resource qb-core` | oxmysql resursu paketdə deyil və ya köhnə mənbə kodu ilə əvəz olunub | Repodan yeni `resources/` götürün — `resources/[standalone]/oxmysql` rəsmi v2.14.1 release-dir |
+| `Couldn't find resource mapmanager / chat / spawnmanager ...` | Artefaktın sistem resursları silinib | Yeni `resources/` paketində `[system]` qovluğu var — onu saxlayın |
+| `SCRIPT ERROR: ... No such export GetCoreObject in resource qb-core` | qb-core oxmysql olmadığı üçün başlamayıb | Yuxarıdakı iki sətri həll edin — bu xəta öz-özünə yox olur |
+| `SCRIPT ERROR: locales/az.lua ... near 'delete'` | Köhnə tərcümə faylındakı sintaksis xətası | Repodan yenilənmiş `qb-policejob/locales/az.lua` götürün |
+| `Failed to get processes' tree usage data ... wmic` | Windows 11-də `wmic` köhnəlib | **Zərərsizdir** — diqqət etməyin |
 
 ---
 

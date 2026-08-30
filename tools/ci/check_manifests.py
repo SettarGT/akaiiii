@@ -11,6 +11,7 @@ import re
 import sys
 
 RES_ROOT = 'resources/[196rp]'
+RES_ROOTS = ['resources/[196rp]', 'resources/[system]']
 problems = []
 
 # FiveM server artifacts ilə birlikdə gələn, repo-da saxlanmayan resurslar
@@ -22,10 +23,15 @@ CFX_BUILTIN = {
 
 
 def res_dirs():
-    for name in sorted(os.listdir(RES_ROOT)):
-        path = os.path.join(RES_ROOT, name)
-        if os.path.isdir(path):
-            yield name, path
+    seen = set()
+    for root in RES_ROOTS:
+        if not os.path.isdir(root):
+            continue
+        for name in sorted(os.listdir(root)):
+            path = os.path.join(root, name)
+            if os.path.isdir(path) and name not in seen:
+                seen.add(name)
+                yield name, path
 
 
 # ---------- 1. fxmanifest mövcudluğu və fayl referansları ----------
