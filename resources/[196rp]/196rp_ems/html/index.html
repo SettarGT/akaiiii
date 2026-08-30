@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="utf-8">
+    <title>196 EMS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="ems" class="hidden">
+        <!-- Rentgen -->
+        <div id="xray" class="panel hidden">
+            <div class="head">
+                <div class="logo">🩺 <span>196 EMS</span> — Rentgen</div>
+                <div class="sub">Xəstə ID: <b id="xTarget">-</b> · Kritik hədd: <b id="xCrit">-</b></div>
+            </div>
+            <div class="grid" id="xGrid"></div>
+            <div class="btns">
+                <button id="btnXrayClose" class="btn ghost">Bağla</button>
+                <button id="btnSurgery" class="btn gold">🔪 Cərrahiyyə başlat</button>
+            </div>
+        </div>
+
+        <!-- Cərrahiyyə -->
+        <div id="surgery" class="panel hidden">
+            <div class="head">
+                <div class="logo">🔪 <span>196 EMS</span> — Cərrahiyyə</div>
+                <div class="sub" id="sStage">Addım 1 / <span id="sTotal">5</span> — Yadda saxla</div>
+            </div>
+            <div class="seq" id="sShow"></div>
+            <div class="seq hint">🧠 Yadda saxla, sonra eyni ardıcıllığı təkrarla</div>
+            <div class="input" id="sInput"></div>
+            <div class="btns">
+                <button id="btnSurgeryOK" class="btn gold disabled" disabled>✔ Təsdiqlə</button>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

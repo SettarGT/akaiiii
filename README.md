@@ -43,6 +43,10 @@ qb-houses, qb-apartments, qb-interior, qb-loading, qb-adminmenu, qb-weapons.
 | `196rp_hospital` | Xəstəxana — 2x qayıdış, müalicə, EMS duty (0 NPC) |
 | `196rp_dealer` | Avtosalon — premium NUI ilə avtomobil alışı |
 | `196rp_atm` | ATM — NUI maliyyə paneli (nağd ↔ bank) |
+| `196rp_ems` | Advanced EMS — 6 zona zədə, rentgen NUI, xərək, cərrahiyyə minigame |
+| `196rp_prison` | Həbsxana işləri — mətbəx/təmizlik/idman → vaxt azalması |
+| `196rp_fire` | Yanğınsöndürmə — stansiya kiosku, /yangin, /sondur, təsadüfi yanğınlar |
+| `196rp_radar` | Polis radarı + plate scanner (/radar, /plate) |
 
 ---
 
@@ -144,6 +148,10 @@ qb-houses, qb-apartments, qb-interior, qb-loading, qb-adminmenu, qb-weapons.
 | `/anim` | Animasiya menyusu |
 | `/temir` | Mexanik — yaxın avtomobili təmir et |
 | `/avtomobil` `/sat` | Avtosalon — satış maşını çağır / alıcıya sat |
+| `/rentgen` `/sarqi` `/gips` `/cerrahiye` `/dirilt` `/xertek` | EMS — rentgen, sarğı, gips, cərrahiyyə, diriltmə, xərək |
+| `/radar` `/plate` | Polis — radar aç/bagla, plate skan |
+| `/yangin` `/sondur` | Yanğın zəngi / söndürmə |
+| `/sat` (həbsxanada yox) | Həbsxana işləri: [E] ilə mətbəx/təmizlik/idman |
 
 ### Admin
 `/wluygula`, `/wlqebul <id>`, `/wlred <id> <səbəb>`, `/wlrem <id>`, `/wlkesifle` —

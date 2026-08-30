@@ -218,3 +218,15 @@ say / sv_...          → Konfiquraşdırmalar
 /sat — Avtosalon: yaxın alıcıya satır (faktura yox, birbaşa nağd)
 /is — İş Mərkəzi menyusu (və ya [E] stansiya)
 /nobvet — PD/Xəstəxana/İş növbəti paneli
+
+=== V1.5 EMS / HƏBSXANA / YANĞIN / RADAR ===
+/rentgen <id> — EMS: xəstənin 6-zona rentgeni (NUI)
+/sarqi <id> — EMS: bandage ilə ən ağır zona -25
+/gips <id> — EMS: firstaid ilə zona -35 (qol/ayaq)
+/cerrahiye <id> — EMS: NUI cərrahiyyə minigame (5 addım)
+/dirilt <id> — EMS: zədələr təmizlənibsə xəstəni dirilt
+/xertek <id> / /xertekendir — EMS: xəstəni daşı / qoy
+/radar — Polis: sürət radarını aç/bagla
+/plate — Polis: yaxın avtomobilin sahibini tap
+/yangin — Hər kəs: yanğın zəngi (911 briqada)
+/sondur — Yanğınsöndürən: yanan obyekti söndür (+₣120)

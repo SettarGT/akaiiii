@@ -84,6 +84,9 @@ EXTERNAL_CLIENT_EVENTS = {
     'InteractSound_SV:PlayOnSource',
     'qb-radio:client:SetRadioState',
     'qb-radio:client:UseItem',
+    # qb-ambulancejob client hadisələri (EMS inteqrasiyası)
+    'hospital:client:Revive',
+    'hospital:client:HealInjuries',
 }
 
 # Digər resurslarda qeydiyyatdan keçmiş server eventləri (qloballa yox — ayrıca)

@@ -55,6 +55,7 @@ QBCore.Shared.Jobs = {
 			['4'] = { name = 'Menecer', isboss = true, payment = 150 },
 		},
 	},
+	fire = { label = 'Yanğınsöndürmə', defaultDuty = true, offDutyPay = false, grades = { ['0'] = { name = 'Yanğınsöndürən', payment = 60 }, ['1'] = { name = 'Komandir', payment = 90 } } },
 	taxi = {
 		label = 'Taksi',
 		defaultDuty = true,

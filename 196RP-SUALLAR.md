@@ -48,6 +48,12 @@
 - `196rp_jobs` təkmilləşdirmə — 12 iş, balıqçılıq/mədən/meşə/inşaat zonaları + satış məntəqələri, mexanik `/temir`, avtosalon `/avtomobil`+`/sat` (player_vehicles qeydiyyatı).
 - qb: `pilot` işi, 24/7 + LTD mağazalarına `useStock`.
 
+## ✅ V1.5 TƏHVİL EDİLDİ (bu gün)
+- `196rp_ems` — 6 zona zədə, rentgen NUI, sarğı/gips, cərrahiyyə minigame, xərək daşıma, şərti diriltmə.
+- `196rp_prison` — mətbəx/təmizlik/idman işləri → həbs vaxtı azalması (-30/-35 san, CD 90 san).
+- `196rp_fire` — yanğınsöndürmə: stansiya kiosku, /yangin 911 zəngi, blip, /sondur (+₣120), təsadüfi avtomobil yanğınları, yanğın maşını.
+- `196rp_radar` — polis radarı (NUI, sürət həddi xəbərdarlığı) + /plate skan (DB sahib axtarışı).
+
 ## ⏳ NÖVBƏTİ MƏRHƏLƏLƏR (v1 davamı)
 
 - **v1.1:** Bələdiyyə paketi (pasport/FİN 11 rəqəm/qan qrupu + sürücülük imtahanı 10 sual), xüsusi MDT + dispatch, faktura NUI, ATM dizaynı, iş geyimləri (uniforma), cərimə bildiriş pəncərəsi.

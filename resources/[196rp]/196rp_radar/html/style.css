@@ -1,0 +1,26 @@
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+body { background: transparent; }
+.hidden { display: none !important; }
+
+#radar {
+    position: fixed; left: 50%; bottom: 70px; transform: translateX(-50%);
+    width: 300px; padding: 16px 24px 18px;
+    border-radius: 16px; text-align: center;
+    background: linear-gradient(160deg, rgba(8,14,26,.92), rgba(16,30,48,.92));
+    border: 1px solid rgba(125, 211, 252, 0.35);
+    box-shadow: 0 20px 60px rgba(0,0,0,.7);
+    backdrop-filter: blur(10px);
+}
+
+.r-top { color: #7dd3fc; font-size: 11px; font-weight: 800; letter-spacing: 3px; margin-bottom: 6px; }
+.r-top .dot {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: #34d399; margin-right: 6px;
+    box-shadow: 0 0 10px #34d399;
+}
+
+.r-speed.big { font-size: 56px; font-weight: 900; color: #fff; line-height: 1; font-variant-numeric: tabular-nums; }
+#radar.warn .r-speed.big { color: #ef4444; text-shadow: 0 0 18px rgba(239,68,68,.6); }
+.r-unit { color: #74859c; font-size: 11px; letter-spacing: 2px; margin-bottom: 10px; }
+.r-plate { font-size: 18px; font-weight: 800; color: #ffd97a; letter-spacing: 2px; }
+.r-model { font-size: 12px; color: #9fb1c8; margin-top: 4px; }
