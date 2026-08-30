@@ -277,3 +277,5 @@ Ev icarəsi: satılmayan evin qapısına yaxınlaş → [E] menyu → "İcarə e
 Əşya istifadə müddəti: yemək/içki 48 saat, dərman 7 gün (196rp_expiry, avtomatik silinmə + bildiriş)
 Baqaj: bütün avtomobillərdə 15 slot (D default), əlcək 5 slot
 Benzin: ₣1.75/litr
+Qaraj: maksimum 15 maşın (TT-42)
+Gəlir vergisi: iş satışlarından avtomatik 5% (TT-14)

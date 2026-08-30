@@ -1,5 +1,8 @@
 Config = {}
 
+-- Gəlir vergisi (iş satışlarından kəsmə, %)
+Config.IncomeTax = 5.0
+
 -- ═══════════ İş Mərkəzləri (start) ═══════════
 Config.JobCenters = {
     { label = 'Mərkəz İş Mərkəzi', coords = vector3(-266.63, -965.76, 31.22), icon = 'fas fa-briefcase' },

@@ -155,9 +155,15 @@ RegisterNetEvent('196rp_jobs:server:sell', function(sellId, item, amount)
     end
 
     local price = sp.buys[item] * amount
+    local tax = math.floor(price * Config.IncomeTax / 100)
+    local net = price - tax
     Player.Functions.RemoveItem(item, amount, false, false, 'job-sell')
-    Player.Functions.AddMoney('cash', price, 'job-sell')
-    Notify(src, ('💰 %d × %s satıldı: +₣%d'):format(amount, item, price), 'success')
+    Player.Functions.AddMoney('cash', net, 'job-sell')
+    if tax > 0 then
+        Notify(src, ('💰 %d × %s satıldı: +₣%d (gəlir vergisi 5%% = -₣%d)'):format(amount, item, net, tax), 'success')
+    else
+        Notify(src, ('💰 %d × %s satıldı: +₣%d'):format(amount, item, net), 'success')
+    end
 end)
 
 

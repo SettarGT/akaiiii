@@ -64,6 +64,13 @@
 - **0 NPC** — qb-shops bütün 39 mağazada satıcı ped-ləri söndürüldü (tam self-service zona).
 - Streamer rejimi `/pm`-də də adı gizlədir.
 
+## ✅ V1.11 TƏHVİL EDİLDİ (bu gün)
+- `196rp_expiry` — **əşya istifadə müddəti**: yemək/içki 48 saat, dərman 7 gün; qb-inventory `ItemAdded` hook-u ilə yeni əşyalara avtomatik vaxt yazılır, bitənlər silinir + bildiriş (TT-40/41).
+- **Baqaj**: bütün avtomobillərdə 15 slot (TT-42), əlcək 5, ev anbarı 50.
+- **Qaraj limiti**: hər oyunçu qarajda maksimum 15 maşın saxlaya bilər (TT-42).
+- **Gəlir vergisi**: iş satışlarından 5% (TT-14) — `196rp_jobs` Config.IncomeTax.
+- **Benzin**: ₣1.75/litr (TT-17).
+
 ## ⏳ NÖVBƏTİ MƏRHƏLƏLƏR (v1 davamı)
 
 - **v1.1:** Bələdiyyə paketi (pasport/FİN 11 rəqəm/qan qrupu + sürücülük imtahanı 10 sual), xüsusi MDT + dispatch, faktura NUI, ATM dizaynı, iş geyimləri (uniforma), cərimə bildiriş pəncərəsi.

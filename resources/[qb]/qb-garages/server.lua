@@ -169,6 +169,14 @@ QBCore.Functions.CreateCallback('qb-garages:server:canDeposit', function(source,
         return
     end
     if state == 1 then
+        if Config.StoredVehicleLimit then
+            local stored = MySQL.scalar.await('SELECT COUNT(*) FROM player_vehicles WHERE citizenid = ? AND state = 1', { Player.PlayerData.citizenid })
+            if stored >= Config.StoredVehicleLimit then
+                TriggerClientEvent('QBCore:Notify', source, ('Qaraj doludur — maksimum %d maşın saxlanıla bilər.'):format(Config.StoredVehicleLimit), 'error')
+                cb(false)
+                return
+            end
+        end
         MySQL.update('UPDATE player_vehicles SET state = ?, garage = ? WHERE plate = ?', { state, garage, plate })
         cb(true)
     else

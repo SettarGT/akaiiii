@@ -5,6 +5,7 @@ Config.SharedGarages = false       -- true == take any car from any garage | fal
 Config.ClassSystem = false         -- true == restrict vehicles by class | false == any vehicle class in any garage
 Config.FuelResource = 'LegacyFuel' -- supports any that has a GetFuel() and SetFuel() export
 Config.Warp = true                 -- true == warp player into vehicle | false == vehicle spawns without warping
+Config.StoredVehicleLimit = 15 -- TT-42: qarajda maksimum saxlanılan maşın                 -- true == warp player into vehicle | false == vehicle spawns without warping
 
 -- https://docs.fivem.net/natives/?_0x29439776AAA00A62
 Config.VehicleClass = {
