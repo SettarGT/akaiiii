@@ -262,3 +262,5 @@ Sim Kart: aeroport terminalında kiosk — yeni 196-XXX nömrə (₣500)
 Backup: scripts/mysql-backup.sh (Linux cron 6 saat) / mysql-backup.bat (Windows Task Scheduler)
 Kuryer zənciri: mağazada [E] → "Kuryer sifarişi" (₣400) → Logistika Anbarından qutunu götür (trucker) → mağazaya çatdır (+₣700)
 Self-repair stansiyası: Avtosalon yanı — mexanik yoxdursa 2.5x qiymət
+
+/uniforma — İş geyimi (mexanik/avtosalon/mədən/meşə/inşaat/balıqçı) — aç/bağla

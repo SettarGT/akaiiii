@@ -224,6 +224,37 @@ local function OpenSelfStation()
     end)
 end
 
+
+-- ── İş geyimləri ──
+local uniformOn = false
+local savedOutfit = {}
+
+RegisterCommand('uniforma', function()
+    local pData = QBCore.Functions.GetPlayerData()
+    local outfit = Config.Uniforms and Config.Uniforms[pData.job.name]
+    local ped = PlayerPedId()
+    if not outfit then
+        QBCore.Functions.Notify('Bu iş üçün uniforma yoxdur.', 'primary')
+        return
+    end
+    if not uniformOn then
+        savedOutfit = {}
+        for _, s in ipairs(outfit) do
+            savedOutfit[#savedOutfit + 1] = { slot = s.slot, draw = GetPedDrawableVariation(ped, s.slot), tex = GetPedTextureVariation(ped, s.slot) }
+            SetPedComponentVariation(ped, s.slot, s.draw, s.tex, 0)
+        end
+        uniformOn = true
+        QBCore.Functions.Notify('👕 İş geyimi geyindiniz — /uniforma ilə çıxarın.', 'success')
+    else
+        for _, s in ipairs(savedOutfit) do
+            SetPedComponentVariation(ped, s.slot, s.draw, s.tex, 0)
+        end
+        savedOutfit = {}
+        uniformOn = false
+        QBCore.Functions.Notify('👕 Adi geyimə qayıtdınız.', 'primary')
+    end
+end, false)
+
 -- ── Avtosalon ──
 local function OpenDealerMenu()
     local pData = QBCore.Functions.GetPlayerData()

@@ -36,7 +36,6 @@ qb-houses, qb-apartments, qb-interior, qb-loading, qb-adminmenu, qb-weapons.
 |---|---|
 | `196rp_whitelist` | DB əsaslı whitelist: `/muraciet`, Discord webhook, `/wluygula /wlqebul /wlred /wlrem /wlkesifle` |
 | `196rp_rpcommands` | `/me`, `/do`, `/ame`, `/try`, `/ooc`, `/report`, `/pm` — Azərbaycanca |
-| `196rp_jobs` | İş Mərkəzi — 10 mülki işə düzəlmə |
 | `196rp_animations` | `U` düyməsi / `/anim` — animasiya menyusu |
 | `196rp_tuning` | Tuninq emalatxanası (mühərrik, əyləc, turbo, ksenon, rəng) |
 | `196rp_mdt` | Polis MDT — axtarış, cərimə, nəqliyyat, qeydlər (NUI) |

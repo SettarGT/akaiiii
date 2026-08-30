@@ -58,6 +58,17 @@ Config.Mechanic = {
     },
 }
 
+-- ═══════════ İş geyimləri (uniforma) ═══════════
+-- slot: 3=torso, 4=ayaq, 6=ayaqqabı, 11=üst
+Config.Uniforms = {
+    miner =       { { slot = 3, draw = 34, tex = 0 }, { slot = 4, draw = 24, tex = 0 }, { slot = 11, draw = 219, tex = 0 } },
+    lumberjack =  { { slot = 3, draw = 34, tex = 0 }, { slot = 4, draw = 23, tex = 0 }, { slot = 11, draw = 220, tex = 0 } },
+    construction ={ { slot = 3, draw = 34, tex = 0 }, { slot = 4, draw = 22, tex = 0 }, { slot = 11, draw = 218, tex = 0 } },
+    fisher =      { { slot = 3, draw = 34, tex = 0 }, { slot = 4, draw = 21, tex = 0 } },
+    mechanic =    { { slot = 3, draw = 1, tex = 0 },  { slot = 4, draw = 23, tex = 0 } },
+    cardealer =   { { slot = 3, draw = 1, tex = 0 },  { slot = 4, draw = 25, tex = 0 } },
+}
+
 -- ═══════════ Avtosalon ═══════════
 Config.CarDealer = {
     SaleCenter = { label = '196 Avtosalon', coords = vector3(-50.27, -1101.42, 26.42), radius = 8.0 },
