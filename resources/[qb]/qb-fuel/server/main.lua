@@ -13,7 +13,7 @@ QBCore.Functions.CreateCallback('qb-fuel:server:refillVehicle', function(src, cb
         return
     end
 
-    local finalPrice = litres * Config.FuelPrice
+    local finalPrice = math.floor(litres * Config.FuelPrice + 0.5)
     if Player.PlayerData.money[Config.MoneyType] >= finalPrice then
         cb(Player.RemoveMoney(Config.MoneyType, finalPrice, 'refuel-vehicle'))
     else

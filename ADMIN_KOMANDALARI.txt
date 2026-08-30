@@ -271,3 +271,9 @@ Ev icarəsi: satılmayan evin qapısına yaxınlaş → [E] menyu → "İcarə e
 /icarəqaytar — icarəni ləğv et (ev yaxınlığında)
 /vergibax — növbəti həftəlik vergi tarixi (avtomobil ₣250, ev ₣500/həftə)
 👕 Geyim düyməsi — inventar başlığında qarderob (qb-clothing) qısayolu
+
+── V1.11 ƏLAVƏLƏR ─────────────────────────────
+
+Əşya istifadə müddəti: yemək/içki 48 saat, dərman 7 gün (196rp_expiry, avtomatik silinmə + bildiriş)
+Baqaj: bütün avtomobillərdə 15 slot (D default), əlcək 5 slot
+Benzin: ₣1.75/litr
