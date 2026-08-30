@@ -7,6 +7,9 @@ Config.Webhooks = {
     kills     = '',   -- ölümlər
     admin     = '',   -- admin əmrləri
     veh       = '',   -- avtomobil hadisələri
+    items     = '',   -- əşya əlavə/silinmə
+    reports   = '',   -- oyunçu reportları
+    wl        = '',   -- whitelist müraciətləri
     anticheat = '',   -- cheat şübhələri
 }
 

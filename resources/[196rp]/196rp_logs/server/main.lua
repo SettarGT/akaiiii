@@ -2,7 +2,8 @@ local QBCore = exports['qb-core']:GetCoreObject()
 
 local colors = {
     conn = 3066993, money = 15844367, kills = 15158332,
-    admin = 15105570, veh = 3447003, anticheat = 15548997,
+    admin = 15105570, veh = 3447003, items = 10181046,
+    reports = 15548997, wl = 5793266, anticheat = 15548997,
 }
 
 -- ── Webhook göndər ──
@@ -43,6 +44,30 @@ local function nameOf(player)
     if not player then return '?' end
     local c = player.PlayerData.charinfo
     return (c.firstname or '?') .. ' ' .. (c.lastname or '?')
+end
+
+-- ── Hook: Əşya (#items) — qb-inventory listener ──
+if GetResourceState('qb-inventory') == 'started' then
+    exports['qb-inventory']:AddListener('ItemAdded', function(_, data)
+        if not data or not data.item then return end
+        local who = data.source or '?'
+        SendWithFields('items', '📦 Əşya əlavə edildi', {
+            { name = 'Oyunçu', value = '`' .. tostring(who) .. '`', inline = true },
+            { name = 'Əşya', value = data.item.label or data.item.name, inline = true },
+            { name = 'Say', value = tostring(data.amount or 1), inline = true },
+            { name = 'Səbəb', value = data.reason or '?', inline = true },
+        })
+    end)
+    exports['qb-inventory']:AddListener('ItemRemoved', function(_, data)
+        if not data or not data.item then return end
+        local who = data.source or '?'
+        SendWithFields('items', '🗑 Əşya silindi', {
+            { name = 'Oyunçu', value = '`' .. tostring(who) .. '`', inline = true },
+            { name = 'Əşya', value = data.item.label or data.item.name, inline = true },
+            { name = 'Say', value = tostring(data.amount or 1), inline = true },
+            { name = 'Səbəb', value = data.reason or '?', inline = true },
+        })
+    end)
 end
 
 -- ── Hook: giriş/çıxış ──
